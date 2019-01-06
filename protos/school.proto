@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package school;
+
+
+service SchoolService {
+  rpc SearchSchoolByQuery (SearchSchoolByQueryRequest) returns (SearchSchoolByQueryReply) {}
+  rpc SearchSchoolByCritera (SearchSchoolByCriteraRequest) returns (SearchSchoolByCriteraReply) {}
+  rpc ListSchool (ListSchoolRequest) returns (ListSchoolReply) {}
+  rpc GetSchool (GetSchoolRequest) returns (GetSchoolReply) {}
+}
+
+message School {
+  string name = 1;
+  string description = 2;
+}
+
+// SearchSchoolByQuery
+
+message SearchSchoolByQueryRequest {
+  string query = 1;
+}
+
+message SearchSchoolByQueryReply {
+  repeated School schools = 1;
+}
+
+// SearchSchoolByCritera
+
+message SearchSchoolByCriteraRequest {
+  string sector = 1;
+}
+
+message SearchSchoolByCriteraReply {
+  repeated School schools = 1;
+}
+
+// ListSchool
+
+message ListSchoolRequest {
+  uint64 first = 1;
+  uint64 offset = 2;
+}
+
+message ListSchoolReply {
+  repeated School schools = 1;
+}
+
+// GetSchool
+
+message GetSchoolRequest {
+  string id = 1;
+}
+
+message GetSchoolReply {
+  School school = 1;
+}

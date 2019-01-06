@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package uniuni_account;
+
+service AccountService {
+  rpc SignIn (SignInRequest) returns (SignInReply) {}
+  rpc SignUp (SignUpRequest) returns (SignUpReply) {}
+  rpc SignOut (SignOutRequest) returns (SignOutReply) {}
+  rpc Close (CloseRequest) returns (CloseReply) {}
+}
+
+message Credential {
+  string email = 1;
+  string password = 2;
+}
+
+message Session {
+  string token = 1;
+}
+
+// SignIn
+
+message SignInRequest {
+  Credential credential = 1;
+}
+
+message SignInReply {
+  Session session = 1;
+}
+
+// SignUp
+
+message SignUpRequest {
+  Credential credential = 1;
+}
+
+message SignUpReply {
+}
+
+// SignOut
+
+message SignOutRequest {
+  string id = 1;
+}
+
+message SignOutReply {
+}
+
+// Close
+
+message CloseRequest {
+  string id = 1;
+}
+
+message CloseReply {
+}

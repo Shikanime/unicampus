@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message Location {
+  string address = 1;
+  string state = 2;
+  string country = 3;
+}
