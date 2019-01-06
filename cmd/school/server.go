@@ -22,48 +22,48 @@ type Server struct {
 	recommandation *recommandation.Repo
 }
 
-func (s *Server) SearchSchoolByQuery(ctx context.Context, in *school.SearchSchoolByQueryRequest) (*school.SearchSchoolByQueryReply, error) {
+func (s *Server) SearchSchoolByQuery(ctx context.Context, in *unicampus_school.SearchSchoolByQueryRequest) (*unicampus_school.SearchSchoolByQueryReply, error) {
 	schoolIndexes := s.indexer.SearchSchoolByQuery(in.Query)
 	schoolDatas := s.persistence.ListSchool(schoolIndexes)
 
-	schools := make([]*school.School, len(schoolDatas))
+	schools := make([]*unicampus_school.School, len(schoolDatas))
 	for i, dbSchool := range schoolDatas {
-		schools[i] = &school.School{
+		schools[i] = &unicampus_school.School{
 			Name:        dbSchool.Name,
 			Description: dbSchool.Description,
 		}
 	}
 
-	return &school.SearchSchoolByQueryReply{
+	return &unicampus_school.SearchSchoolByQueryReply{
 		Schools: schools,
 	}, nil
 }
 
-func (s *Server) SearchSchoolByCritera(ctx context.Context, in *school.SearchSchoolByCriteraRequest) (*school.SearchSchoolByCriteraReply, error) {
-	return &school.SearchSchoolByCriteraReply{}, nil
+func (s *Server) SearchSchoolByCritera(ctx context.Context, in *unicampus_school.SearchSchoolByCriteraRequest) (*unicampus_school.SearchSchoolByCriteraReply, error) {
+	return &unicampus_school.SearchSchoolByCriteraReply{}, nil
 }
 
-func (s *Server) ListSchool(ctx context.Context, in *school.ListSchoolRequest) (*school.ListSchoolReply, error) {
+func (s *Server) ListSchool(ctx context.Context, in *unicampus_school.ListSchoolRequest) (*unicampus_school.ListSchoolReply, error) {
 	schoolDatas := s.persistence.ListSchoolByOffset(in.First, in.Offset)
 
-	schools := make([]*school.School, len(schoolDatas))
+	schools := make([]*unicampus_school.School, len(schoolDatas))
 	for i, dbSchool := range schoolDatas {
-		schools[i] = &school.School{
+		schools[i] = &unicampus_school.School{
 			Name:        dbSchool.Name,
 			Description: dbSchool.Description,
 		}
 	}
 
-	return &school.ListSchoolReply{
+	return &unicampus_school.ListSchoolReply{
 		Schools: schools,
 	}, nil
 }
 
-func (s *Server) GetSchool(ctx context.Context, in *school.GetSchoolRequest) (*school.GetSchoolReply, error) {
+func (s *Server) GetSchool(ctx context.Context, in *unicampus_school.GetSchoolRequest) (*unicampus_school.GetSchoolReply, error) {
 	schoolData := s.persistence.GetSchool(in.Id)
 
-	return &school.GetSchoolReply{
-		School: &school.School{
+	return &unicampus_school.GetSchoolReply{
+		School: &unicampus_school.School{
 			Name:        schoolData.Name,
 			Description: schoolData.Description,
 		},
@@ -96,7 +96,7 @@ func main() {
 
 	// Server
 	s := grpc.NewServer()
-	school.RegisterSchoolServiceServer(s, &Server{
+	unicampus_school.RegisterSchoolServiceServer(s, &Server{
 		persistence:    persistenceRepo,
 		indexer:        indexerRepo,
 		recommandation: recommandationRepo,

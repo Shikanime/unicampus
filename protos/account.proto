@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package uniuni_account;
+package unicampus_account;
 
 service AccountService {
   rpc SignIn (SignInRequest) returns (SignInReply) {}

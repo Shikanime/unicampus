@@ -1,5 +1,6 @@
 PROTOBUFS_DIR := ./protos
 
+ACCOUNT_DIR := ./pkg/account
 SCHOOL_DIR := ./pkg/school
 
 gen-grpc:

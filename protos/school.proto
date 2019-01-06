@@ -1,7 +1,6 @@
 syntax = "proto3";
 
-package school;
-
+package unicampus_school;
 
 service SchoolService {
   rpc SearchSchoolByQuery (SearchSchoolByQueryRequest) returns (SearchSchoolByQueryReply) {}
