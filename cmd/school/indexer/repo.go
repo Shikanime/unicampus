@@ -3,12 +3,37 @@ package indexer
 import (
 	"context"
 	"encoding/json"
+	"log"
 
 	"github.com/olivere/elastic"
 )
 
+func NewClient() *Repo {
+	conn, err := elastic.NewClient(
+		elastic.SetURL("http://localhost:9200"),
+		elastic.SetSniff(false),
+	)
+	if err != nil {
+		log.Fatalf("failed to connect indexer database: %v", err)
+	}
+
+	// bulk := conn.Bulk().
+	// 	Index("schools").
+	// 	Type("_doc")
+	// bulk.Add(elastic.NewBulkIndexRequest().Id("1").Doc(&School{ID: "1", Name: "ETNA", Description: "Desc"}))
+
+	// _, err = bulk.Do(context.Background())
+	// if err != nil {
+	// 	log.Fatalf("failed to connect indexer database: %v", err)
+	// }
+
+	return &Repo{
+		conn: conn,
+	}
+}
+
 type Repo struct {
-	Conn *elastic.Client
+	conn *elastic.Client
 }
 
 func (r *Repo) SearchSchoolByQuery(query string) []string {
@@ -16,7 +41,7 @@ func (r *Repo) SearchSchoolByQuery(query string) []string {
 		Fuzziness("2").
 		MinimumShouldMatch("2")
 
-	result, err := r.Conn.Search().
+	result, err := r.conn.Search().
 		Index("schools").
 		Query(queryBuilder).
 		Do(context.Background())
@@ -32,4 +57,7 @@ func (r *Repo) SearchSchoolByQuery(query string) []string {
 	}
 
 	return schoolIndexes
+}
+
+func (r *Repo) Close() {
 }
