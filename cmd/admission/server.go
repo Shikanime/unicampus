@@ -9,7 +9,7 @@ import (
 	"github.com/Shikanime/unicampus/cmd/admission/containers"
 	"github.com/Shikanime/unicampus/cmd/admission/services/indexer"
 	"github.com/Shikanime/unicampus/cmd/admission/services/persistence"
-	"github.com/Shikanime/unicampus/pkg/unicampus_admission"
+	"github.com/Shikanime/unicampus/pkg/unicampus_api_admission_v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -44,7 +44,7 @@ func main() {
 
 	// Server
 	s := grpc.NewServer()
-	unicampus_admission.RegisterAdmissionServiceServer(s, &Server{
+	unicampus_api_admission_v1.RegisterAdmissionServiceServer(s, &Server{
 		School: containers.NewSchool(&persistenceRepo, &indexerRepo),
 		// Student: containers.NewStudent(&persistenceRepo, &indexerRepo),
 	})

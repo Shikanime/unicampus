@@ -15,7 +15,7 @@ func NewClient() Repo {
 		panic(err)
 	}
 
-	bucketName := "unicampus_admission_student"
+	bucketName := "unicampus_api_admission_v1_student"
 	location := "us-east-1"
 
 	if err = conn.MakeBucket(bucketName, location); err != nil {
