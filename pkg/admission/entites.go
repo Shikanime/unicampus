@@ -13,7 +13,7 @@ type Student struct {
 }
 
 type Application struct {
-	UUID        string
-	SchoolUUID  string
-	StudentUUID string
+	UUID    string
+	School  *School
+	Student *Student
 }

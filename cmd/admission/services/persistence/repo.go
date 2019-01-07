@@ -101,12 +101,12 @@ func (r *Repo) DeleteSchool(school *admission.School) (*admission.School, error)
 }
 
 func (r *Repo) CreateApplication(application *admission.Application) (*admission.Application, error) {
-	schoolData, err := r.GetSchool(&admission.School{UUID: application.SchoolUUID})
+	schoolData, err := r.GetSchool(application.School)
 	if err != nil {
 		return nil, err
 	}
 
-	studentData, err := r.GetStudent(&admission.Student{UUID: application.StudentUUID})
+	studentData, err := r.GetStudent(application.Student)
 	if err != nil {
 		return nil, err
 	}

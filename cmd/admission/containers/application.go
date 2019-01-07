@@ -35,16 +35,16 @@ func (s *Student) AppyStudentToSchool(ctx context.Context, in *unicampus_admissi
 
 func NewApplicationNetworkToDomain(application *unicampus_admission.Application) *admission.Application {
 	return &admission.Application{
-		UUID:        application.Uuid,
-		SchoolUUID:  application.SchoolUuid,
-		StudentUUID: application.StudentUuid,
+		UUID:    application.Uuid,
+		School:  NewSchoolNetworkToDomain(application.School),
+		Student: NewStudentNetworkToDomain(application.Student),
 	}
 }
 
 func NewApplicationDomainToNetwork(application *admission.Application) *unicampus_admission.Application {
 	return &unicampus_admission.Application{
-		Uuid:        application.UUID,
-		SchoolUuid:  application.SchoolUUID,
-		StudentUuid: application.StudentUUID,
+		Uuid:    application.UUID,
+		School:  NewSchoolDomainToNetwork(application.School),
+		Student: NewStudentDomainToNetwork(application.Student),
 	}
 }
