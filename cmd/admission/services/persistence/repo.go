@@ -100,24 +100,71 @@ func (r *Repo) DeleteSchool(school *admission.School) (*admission.School, error)
 	return newSchoolPersistenceToDomain(schoolData), nil
 }
 
+func (r *Repo) CreateApplication(application *admission.Application) (*admission.Application, error) {
+	schoolData, err := r.GetSchool(&admission.School{UUID: application.SchoolUUID})
+	if err != nil {
+		return nil, err
+	}
+
+	studentData, err := r.GetStudent(&admission.Student{UUID: application.StudentUUID})
+	if err != nil {
+		return nil, err
+	}
+
+	applicationData := &Application{
+		schoolUUID:  schoolData.UUID,
+		studentUUID: studentData.UUID,
+	}
+	if err := r.conn.Create(&applicationData).Error; err != nil {
+		return nil, err
+	}
+
+	return newApplicationPersistenceToDomain(applicationData), nil
+}
+
 func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error) {
-	return nil, nil
+	studentData := new(Student)
+	if err := r.conn.Take(studentData, student).Error; err != nil {
+		return nil, err
+	}
+	return newStudentPersistenceToDomain(studentData), nil
 }
 
-func (r *Repo) ListStudent(schools []*admission.Student) ([]*admission.Student, error) {
-	return nil, nil
+func (r *Repo) CreateStudent(student *admission.Student) (*admission.Student, error) {
+	if err := r.conn.Create(&student).Error; err != nil {
+		return nil, err
+	}
+	studentData := new(Student)
+	if err := r.conn.First(&studentData).Error; err != nil {
+		return nil, err
+	}
+	return newStudentPersistenceToDomain(studentData), nil
 }
 
-func (r *Repo) ListStudentByOffset(first uint64, offset uint64) ([]*admission.Student, error) {
-	return nil, nil
+func (r *Repo) UpdateStudent(student *admission.Student) (*admission.Student, error) {
+	studentData := new(Student)
+	if err := r.conn.Update(studentData).Error; err != nil {
+		return nil, err
+	}
+	return newStudentPersistenceToDomain(studentData), nil
 }
 
 func (r *Repo) PutStudent(student *admission.Student) (*admission.Student, error) {
-	return nil, nil
+	if r.conn.NewRecord(student) {
+		return r.CreateStudent(student)
+	}
+	return r.UpdateStudent(student)
 }
 
 func (r *Repo) DeleteStudent(student *admission.Student) (*admission.Student, error) {
-	return nil, nil
+	studentData := new(Student)
+	if err := r.conn.First(studentData, student).Error; err != nil {
+		return nil, err
+	}
+	if err := r.conn.Delete(studentData).Error; err != nil {
+		return nil, err
+	}
+	return newStudentPersistenceToDomain(studentData), nil
 }
 
 func (r *Repo) Close() {

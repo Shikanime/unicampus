@@ -11,13 +11,11 @@ service AdmissionService {
   rpc PutSchool (School) returns (School) {}
   rpc DeleteSchool (School) returns (School) {}
 
-  // rpc ListStudents (stream Student) returns (stream Student) {}
-  // rpc ListStudentsByQuery (Query) returns (stream Student) {}
-  // rpc ListStudentsByCritera (Critera) returns (stream Student) {}
-  // rpc ListStudentsByOffset (Offset) returns (stream Student) {}
-  // rpc GetStudent (Student) returns (Student) {}
-  // rpc PutStudent (Student) returns (Student) {}
-  // rpc DeleteStudent (Student) returns (Student) {}
+  rpc AppyStudentToSchool (Application) returns (Application) {}
+
+  rpc GetStudent (Student) returns (Student) {}
+  rpc PutStudent (Student) returns (Student) {}
+  rpc DeleteStudent (Student) returns (Student) {}
 }
 
 message School {
@@ -28,9 +26,15 @@ message School {
 
 message Student {
   string uuid = 1;
-  string fist_name = 2;
+  string first_name = 2;
   string last_name = 3;
   string description = 4;
+}
+
+message Application {
+  string uuid = 1;
+  string school_uuid = 2;
+  string student_uuid = 3;
 }
 
 message Query {

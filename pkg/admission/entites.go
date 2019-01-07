@@ -7,7 +7,13 @@ type School struct {
 }
 
 type Student struct {
-	FirstName   string
-	LastName    string
-	Description string
+	UUID      string
+	FirstName string
+	LastName  string
+}
+
+type Application struct {
+	UUID        string
+	SchoolUUID  string
+	StudentUUID string
 }

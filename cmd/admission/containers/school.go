@@ -30,12 +30,12 @@ func (s *School) ListSchools(stream unicampus_admission.AdmissionService_ListSch
 		in, err := stream.Recv()
 
 		if err == io.EOF {
-			schoolData, err := s.persistence.GetSchool(newSchoolNetworkToDomain(in))
+			schoolData, err := s.persistence.GetSchool(NewSchoolNetworkToDomain(in))
 			if err != nil {
 				return err
 			}
 
-			if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+			if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
 				return err
 			}
 		}
@@ -56,7 +56,7 @@ func (s *School) ListSchoolsByOffset(in *unicampus_admission.Offset, stream unic
 	}
 
 	for _, schoolData := range schoolDatas {
-		if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+		if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
 			return err
 		}
 	}
@@ -76,7 +76,7 @@ func (s *School) ListSchoolsByQuery(in *unicampus_admission.Query, stream unicam
 	}
 
 	for _, schoolData := range schoolDatas {
-		if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+		if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
 			return err
 		}
 	}
@@ -92,33 +92,33 @@ func (s *School) ListSchoolsByCritera(in *unicampus_admission.Critera, stream un
 }
 
 func (s *School) GetSchool(ctx context.Context, in *unicampus_admission.School) (*unicampus_admission.School, error) {
-	schoolData, err := s.persistence.GetSchool(newSchoolNetworkToDomain(in))
+	schoolData, err := s.persistence.GetSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
 	}
 
-	return newSchoolDomainToNetwork(schoolData), nil
+	return NewSchoolDomainToNetwork(schoolData), nil
 }
 
 func (s *School) PutSchool(ctx context.Context, in *unicampus_admission.School) (*unicampus_admission.School, error) {
-	schoolData, err := s.persistence.PutSchool(newSchoolNetworkToDomain(in))
+	schoolData, err := s.persistence.PutSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
 	}
 
-	return newSchoolDomainToNetwork(schoolData), nil
+	return NewSchoolDomainToNetwork(schoolData), nil
 }
 
 func (s *School) DeleteSchool(ctx context.Context, in *unicampus_admission.School) (*unicampus_admission.School, error) {
-	schoolData, err := s.persistence.DeleteSchool(newSchoolNetworkToDomain(in))
+	schoolData, err := s.persistence.DeleteSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
 	}
 
-	return newSchoolDomainToNetwork(schoolData), nil
+	return NewSchoolDomainToNetwork(schoolData), nil
 }
 
-func newSchoolNetworkToDomain(school *unicampus_admission.School) *admission.School {
+func NewSchoolNetworkToDomain(school *unicampus_admission.School) *admission.School {
 	return &admission.School{
 		UUID:        school.Uuid,
 		Name:        school.Name,
@@ -126,7 +126,7 @@ func newSchoolNetworkToDomain(school *unicampus_admission.School) *admission.Sch
 	}
 }
 
-func newSchoolDomainToNetwork(school *admission.School) *unicampus_admission.School {
+func NewSchoolDomainToNetwork(school *admission.School) *unicampus_admission.School {
 	return &unicampus_admission.School{
 		Uuid:        school.UUID,
 		Name:        school.Name,
