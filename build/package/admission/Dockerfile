@@ -1,6 +1,6 @@
 FROM golang:1.11.4 AS builder
 WORKDIR /opt/build
-ADD . /opt/build
+COPY ./cmd/admission /opt/build
 RUN go build -o main .
 
 FROM golang:1.11.4-alpine
