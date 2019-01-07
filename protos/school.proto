@@ -3,54 +3,30 @@ syntax = "proto3";
 package unicampus_school;
 
 service SchoolService {
-  rpc SearchSchoolByQuery (SearchSchoolByQueryRequest) returns (SearchSchoolByQueryReply) {}
-  rpc SearchSchoolByCritera (SearchSchoolByCriteraRequest) returns (SearchSchoolByCriteraReply) {}
-  rpc ListSchool (ListSchoolRequest) returns (ListSchoolReply) {}
-  rpc GetSchool (GetSchoolRequest) returns (GetSchoolReply) {}
+  rpc ListSchool (stream School) returns (stream School) {}
+  rpc ListSchoolByQuery (Query) returns (stream School) {}
+  rpc ListSchoolByCritera (Critera) returns (stream School) {}
+  rpc ListSchoolByOffset (Offset) returns (stream School) {}
+  rpc GetSchool (School) returns (School) {}
+  rpc PutSchool (School) returns (School) {}
+  rpc DeleteSchool (School) returns (School) {}
 }
 
 message School {
-  string name = 1;
-  string description = 2;
+  string id = 1;
+  string name = 2;
+  string description = 3;
 }
 
-// SearchSchoolByQuery
-
-message SearchSchoolByQueryRequest {
+message Query {
   string query = 1;
 }
 
-message SearchSchoolByQueryReply {
-  repeated School schools = 1;
-}
-
-// SearchSchoolByCritera
-
-message SearchSchoolByCriteraRequest {
+message Critera {
   string sector = 1;
 }
 
-message SearchSchoolByCriteraReply {
-  repeated School schools = 1;
-}
-
-// ListSchool
-
-message ListSchoolRequest {
+message Offset {
   uint64 first = 1;
   uint64 offset = 2;
-}
-
-message ListSchoolReply {
-  repeated School schools = 1;
-}
-
-// GetSchool
-
-message GetSchoolRequest {
-  string id = 1;
-}
-
-message GetSchoolReply {
-  School school = 1;
 }

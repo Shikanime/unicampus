@@ -3,14 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"os"
 
+	"github.com/Shikanime/unicampus/cmd/school/domain"
 	"github.com/Shikanime/unicampus/cmd/school/indexer"
 	"github.com/Shikanime/unicampus/cmd/school/persistence"
 	"github.com/Shikanime/unicampus/cmd/school/recommandation"
-	"github.com/Shikanime/unicampus/pkg/school"
+	"github.com/Shikanime/unicampus/internal/app/school"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -22,52 +24,84 @@ type Server struct {
 	recommandation *recommandation.Repo
 }
 
-func (s *Server) SearchSchoolByQuery(ctx context.Context, in *unicampus_school.SearchSchoolByQueryRequest) (*unicampus_school.SearchSchoolByQueryReply, error) {
+func (s *Server) ListSchool(stream unicampus_school.SchoolService_ListSchoolServer) error {
+	for {
+		in, err := stream.Recv()
+
+		if err == io.EOF {
+			schoolData := s.persistence.GetSchool(newSchoolNetworkToDomain(in))
+
+			if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+				return err
+			}
+		}
+
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}
+}
+
+func (s *Server) ListSchoolByOffset(in *unicampus_school.Offset, stream unicampus_school.SchoolService_ListSchoolByOffsetServer) error {
+	schoolDatas := s.persistence.ListSchoolByOffset(in.First, in.Offset)
+
+	for _, schoolData := range schoolDatas {
+		if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *Server) ListSchoolByQuery(in *unicampus_school.Query, stream unicampus_school.SchoolService_ListSchoolByQueryServer) error {
 	schoolIndexes := s.indexer.SearchSchoolByQuery(in.Query)
 	schoolDatas := s.persistence.ListSchool(schoolIndexes)
 
-	schools := make([]*unicampus_school.School, len(schoolDatas))
-	for i, dbSchool := range schoolDatas {
-		schools[i] = &unicampus_school.School{
-			Name:        dbSchool.Name,
-			Description: dbSchool.Description,
+	for _, schoolData := range schoolDatas {
+		if err := stream.Send(newSchoolDomainToNetwork(schoolData)); err != nil {
+			return err
 		}
 	}
 
-	return &unicampus_school.SearchSchoolByQueryReply{
-		Schools: schools,
-	}, nil
+	return nil
 }
 
-func (s *Server) SearchSchoolByCritera(ctx context.Context, in *unicampus_school.SearchSchoolByCriteraRequest) (*unicampus_school.SearchSchoolByCriteraReply, error) {
-	return &unicampus_school.SearchSchoolByCriteraReply{}, nil
-}
-
-func (s *Server) ListSchool(ctx context.Context, in *unicampus_school.ListSchoolRequest) (*unicampus_school.ListSchoolReply, error) {
-	schoolDatas := s.persistence.ListSchoolByOffset(in.First, in.Offset)
-
-	schools := make([]*unicampus_school.School, len(schoolDatas))
-	for i, dbSchool := range schoolDatas {
-		schools[i] = &unicampus_school.School{
-			Name:        dbSchool.Name,
-			Description: dbSchool.Description,
-		}
+func (s *Server) ListSchoolByCritera(in *unicampus_school.Critera, stream unicampus_school.SchoolService_ListSchoolByCriteraServer) error {
+	if err := stream.Send(&unicampus_school.School{}); err != nil {
+		return err
 	}
-
-	return &unicampus_school.ListSchoolReply{
-		Schools: schools,
-	}, nil
+	return nil
 }
 
-func (s *Server) GetSchool(ctx context.Context, in *unicampus_school.GetSchoolRequest) (*unicampus_school.GetSchoolReply, error) {
-	schoolData := s.persistence.GetSchool(in.Id)
+func (s *Server) GetSchool(ctx context.Context, in *unicampus_school.School) (*unicampus_school.School, error) {
+	return newSchoolDomainToNetwork(s.persistence.GetSchool(newSchoolNetworkToDomain(in))), nil
+}
 
-	return &unicampus_school.GetSchoolReply{
-		School: &unicampus_school.School{
-			Name:        schoolData.Name,
-			Description: schoolData.Description,
-		},
-	}, nil
+func (s *Server) PutSchool(ctx context.Context, in *unicampus_school.School) (*unicampus_school.School, error) {
+	return newSchoolDomainToNetwork(s.persistence.PutSchool(newSchoolNetworkToDomain(in))), nil
+}
+
+func (s *Server) DeleteSchool(ctx context.Context, in *unicampus_school.School) (*unicampus_school.School, error) {
+	return newSchoolDomainToNetwork(s.persistence.DeleteSchool(newSchoolNetworkToDomain(in))), nil
+}
+
+func newSchoolNetworkToDomain(school *unicampus_school.School) *domain.School {
+	return &domain.School{
+		ID:          school.Id,
+		Name:        school.Name,
+		Description: school.Description,
+	}
+}
+
+func newSchoolDomainToNetwork(school *domain.School) *unicampus_school.School {
+	return &unicampus_school.School{
+		Id:          school.ID,
+		Name:        school.Name,
+		Description: school.Description,
+	}
 }
 
 func NewTCPListener() net.Listener {

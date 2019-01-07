@@ -2,9 +2,9 @@ package indexer
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 
+	"github.com/Shikanime/unicampus/cmd/school/domain"
 	"github.com/olivere/elastic"
 )
 
@@ -36,7 +36,7 @@ type Repo struct {
 	conn *elastic.Client
 }
 
-func (r *Repo) SearchSchoolByQuery(query string) []string {
+func (r *Repo) SearchSchoolByQuery(query string) []*domain.School {
 	queryBuilder := elastic.NewMultiMatchQuery(query, "name", "description").
 		Fuzziness("2").
 		MinimumShouldMatch("2")
@@ -49,14 +49,7 @@ func (r *Repo) SearchSchoolByQuery(query string) []string {
 		panic(err)
 	}
 
-	schoolIndexes := make([]string, len(result.Hits.Hits))
-	for i, hit := range result.Hits.Hits {
-		var school School
-		json.Unmarshal(*hit.Source, &school)
-		schoolIndexes[i] = school.ID
-	}
-
-	return schoolIndexes
+	return newSchoolsIndexerToDomain(result.Hits.Hits)
 }
 
 func (r *Repo) Close() {

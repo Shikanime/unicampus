@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: pg-psl
   labels:
-    app: postgres
+    app: postgresql
 spec:
   selector:
-    app: postgres
+    app: postgresql
   ports:
     - protocol: TCP
       name: database

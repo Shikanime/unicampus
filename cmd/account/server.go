@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/Shikanime/unicampus/cmd/account/persistence"
-	"github.com/Shikanime/unicampus/pkg/account"
+	"github.com/Shikanime/unicampus/internal/app/account"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -33,7 +33,6 @@ func (s *Server) SignOut(context.Context, *unicampus_account.SignOutRequest) (*u
 
 func (s *Server) Close(context.Context, *unicampus_account.CloseRequest) (*unicampus_account.CloseReply, error) {
 	return &unicampus_account.CloseReply{}, nil
-
 }
 
 func NewTCPListener() net.Listener {
