@@ -112,8 +112,8 @@ func (r *Repo) CreateApplication(application *admission.Application) (*admission
 	}
 
 	applicationData := &Application{
-		schoolUUID:  schoolData.UUID,
-		studentUUID: studentData.UUID,
+		SchoolUUID:  schoolData.UUID,
+		StudentUUID: studentData.UUID,
 	}
 	if err := r.conn.Create(&applicationData).Error; err != nil {
 		return nil, err
