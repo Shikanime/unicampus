@@ -1,27 +1,27 @@
 package persistence
 
 import (
-	"github.com/Shikanime/unicampus/cmd/school/domain"
+	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/jinzhu/gorm"
 )
 
 type School struct {
 	gorm.Model
-	ID          string
+	UUID        string
 	Name        string
 	Description string
 }
 
-func newSchoolPersistenceToDomain(d *School) *domain.School {
-	return &domain.School{
-		ID:          d.ID,
+func newSchoolPersistenceToDomain(d *School) *admission.School {
+	return &admission.School{
+		UUID:        d.UUID,
 		Name:        d.Name,
 		Description: d.Description,
 	}
 }
 
-func newSchoolsPersistenceToDomain(d []*School) []*domain.School {
-	schools := make([]*domain.School, len(d))
+func newSchoolsPersistenceToDomain(d []*School) []*admission.School {
+	schools := make([]*admission.School, len(d))
 	for _, schoolData := range d {
 		schools = append(schools, newSchoolPersistenceToDomain(schoolData))
 	}

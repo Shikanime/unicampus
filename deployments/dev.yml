@@ -27,3 +27,21 @@ spec:
       name: database
       port: 9200
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ne-psl
+  labels:
+    app: neo4j
+spec:
+  selector:
+    app: neo4j
+  ports:
+    - protocol: TCP
+      name: database
+      port: 7687
+    - protocol: TCP
+      name: database2
+      port: 7878
+  type: LoadBalancer

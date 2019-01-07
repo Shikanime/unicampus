@@ -4,11 +4,11 @@ import (
 	"context"
 	"log"
 
-	"github.com/Shikanime/unicampus/cmd/school/domain"
+	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/olivere/elastic"
 )
 
-func NewClient() *Repo {
+func NewClient() Repo {
 	conn, err := elastic.NewClient(
 		elastic.SetURL("http://localhost:9200"),
 		elastic.SetSniff(false),
@@ -27,7 +27,7 @@ func NewClient() *Repo {
 	// 	log.Fatalf("failed to connect indexer database: %v", err)
 	// }
 
-	return &Repo{
+	return Repo{
 		conn: conn,
 	}
 }
@@ -36,7 +36,11 @@ type Repo struct {
 	conn *elastic.Client
 }
 
-func (r *Repo) SearchSchoolByQuery(query string) []*domain.School {
+func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, error) {
+	return nil, nil
+}
+
+func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 	queryBuilder := elastic.NewMultiMatchQuery(query, "name", "description").
 		Fuzziness("2").
 		MinimumShouldMatch("2")
@@ -46,10 +50,10 @@ func (r *Repo) SearchSchoolByQuery(query string) []*domain.School {
 		Query(queryBuilder).
 		Do(context.Background())
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return newSchoolsIndexerToDomain(result.Hits.Hits)
+	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
 }
 
 func (r *Repo) Close() {
