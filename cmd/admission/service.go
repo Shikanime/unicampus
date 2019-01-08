@@ -9,7 +9,7 @@ import (
 	"github.com/Shikanime/unicampus/cmd/admission/services"
 )
 
-type Server struct {
+type App struct {
 	app.School
 	app.Student
 }
@@ -26,7 +26,7 @@ func main() {
 	persistenceRepo := persistence.NewRepository(postgresService)
 	indexerRepo := indexer.NewRepository(elasticserachService)
 
-	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Driver(), &Server{
+	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &App{
 		School: app.NewSchool(&persistenceRepo, &indexerRepo),
 		// Student: app.NewStudent(&persistenceRepo, &indexerRepo),
 	})

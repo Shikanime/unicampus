@@ -12,23 +12,23 @@ import (
 
 type GRPCDeliver struct {
 	listener net.Listener
-	driver   *grpc.Server
+	server   *grpc.Server
 }
 
 func NewGRPCDeliver() *GRPCDeliver {
 	return &GRPCDeliver{
 		listener: newTCPListener(),
-		driver:   grpc.NewServer(),
+		server:   grpc.NewServer(),
 	}
 }
 
-func (s *GRPCDeliver) Driver() *grpc.Server {
-	return s.driver
+func (d *GRPCDeliver) Server() *grpc.Server {
+	return d.server
 }
 
-func (s *GRPCDeliver) Run() {
-	reflection.Register(s.driver)
-	if err := s.driver.Serve(s.listener); err != nil {
+func (d *GRPCDeliver) Run() {
+	reflection.Register(d.server)
+	if err := d.server.Serve(d.listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
@@ -39,7 +39,7 @@ func newTCPListener() net.Listener {
 		port = "50051"
 	}
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
