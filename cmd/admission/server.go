@@ -1,56 +1,30 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net"
-	"os"
-
-	"github.com/Shikanime/unicampus/cmd/admission/containers"
+	"github.com/Shikanime/unicampus/cmd/admission/app"
+	"github.com/Shikanime/unicampus/cmd/admission/delivers/grpc"
 	"github.com/Shikanime/unicampus/cmd/admission/services/indexer"
 	"github.com/Shikanime/unicampus/cmd/admission/services/persistence"
 	"github.com/Shikanime/unicampus/pkg/unicampus_api_admission_v1"
-
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
 type Server struct {
-	containers.School
-	containers.Student
-}
-
-func NewTCPListener() net.Listener {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "50051"
-	}
-
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
-
-	return listener
+	app.School
+	app.Student
 }
 
 func main() {
-	tcpListener := NewTCPListener()
+	grpcDeliver := grpc.NewServer()
 
 	persistenceRepo := persistence.NewClient()
 	defer persistenceRepo.Close()
 	indexerRepo := indexer.NewClient()
 	defer indexerRepo.Close()
 
-	// Server
-	s := grpc.NewServer()
-	unicampus_api_admission_v1.RegisterAdmissionServiceServer(s, &Server{
-		School: containers.NewSchool(&persistenceRepo, &indexerRepo),
-		// Student: containers.NewStudent(&persistenceRepo, &indexerRepo),
+	unicampus_api_admission_v1.RegisterAdmissionServiceServer(grpcDeliver.Driver(), &Server{
+		School: app.NewSchool(&persistenceRepo, &indexerRepo),
+		// Student: app.NewStudent(&persistenceRepo, &indexerRepo),
 	})
-	// Register reflection service on gRPC server.
-	reflection.Register(s)
-	if err := s.Serve(tcpListener); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+
+	grpcDeliver.Run()
 }

@@ -1,4 +1,4 @@
-package containers
+package app
 
 import (
 	"context"
@@ -46,5 +46,21 @@ func NewApplicationDomainToNetwork(application *admission.Application) *unicampu
 		Uuid:    application.UUID,
 		School:  NewSchoolDomainToNetwork(application.School),
 		Student: NewStudentDomainToNetwork(application.Student),
+	}
+}
+
+func NewStudentNetworkToDomain(student *unicampus_api_admission_v1.Student) *admission.Student {
+	return &admission.Student{
+		UUID:      student.Uuid,
+		FirstName: student.FirstName,
+		LastName:  student.LastName,
+	}
+}
+
+func NewStudentDomainToNetwork(student *admission.Student) *unicampus_api_admission_v1.Student {
+	return &unicampus_api_admission_v1.Student{
+		Uuid:      student.UUID,
+		FirstName: student.FirstName,
+		LastName:  student.LastName,
 	}
 }

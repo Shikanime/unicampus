@@ -1,4 +1,4 @@
-package containers
+package app
 
 import (
 	"context"
