@@ -1,11 +1,12 @@
 package main
 
 import (
+	"github.com/Shikanime/unicampus/api/admission/v1alpha1"
 	"github.com/Shikanime/unicampus/cmd/admission/app"
-	"github.com/Shikanime/unicampus/cmd/admission/delivers/grpc"
-	"github.com/Shikanime/unicampus/cmd/admission/services/indexer"
-	"github.com/Shikanime/unicampus/cmd/admission/services/persistence"
-	"github.com/Shikanime/unicampus/pkg/unicampus_api_admission_v1"
+	"github.com/Shikanime/unicampus/cmd/admission/delivers"
+	"github.com/Shikanime/unicampus/cmd/admission/repositories/indexer"
+	"github.com/Shikanime/unicampus/cmd/admission/repositories/persistence"
+	"github.com/Shikanime/unicampus/cmd/admission/services"
 )
 
 type Server struct {
@@ -14,17 +15,19 @@ type Server struct {
 }
 
 func main() {
-	grpcDeliver := grpc.NewServer()
+	grpcDeliver := delivers.NewGRPCDeliver()
+	defer grpcDeliver.Run()
 
-	persistenceRepo := persistence.NewClient()
-	defer persistenceRepo.Close()
-	indexerRepo := indexer.NewClient()
-	defer indexerRepo.Close()
+	postgresService := services.NewPostgresService()
+	defer postgresService.Close()
+	elasticserachService := services.NewElasticSearchService()
+	defer elasticserachService.Close()
 
-	unicampus_api_admission_v1.RegisterAdmissionServiceServer(grpcDeliver.Driver(), &Server{
+	persistenceRepo := persistence.NewRepository(postgresService)
+	indexerRepo := indexer.NewRepository(elasticserachService)
+
+	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Driver(), &Server{
 		School: app.NewSchool(&persistenceRepo, &indexerRepo),
 		// Student: app.NewStudent(&persistenceRepo, &indexerRepo),
 	})
-
-	grpcDeliver.Run()
 }

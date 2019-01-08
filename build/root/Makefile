@@ -1,17 +1,15 @@
-PROTOBUF_DIR := ./api/protobuf-spec
-
-ACCOUNT_DIR := ./pkg/unicampus_api_account_v1
-SCHOOL_DIR := ./pkg/unicampus_api_admission_v1
+SCHOOL_DIR := ./api/admission/v1alpha1
+ACCOUNT_DIR := ./api/account/v1alpha1
 
 gen-grpc:
 	mkdir -p $(SCHOOL_DIR)
-	protoc -I $(PROTOBUF_DIR)/ \
+	protoc -I $(SCHOOL_DIR)/ \
 		--gofast_out=plugins=grpc:$(SCHOOL_DIR) \
-		$(PROTOBUF_DIR)/unicampus_api_admission_v1.proto
+		$(SCHOOL_DIR)/generated.proto
 	mkdir -p $(ACCOUNT_DIR)
-	protoc -I $(PROTOBUF_DIR)/ \
+	protoc -I $(ACCOUNT_DIR)/ \
 		--gofast_out=plugins=grpc:$(ACCOUNT_DIR) \
-		$(PROTOBUF_DIR)/unicampus_api_account_v1.proto
+		$(ACCOUNT_DIR)/generated.proto
 
 gen: gen-grpc
 

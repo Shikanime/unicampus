@@ -3,10 +3,10 @@ package app
 import (
 	"context"
 
-	"github.com/Shikanime/unicampus/cmd/admission/services/indexer"
-	"github.com/Shikanime/unicampus/cmd/admission/services/persistence"
+	"github.com/Shikanime/unicampus/api/admission/v1alpha1"
+	"github.com/Shikanime/unicampus/cmd/admission/repositories/indexer"
+	"github.com/Shikanime/unicampus/cmd/admission/repositories/persistence"
 	"github.com/Shikanime/unicampus/pkg/admission"
-	"github.com/Shikanime/unicampus/pkg/unicampus_api_admission_v1"
 )
 
 func NewApplication(
@@ -24,7 +24,7 @@ type Application struct {
 	indexer     *indexer.Repo
 }
 
-func (s *Student) AppyStudentToSchool(ctx context.Context, in *unicampus_api_admission_v1.Application) (*unicampus_api_admission_v1.Application, error) {
+func (s *Student) AppyStudentToSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.Application) (*unicampus_api_admission_v1alpha1.Application, error) {
 	applicationData, err := s.persistence.CreateApplication(NewApplicationNetworkToDomain(in))
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (s *Student) AppyStudentToSchool(ctx context.Context, in *unicampus_api_adm
 	return NewApplicationDomainToNetwork(applicationData), nil
 }
 
-func NewApplicationNetworkToDomain(application *unicampus_api_admission_v1.Application) *admission.Application {
+func NewApplicationNetworkToDomain(application *unicampus_api_admission_v1alpha1.Application) *admission.Application {
 	return &admission.Application{
 		UUID:    application.Uuid,
 		School:  NewSchoolNetworkToDomain(application.School),
@@ -41,15 +41,15 @@ func NewApplicationNetworkToDomain(application *unicampus_api_admission_v1.Appli
 	}
 }
 
-func NewApplicationDomainToNetwork(application *admission.Application) *unicampus_api_admission_v1.Application {
-	return &unicampus_api_admission_v1.Application{
+func NewApplicationDomainToNetwork(application *admission.Application) *unicampus_api_admission_v1alpha1.Application {
+	return &unicampus_api_admission_v1alpha1.Application{
 		Uuid:    application.UUID,
 		School:  NewSchoolDomainToNetwork(application.School),
 		Student: NewStudentDomainToNetwork(application.Student),
 	}
 }
 
-func NewStudentNetworkToDomain(student *unicampus_api_admission_v1.Student) *admission.Student {
+func NewStudentNetworkToDomain(student *unicampus_api_admission_v1alpha1.Student) *admission.Student {
 	return &admission.Student{
 		UUID:      student.Uuid,
 		FirstName: student.FirstName,
@@ -57,8 +57,8 @@ func NewStudentNetworkToDomain(student *unicampus_api_admission_v1.Student) *adm
 	}
 }
 
-func NewStudentDomainToNetwork(student *admission.Student) *unicampus_api_admission_v1.Student {
-	return &unicampus_api_admission_v1.Student{
+func NewStudentDomainToNetwork(student *admission.Student) *unicampus_api_admission_v1alpha1.Student {
+	return &unicampus_api_admission_v1alpha1.Student{
 		Uuid:      student.UUID,
 		FirstName: student.FirstName,
 		LastName:  student.LastName,

@@ -1,27 +1,16 @@
 package persistence
 
 import (
-	"log"
-
+	"github.com/Shikanime/unicampus/cmd/admission/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-func NewClient() Repo {
-	conn, err := gorm.Open("postgres", "sslmode=disable user=postgres password=postgres dbname=yo")
-	if err != nil {
-		log.Fatalf("failed to connect persistent database: %v", err)
-	}
-
-	// Migrate
-	if err != nil {
-		log.Fatalf("failed to connect persistent database: %v", err)
-	}
+func NewRepository(service *services.PostgresService) Repo {
+	conn := service.Driver()
 
 	conn.AutoMigrate(&School{})
-
-	// Seed
 	conn.Create(&School{Name: "ETNA", Description: "Desc", UUID: "yo"})
 
 	return Repo{
@@ -165,8 +154,4 @@ func (r *Repo) DeleteStudent(student *admission.Student) (*admission.Student, er
 		return nil, err
 	}
 	return newStudentPersistenceToDomain(studentData), nil
-}
-
-func (r *Repo) Close() {
-	r.conn.Close()
 }

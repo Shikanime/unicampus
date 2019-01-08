@@ -2,20 +2,13 @@ package indexer
 
 import (
 	"context"
-	"log"
 
+	"github.com/Shikanime/unicampus/cmd/admission/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/olivere/elastic"
 )
 
-func NewClient() Repo {
-	conn, err := elastic.NewClient(
-		elastic.SetURL("http://localhost:9200"),
-		elastic.SetSniff(false),
-	)
-	if err != nil {
-		log.Fatalf("failed to connect indexer database: %v", err)
-	}
+func NewRepository(service *services.ElasticSearchService) Repo {
 
 	// bulk := conn.Bulk().
 	// 	Index("schools").
@@ -28,7 +21,7 @@ func NewClient() Repo {
 	// }
 
 	return Repo{
-		conn: conn,
+		conn: service.Driver(),
 	}
 }
 
@@ -54,7 +47,4 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 	}
 
 	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
-}
-
-func (r *Repo) Close() {
 }
