@@ -1,7 +1,7 @@
 package persistence
 
 import (
-	"github.com/Shikanime/unicampus/cmd/admission/services"
+	"github.com/Shikanime/unicampus/internal/pkg/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"

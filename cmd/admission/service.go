@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	"github.com/Shikanime/unicampus/cmd/admission/app"
-	"github.com/Shikanime/unicampus/cmd/admission/delivers"
-	"github.com/Shikanime/unicampus/cmd/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/cmd/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/cmd/admission/services"
+	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
+	app "github.com/Shikanime/unicampus/internal/app/admission"
+	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
+	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
+	"github.com/Shikanime/unicampus/internal/pkg/delivers"
+	"github.com/Shikanime/unicampus/internal/pkg/services"
 )
 
 type App struct {
@@ -16,7 +16,6 @@ type App struct {
 
 func main() {
 	grpcDeliver := delivers.NewGRPCDeliver()
-	defer grpcDeliver.Run()
 
 	postgresService := services.NewPostgresService()
 	defer postgresService.Close()
@@ -30,4 +29,6 @@ func main() {
 		School: app.NewSchool(&persistenceRepo, &indexerRepo),
 		// Student: app.NewStudent(&persistenceRepo, &indexerRepo),
 	})
+
+	grpcDeliver.Run()
 }

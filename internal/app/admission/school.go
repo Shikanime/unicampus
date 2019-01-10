@@ -4,9 +4,9 @@ import (
 	"context"
 	"io"
 
-	"github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	"github.com/Shikanime/unicampus/cmd/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/cmd/admission/repositories/persistence"
+	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
+	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
+	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
 	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
