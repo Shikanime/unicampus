@@ -7,15 +7,17 @@ service AdmissionService {
   rpc ListSchoolsByQuery (Query) returns (stream School) {}
   rpc ListSchoolsByCritera (Critera) returns (stream School) {}
   rpc ListSchoolsByOffset (Offset) returns (stream School) {}
-  rpc GetSchool (School) returns (School) {}
-  rpc PutSchool (School) returns (School) {}
-  rpc DeleteSchool (School) returns (School) {}
+  rpc FindSchool (School) returns (School) {}
+  rpc RegisterSchool (School) returns (School) {}
+  rpc UnregisterSchool (School) returns (School) {}
+  rpc UpdateSchool (School) returns (School) {}
 
   rpc AppyStudentToSchool (Application) returns (Application) {}
 
-  rpc GetStudent (Student) returns (Student) {}
-  rpc PutStudent (Student) returns (Student) {}
-  rpc DeleteStudent (Student) returns (Student) {}
+  rpc FindStudent (Student) returns (Student) {}
+  rpc RegisterStudent (Student) returns (Student) {}
+  rpc UnregisterStudent (Student) returns (Student) {}
+  rpc UpdateStudent (Student) returns (Student) {}
 }
 
 message School {

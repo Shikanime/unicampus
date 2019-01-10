@@ -48,19 +48,3 @@ func NewApplicationDomainToNetwork(application *admission.Application) *unicampu
 		Student: NewStudentDomainToNetwork(application.Student),
 	}
 }
-
-func NewStudentNetworkToDomain(student *unicampus_api_admission_v1alpha1.Student) *admission.Student {
-	return &admission.Student{
-		UUID:      student.Uuid,
-		FirstName: student.FirstName,
-		LastName:  student.LastName,
-	}
-}
-
-func NewStudentDomainToNetwork(student *admission.Student) *unicampus_api_admission_v1alpha1.Student {
-	return &unicampus_api_admission_v1alpha1.Student{
-		Uuid:      student.UUID,
-		FirstName: student.FirstName,
-		LastName:  student.LastName,
-	}
-}

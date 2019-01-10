@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/Shikanime/unicampus/cmd/account/persistence"
-	"github.com/Shikanime/unicampus/internal/app/account"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -24,7 +23,6 @@ func (s *Server) SignIn(context.Context, *unicampus_account.SignInRequest) (*uni
 
 func (s *Server) SignUp(context.Context, *unicampus_account.SignUpRequest) (*unicampus_account.SignUpReply, error) {
 	return &unicampus_account.SignUpReply{}, nil
-
 }
 
 func (s *Server) SignOut(context.Context, *unicampus_account.SignOutRequest) (*unicampus_account.SignOutReply, error) {

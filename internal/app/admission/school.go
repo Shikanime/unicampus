@@ -91,7 +91,7 @@ func (s *School) ListSchoolsByCritera(in *unicampus_api_admission_v1alpha1.Crite
 	return nil
 }
 
-func (s *School) GetSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
+func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
 	schoolData, err := s.persistence.GetSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
@@ -100,8 +100,8 @@ func (s *School) GetSchool(ctx context.Context, in *unicampus_api_admission_v1al
 	return NewSchoolDomainToNetwork(schoolData), nil
 }
 
-func (s *School) PutSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.PutSchool(NewSchoolNetworkToDomain(in))
+func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
+	schoolData, err := s.persistence.CreateSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
 	}
@@ -109,8 +109,17 @@ func (s *School) PutSchool(ctx context.Context, in *unicampus_api_admission_v1al
 	return NewSchoolDomainToNetwork(schoolData), nil
 }
 
-func (s *School) DeleteSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
+func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
 	schoolData, err := s.persistence.DeleteSchool(NewSchoolNetworkToDomain(in))
+	if err != nil {
+		return nil, err
+	}
+
+	return NewSchoolDomainToNetwork(schoolData), nil
+}
+
+func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
+	schoolData, err := s.persistence.UpdateSchool(NewSchoolNetworkToDomain(in))
 	if err != nil {
 		return nil, err
 	}
