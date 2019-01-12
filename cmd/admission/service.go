@@ -12,6 +12,7 @@ import (
 type App struct {
 	app.School
 	app.Student
+	app.Application
 }
 
 func main() {
@@ -26,8 +27,9 @@ func main() {
 	indexerRepo := indexer.NewRepository(elasticserachService)
 
 	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &App{
-		School: app.NewSchool(&persistenceRepo, &indexerRepo),
-		// Student: app.NewStudent(&persistenceRepo, &indexerRepo),
+		School:      app.NewSchoolService(&persistenceRepo, &indexerRepo),
+		Student:     app.NewStudentService(&persistenceRepo, &indexerRepo),
+		Application: app.NewApplicationService(&persistenceRepo, &indexerRepo),
 	})
 
 	grpcDeliver.Run()

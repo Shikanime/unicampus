@@ -10,7 +10,7 @@ import (
 	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
-func NewSchool(
+func NewSchoolService(
 	persistence *persistence.Repo,
 	indexer *indexer.Repo,
 ) School {

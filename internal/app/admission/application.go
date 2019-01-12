@@ -9,7 +9,7 @@ import (
 	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
-func NewApplication(
+func NewApplicationService(
 	persistence *persistence.Repo,
 	indexer *indexer.Repo,
 ) Application {

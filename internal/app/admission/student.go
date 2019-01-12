@@ -9,7 +9,7 @@ import (
 	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
-func NewStudent(
+func NewStudentService(
 	persistence *persistence.Repo,
 	indexer *indexer.Repo,
 ) Student {
