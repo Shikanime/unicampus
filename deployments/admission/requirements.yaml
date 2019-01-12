@@ -1,0 +1,10 @@
+dependencies:
+- name: postgresql
+  version: 3.9.1
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: neo4j
+  version: 0.10.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+- name: elasticsearch
+  version: 1.17.0
+  repository: https://kubernetes-charts.storage.googleapis.com/

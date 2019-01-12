@@ -1,6 +1,11 @@
 SCHOOL_DIR := ./api/admission/v1alpha1
 ACCOUNT_DIR := ./api/account/v1alpha1
 
+build-admission:
+	go build -o build-admission ./cmd/admission/
+
+build: build-admission
+
 gen-grpc:
 	mkdir -p $(SCHOOL_DIR)
 	protoc -I $(SCHOOL_DIR)/ \
@@ -15,4 +20,4 @@ gen: gen-grpc
 
 all: gen
 
-.PHONY: gen-grpc gen
+.PHONY: gen-grpc gen build-admission build
