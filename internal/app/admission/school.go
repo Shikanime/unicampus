@@ -48,22 +48,6 @@ func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionSe
 	}
 }
 
-func (s *School) ListSchoolsByOffset(in *unicampus_api_admission_v1alpha1.Offset, stream unicampus_api_admission_v1alpha1.AdmissionService_ListSchoolsByOffsetServer) error {
-	schoolDatas, err := s.persistence.ListSchoolsByOffset(in.First, in.Offset)
-
-	if err != nil {
-		return nil
-	}
-
-	for _, schoolData := range schoolDatas {
-		if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (s *School) ListSchoolsByQuery(in *unicampus_api_admission_v1alpha1.Query, stream unicampus_api_admission_v1alpha1.AdmissionService_ListSchoolsByQueryServer) error {
 	schoolIndexes, err := s.indexer.SearchSchoolsByQuery(in.Query)
 	if err != nil {

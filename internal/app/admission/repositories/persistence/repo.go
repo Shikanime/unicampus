@@ -37,20 +37,6 @@ func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, er
 	return newSchoolsPersistenceToDomain(schoolDatas), nil
 }
 
-func (r *Repo) ListSchoolsByOffset(first uint64, offset uint64) ([]*admission.School, error) {
-	length := first - offset
-	if length < 0 {
-		length = -length
-	}
-
-	schoolDatas := make([]*School, length)
-	if err := r.db.Driver().Find(&schoolDatas).Error; err != nil {
-		return nil, err
-	}
-
-	return newSchoolsPersistenceToDomain(schoolDatas), nil
-}
-
 func (r *Repo) CreateSchool(school *admission.School) (*admission.School, error) {
 	if err := r.db.Create(&school); err != nil {
 		return nil, err
