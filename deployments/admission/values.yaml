@@ -1,0 +1,21 @@
+postgresql:
+  postgresqlUsername: uniuni_admission
+  postgresqlPassword: uniuni_admission
+  replication:
+    slaveReplicas: 0
+    user: uniuni_admission
+    password: uniuni_admission
+
+elasticsearch:
+  master:
+    replicas: 2
+  client:
+    replicas: 0
+
+neo4j:
+  authEnabled: true
+  neo4jPassword: uniuni_admission
+  core:
+    numberOfServers: 2
+  readReplica:
+    numberOfServers: 0
