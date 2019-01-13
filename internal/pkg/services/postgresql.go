@@ -13,10 +13,10 @@ type PostgreSQLService struct {
 	driver *gorm.DB
 }
 
-func lookupPostgreSQLUsername(name string) string {
+func lookupPostgreSQLUsername() string {
 	username, ok := os.LookupEnv("POSTGRESQL_USERNAME")
 	if !ok {
-		username = fmt.Sprint("unicampus_", name)
+		username = "postgres"
 	}
 	return username
 }
@@ -24,7 +24,7 @@ func lookupPostgreSQLUsername(name string) string {
 func lookupPostgreSQLPassword() string {
 	password, ok := os.LookupEnv("POSTGRESQL_PASSWORD")
 	if !ok {
-		password = fmt.Sprint("unicampus_postgres")
+		password = "unicampus"
 	}
 	return password
 }
@@ -37,12 +37,21 @@ func lookupPostgreSQLHost() string {
 	return host
 }
 
+func lookupPostgreSQLPort() string {
+	port, ok := os.LookupEnv("POSTGRESQL_PORT")
+	if !ok {
+		port = "5432"
+	}
+	return port
+}
+
 func NewPostgreSQLService(name string) *PostgreSQLService {
 	conn, err := gorm.Open("postgres", fmt.Sprintf(
-		"sslmode=disable dbname=%s hostname=%s user=%s password=%s",
+		"sslmode=disable dbname=%s host=%s port=%s user=%s password=%s",
 		name,
 		lookupPostgreSQLHost(),
-		lookupPostgreSQLUsername(name),
+		lookupPostgreSQLPort(),
+		lookupPostgreSQLUsername(),
 		lookupPostgreSQLPassword(),
 	))
 	if err != nil {

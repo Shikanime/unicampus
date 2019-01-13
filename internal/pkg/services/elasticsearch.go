@@ -1,8 +1,10 @@
 package services
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/olivere/elastic"
 )
@@ -19,9 +21,25 @@ func lookupElasticSearchHost() string {
 	return host
 }
 
+func lookupElasticSearchPort() uint16 {
+	env, ok := os.LookupEnv("ELASTICSEARCH_PORT")
+	if !ok {
+		return 9200
+	}
+	port, err := strconv.ParseUint(env, 10, 16)
+	if err != nil {
+		panic(err)
+	}
+	return uint16(port)
+}
+
 func NewElasticSearchService(name string) *ElasticSearchService {
 	conn, err := elastic.NewClient(
-		elastic.SetURL(lookupElasticSearchHost()),
+		elastic.SetURL(fmt.Sprintf(
+			"http://%s:%d",
+			lookupElasticSearchHost(),
+			lookupElasticSearchPort(),
+		)),
 		elastic.SetSniff(false),
 	)
 	if err != nil {

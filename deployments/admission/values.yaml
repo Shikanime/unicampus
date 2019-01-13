@@ -1,10 +1,8 @@
 postgresql:
-  postgresqlUsername: unicampus_admission
-  postgresqlPassword: unicampus_postgres
+  postgresqlPassword: unicampus
   replication:
     slaveReplicas: 0
-    user: unicampus_admission
-    password: unicampus_postgres
+    password: unicampus
 
 elasticsearch:
   master:
@@ -15,7 +13,7 @@ elasticsearch:
 neo4j:
   acceptLicenseAgreement: "yes"
   authEnabled: true
-  neo4jPassword: unicampus_admission
+  neo4jPassword: unicampus
   core:
     numberOfServers: 2
   readReplica:
