@@ -3,27 +3,26 @@ package persistence
 import (
 	"github.com/Shikanime/unicampus/internal/pkg/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/jinzhu/gorm"
 )
 
-func NewRepository(service *services.PostgreSQLDatabaseService) Repo {
-	db := service.Driver()
-
-	db.AutoMigrate(&School{})
-	db.Create(&School{Name: "ETNA", Description: "Desc", UUID: "yo"})
-
+func NewRepository(service *services.PostgreSQLService) Repo {
 	return Repo{
-		db: service,
+		db: service.Driver(),
 	}
 }
 
 type Repo struct {
-	db *services.PostgreSQLDatabaseService
+	db *gorm.DB
+}
+
+func (r *Repo) Init() error {
+	return r.db.AutoMigrate(&School{}).Error
 }
 
 func (r *Repo) GetSchool(school *admission.School) (*admission.School, error) {
 	schoolData := new(School)
-	if err := r.db.Get(schoolData, school); err != nil {
+	if err := r.db.Take(schoolData, school).Error; err != nil {
 		return nil, err
 	}
 	return newSchoolPersistenceToDomain(schoolData), nil
@@ -31,18 +30,18 @@ func (r *Repo) GetSchool(school *admission.School) (*admission.School, error) {
 
 func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, error) {
 	schoolDatas := make([]*School, len(schools))
-	if err := r.db.Driver().Find(&schoolDatas, schools).Error; err != nil {
+	if err := r.db.Find(&schoolDatas, schools).Error; err != nil {
 		return nil, err
 	}
 	return newSchoolsPersistenceToDomain(schoolDatas), nil
 }
 
 func (r *Repo) CreateSchool(school *admission.School) (*admission.School, error) {
-	if err := r.db.Create(&school); err != nil {
+	if err := r.db.Create(&school).Error; err != nil {
 		return nil, err
 	}
 	schoolData := new(School)
-	if err := r.db.Driver().First(&schoolData).Error; err != nil {
+	if err := r.db.First(&schoolData).Error; err != nil {
 		return nil, err
 	}
 	return newSchoolPersistenceToDomain(schoolData), nil
@@ -50,7 +49,7 @@ func (r *Repo) CreateSchool(school *admission.School) (*admission.School, error)
 
 func (r *Repo) UpdateSchool(school *admission.School) (*admission.School, error) {
 	schoolData := new(School)
-	if err := r.db.Update(schoolData); err != nil {
+	if err := r.db.Update(schoolData).Error; err != nil {
 		return nil, err
 	}
 	return newSchoolPersistenceToDomain(schoolData), nil
@@ -58,10 +57,10 @@ func (r *Repo) UpdateSchool(school *admission.School) (*admission.School, error)
 
 func (r *Repo) DeleteSchool(school *admission.School) (*admission.School, error) {
 	schoolData := new(School)
-	if err := r.db.Driver().First(schoolData, school).Error; err != nil {
+	if err := r.db.First(schoolData, school).Error; err != nil {
 		return nil, err
 	}
-	if err := r.db.Delete(schoolData); err != nil {
+	if err := r.db.Delete(schoolData).Error; err != nil {
 		return nil, err
 	}
 	return newSchoolPersistenceToDomain(schoolData), nil
@@ -82,7 +81,7 @@ func (r *Repo) CreateApplication(application *admission.Application) (*admission
 		SchoolUUID:  schoolData.UUID,
 		StudentUUID: studentData.UUID,
 	}
-	if err := r.db.Create(&applicationData); err != nil {
+	if err := r.db.Create(&applicationData).Error; err != nil {
 		return nil, err
 	}
 
@@ -91,18 +90,18 @@ func (r *Repo) CreateApplication(application *admission.Application) (*admission
 
 func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error) {
 	studentData := new(Student)
-	if err := r.db.Get(studentData, student); err != nil {
+	if err := r.db.Take(studentData, student).Error; err != nil {
 		return nil, err
 	}
 	return newStudentPersistenceToDomain(studentData), nil
 }
 
 func (r *Repo) CreateStudent(student *admission.Student) (*admission.Student, error) {
-	if err := r.db.Create(&student); err != nil {
+	if err := r.db.Create(&student).Error; err != nil {
 		return nil, err
 	}
 	studentData := new(Student)
-	if err := r.db.Driver().First(&studentData).Error; err != nil {
+	if err := r.db.First(&studentData).Error; err != nil {
 		return nil, err
 	}
 	return newStudentPersistenceToDomain(studentData), nil
@@ -110,7 +109,7 @@ func (r *Repo) CreateStudent(student *admission.Student) (*admission.Student, er
 
 func (r *Repo) UpdateStudent(student *admission.Student) (*admission.Student, error) {
 	studentData := new(Student)
-	if err := r.db.Update(studentData); err != nil {
+	if err := r.db.Update(studentData).Error; err != nil {
 		return nil, err
 	}
 	return newStudentPersistenceToDomain(studentData), nil
@@ -118,10 +117,10 @@ func (r *Repo) UpdateStudent(student *admission.Student) (*admission.Student, er
 
 func (r *Repo) DeleteStudent(student *admission.Student) (*admission.Student, error) {
 	studentData := new(Student)
-	if err := r.db.Driver().First(studentData, student).Error; err != nil {
+	if err := r.db.First(studentData, student).Error; err != nil {
 		return nil, err
 	}
-	if err := r.db.Delete(studentData); err != nil {
+	if err := r.db.Delete(studentData).Error; err != nil {
 		return nil, err
 	}
 	return newStudentPersistenceToDomain(studentData), nil

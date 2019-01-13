@@ -29,6 +29,10 @@ type Repo struct {
 	conn *elastic.Client
 }
 
+func (r *Repo) Init() error {
+	return nil
+}
+
 func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, error) {
 	return nil, nil
 }
