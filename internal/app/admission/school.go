@@ -113,7 +113,7 @@ func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v
 
 func NewSchoolNetworkToDomain(school *unicampus_api_admission_v1alpha1.School) *admission.School {
 	return &admission.School{
-		UUID:        school.Uuid,
+		UUID:        school.UUID,
 		Name:        school.Name,
 		Description: school.Description,
 	}
@@ -121,7 +121,7 @@ func NewSchoolNetworkToDomain(school *unicampus_api_admission_v1alpha1.School) *
 
 func NewSchoolDomainToNetwork(school *admission.School) *unicampus_api_admission_v1alpha1.School {
 	return &unicampus_api_admission_v1alpha1.School{
-		Uuid:        school.UUID,
+		UUID:        school.UUID,
 		Name:        school.Name,
 		Description: school.Description,
 	}

@@ -58,7 +58,7 @@ func (s *Student) UpdateStudent(ctx context.Context, in *unicampus_api_admission
 
 func NewStudentNetworkToDomain(student *unicampus_api_admission_v1alpha1.Student) *admission.Student {
 	return &admission.Student{
-		UUID:      student.Uuid,
+		UUID:      student.UUID,
 		FirstName: student.FirstName,
 		LastName:  student.LastName,
 	}
@@ -66,7 +66,7 @@ func NewStudentNetworkToDomain(student *unicampus_api_admission_v1alpha1.Student
 
 func NewStudentDomainToNetwork(student *admission.Student) *unicampus_api_admission_v1alpha1.Student {
 	return &unicampus_api_admission_v1alpha1.Student{
-		Uuid:      student.UUID,
+		UUID:      student.UUID,
 		FirstName: student.FirstName,
 		LastName:  student.LastName,
 	}

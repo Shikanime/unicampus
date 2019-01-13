@@ -20,20 +20,20 @@ service AdmissionService {
 }
 
 message School {
-  string uuid = 1;
+  string UUID = 1;
   string name = 2;
   string description = 3;
 }
 
 message Student {
-  string uuid = 1;
+  string UUID = 1;
   string first_name = 2;
   string last_name = 3;
   string description = 4;
 }
 
 message Application {
-  string uuid = 1;
+  string UUID = 1;
   School school = 2;
   Student student = 3;
 }
