@@ -37,20 +37,11 @@ func lookupPostgreSQLHost() string {
 	return host
 }
 
-func lookupPostgreSQLPort() string {
-	port, ok := os.LookupEnv("POSTGRESQL_PORT")
-	if !ok {
-		port = "5432"
-	}
-	return port
-}
-
 func NewPostgreSQLService(name string) *PostgreSQLService {
 	conn, err := gorm.Open("postgres", fmt.Sprintf(
-		"sslmode=disable dbname=%s host=%s port=%s user=%s password=%s",
+		"sslmode=disable dbname=%s host=%s user=%s password=%s",
 		name,
 		lookupPostgreSQLHost(),
-		lookupPostgreSQLPort(),
 		lookupPostgreSQLUsername(),
 		lookupPostgreSQLPassword(),
 	))
