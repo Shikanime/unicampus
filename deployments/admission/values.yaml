@@ -1,8 +1,14 @@
+replicas: 1
+serviceType: LoadBalancer
+grpcpPort: 80
+
 postgresql:
-  postgresqlPassword: unicampus
+  postgresqlUsername: admission
+  postgresqlPassword: admission
   replication:
     slaveReplicas: 0
-    password: unicampus
+    user: admission_read
+    password: admission
 
 elasticsearch:
   master:
@@ -13,7 +19,7 @@ elasticsearch:
 neo4j:
   acceptLicenseAgreement: "yes"
   authEnabled: true
-  neo4jPassword: unicampus
+  neo4jPassword: admission
   core:
     numberOfServers: 2
   readReplica:
