@@ -10,6 +10,10 @@ import (
 	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
+const (
+	APP_NAME = "admission"
+)
+
 type App struct {
 	app.School
 	app.Student
@@ -19,9 +23,9 @@ type App struct {
 func main() {
 	grpcDeliver := delivers.NewGRPCDeliver()
 
-	postgresService := services.NewPostgreSQLService()
+	postgresService := services.NewPostgreSQLService(APP_NAME)
 	defer postgresService.Close()
-	elasticserachService := services.NewElasticSearchService()
+	elasticserachService := services.NewElasticSearchService(APP_NAME)
 	defer elasticserachService.Close()
 
 	persistenceRepo := persistence.NewRepository(postgresService)

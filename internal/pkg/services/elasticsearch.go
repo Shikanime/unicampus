@@ -2,6 +2,7 @@ package services
 
 import (
 	"log"
+	"os"
 
 	"github.com/olivere/elastic"
 )
@@ -10,9 +11,17 @@ type ElasticSearchService struct {
 	driver *elastic.Client
 }
 
-func NewElasticSearchService() *ElasticSearchService {
+func lookupElasticSearchHost() string {
+	host, ok := os.LookupEnv("ELASTICSEARCH_HOST")
+	if !ok {
+		host = "localhost"
+	}
+	return host
+}
+
+func NewElasticSearchService(name string) *ElasticSearchService {
 	conn, err := elastic.NewClient(
-		elastic.SetURL("http://localhost:9200"),
+		elastic.SetURL(lookupElasticSearchHost()),
 		elastic.SetSniff(false),
 	)
 	if err != nil {
