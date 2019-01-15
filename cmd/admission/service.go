@@ -14,7 +14,7 @@ const (
 	APP_NAME = "admission"
 )
 
-type App struct {
+type server struct {
 	app.School
 	app.Student
 	app.Application
@@ -49,7 +49,7 @@ func main() {
 		Description: "Desc",
 	})
 
-	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &App{
+	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &server{
 		School:      schoolService,
 		Student:     studentService,
 		Application: applicationService,
