@@ -15,9 +15,3 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
-
-# Ignore all Protobuf artifacts
-*.pb.*
-
-# Ignore all Helm chart packages
-**/charts/*.tgz
