@@ -6,7 +6,8 @@ go_library(
     importpath = "github.com/Shikanime/unicampus/cmd/account",
     visibility = ["//visibility:private"],
     deps = [
-        "//cmd/account/persistence:go_default_library",
+        "//api/account/v1alpha1:go_default_library",
+        "//internal/app/admission/repositories/persistence:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
         "@org_golang_google_grpc//reflection:go_default_library",
     ],
