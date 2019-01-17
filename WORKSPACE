@@ -31,12 +31,17 @@ load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 gazelle_dependencies()
 
-load(
-    "@io_bazel_rules_docker//go:image.bzl",
-    _go_image_repos = "repositories",
-)
+load("@io_bazel_rules_docker//go:image.bzl", _go_image_repos = "repositories")
 
 _go_image_repos()
+
+load("@io_bazel_rules_docker//container:container.bzl", "container_pull")
+
+container_pull(
+    name = "base",
+    registry = "gcr.io",
+    repository = "distroless/base",
+)
 
 go_repository(
     name = "com_github_jinzhu_gorm",
@@ -256,7 +261,7 @@ go_repository(
 
 go_repository(
     name = "org_golang_x_sys",
-    commit = "11f53e031339",
+    commit = "11f53e03133963fb11ae0588e08b5e0b85be8be5",
     importpath = "golang.org/x/sys",
 )
 
