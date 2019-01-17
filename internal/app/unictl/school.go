@@ -1,4 +1,4 @@
-package main
+package unictl
 
 import (
 	"context"
@@ -7,8 +7,29 @@ import (
 
 	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
 	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
 )
+
+func NewSeedSchoolCommand(client unicampus_api_admission_v1alpha1.AdmissionServiceClient) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "school [uuid] [name] [description]",
+		Short: "Manage a School ressource",
+		Long:  `school command is used for managing a school type ressource.`,
+		Run: func(cmd *cobra.Command, args []string) {
+			schoolData, err := client.RegisterSchool(context.Background(), &unicampus_api_admission_v1alpha1.School{
+				UUID:        "yo",
+				Name:        "ETNA",
+				Description: "Desc",
+			})
+			if err != nil {
+				fmt.Printf("admission/school creation failed: %s", err)
+			} else {
+				fmt.Printf("admission/school created: %s", schoolData)
+			}
+		},
+	}
+
+	return cmd
+}
 
 func NewCreateSchoolCommand(client unicampus_api_admission_v1alpha1.AdmissionServiceClient) *cobra.Command {
 	var uuid string
@@ -47,30 +68,4 @@ func NewCreateSchoolCommand(client unicampus_api_admission_v1alpha1.AdmissionSer
 	cmd.Flags().StringVarP(&description, "description", "d", "", "Set school description")
 
 	return cmd
-}
-
-func main() {
-	conn, _ := grpc.Dial("localhost:50051", grpc.WithInsecure())
-	client := unicampus_api_admission_v1alpha1.NewAdmissionServiceClient(conn)
-
-	var cmdCreate = &cobra.Command{
-		Use:   "create [string to print]",
-		Short: "Create a ressource",
-		Long:  `create command is used for any ressource creation.`,
-		Args:  cobra.MinimumNArgs(1),
-		Run: func(cmd *cobra.Command, args []string) {
-			schoolData, _ := client.RegisterSchool(context.Background(), &unicampus_api_admission_v1alpha1.School{
-				UUID: "yo",
-			})
-
-			fmt.Println(schoolData)
-		},
-	}
-
-	var cmdSchool = NewCreateSchoolCommand(client)
-
-	var rootCmd = &cobra.Command{Use: "unicampus"}
-	rootCmd.AddCommand(cmdCreate)
-	cmdCreate.AddCommand(cmdSchool)
-	rootCmd.Execute()
 }

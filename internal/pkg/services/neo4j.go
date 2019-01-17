@@ -3,15 +3,15 @@ package services
 import (
 	"log"
 
-	"github.com/johnnadratowski/golang-neo4j-bolt-driver"
+	neo4j "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 )
 
 type Neo4jService struct {
-	driver golangNeo4jBoltDriver.Conn
+	driver neo4j.Conn
 }
 
 func NewNeo4jService() *Neo4jService {
-	driver := golangNeo4jBoltDriver.NewDriver()
+	driver := neo4j.NewDriver()
 	conn, err := driver.OpenNeo("bolt://neo4j:neosecret@localhost:7687")
 	if err != nil {
 		log.Fatalf("failed to connect neo4j service")
@@ -22,7 +22,7 @@ func NewNeo4jService() *Neo4jService {
 	}
 }
 
-func (s *Neo4jService) Driver() golangNeo4jBoltDriver.Conn {
+func (s *Neo4jService) Driver() neo4j.Conn {
 	return s.driver
 }
 

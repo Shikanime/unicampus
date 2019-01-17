@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package unicampus.api.admission.v1;
+package unicampus.api.admission.v1alpha1;
 
 service AdmissionService {
   rpc ListSchools (stream School) returns (stream School) {}

@@ -7,7 +7,6 @@ import (
 	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
 	"github.com/Shikanime/unicampus/internal/pkg/delivers"
 	"github.com/Shikanime/unicampus/internal/pkg/services"
-	"github.com/Shikanime/unicampus/pkg/admission"
 )
 
 const (
@@ -42,12 +41,6 @@ func main() {
 	if err = indexerRepo.Init(); err != nil {
 		panic(err)
 	}
-
-	persistenceRepo.CreateSchool(&admission.School{
-		UUID:        "yo",
-		Name:        "ETNA",
-		Description: "Desc",
-	})
 
 	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &server{
 		School:      schoolService,
