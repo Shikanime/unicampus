@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package unicampus.api.account.v1;
+package unicampus.api.account.v1alpha1;
 
 service AccountService {
   rpc SignIn (SignInRequest) returns (SignInReply) {}

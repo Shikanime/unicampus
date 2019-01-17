@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "elasticsearch.go",
+        "minio.go",
+        "neo4j.go",
+        "postgresql.go",
+    ],
+    importpath = "github.com/Shikanime/unicampus/internal/pkg/services",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "@com_github_jinzhu_gorm//:go_default_library",
+        "@com_github_jinzhu_gorm//dialects/postgres:go_default_library",
+        "@com_github_johnnadratowski_golang_neo4j_bolt_driver//:go_default_library",
+        "@com_github_minio_minio_go//:go_default_library",
+        "@com_github_olivere_elastic//:go_default_library",
+    ],
+)
