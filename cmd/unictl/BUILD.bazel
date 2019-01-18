@@ -6,7 +6,7 @@ go_library(
     importpath = "github.com/Shikanime/unicampus/cmd/unictl",
     visibility = ["//visibility:private"],
     deps = [
-        "//api/admission/v1alpha1:go_default_library",
+        "//api/admission/v1alpha1:unicampus_api_admission_v1alpha1_go_proto",
         "//internal/app/unictl:go_default_library",
         "@com_github_spf13_cobra//:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
