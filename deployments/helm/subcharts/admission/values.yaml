@@ -3,11 +3,11 @@ grpcpPort: 80
 
 postgresql:
   postgresqlUsername: admission
-  postgresqlPassword: admission
+  postgresqlPassword: unicampus
   replication:
     slaveReplicas: 0
     user: admission_read
-    password: admission
+    password: unicampus
 
 elasticsearch:
   master:
@@ -18,7 +18,7 @@ elasticsearch:
 neo4j:
   acceptLicenseAgreement: "yes"
   authEnabled: true
-  neo4jPassword: admission
+  neo4jPassword: unicampus
   core:
     numberOfServers: 2
   readReplica:
