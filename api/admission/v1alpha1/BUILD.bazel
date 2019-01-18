@@ -5,6 +5,7 @@ proto_library(
     name = "unicampus_api_admission_v1alpha1_proto",
     srcs = ["generated.proto"],
     visibility = ["//visibility:public"],
+    deps = ["@com_github_googleapis_googleapis//google/api:annotations_proto"],
 )
 
 go_proto_library(
@@ -13,6 +14,7 @@ go_proto_library(
     importpath = "github.com/Shikanime/unicampus/api/admission/v1alpha1",
     proto = ":unicampus_api_admission_v1alpha1_proto",
     visibility = ["//visibility:public"],
+    deps = ["@org_golang_google_genproto//googleapis/api/annotations:go_default_library"],
 )
 
 go_library(

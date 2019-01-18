@@ -8,12 +8,16 @@ build: build-admission
 
 gen-grpc:
 	mkdir -p $(SCHOOL_DIR)
-	protoc -I $(SCHOOL_DIR)/ \
-		--gofast_out=plugins=grpc:$(SCHOOL_DIR) \
+	protoc -I/usr/local/include -I. \
+		-I$(GOPATH)/src \
+		-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+		--gofast_out=plugins=grpc:. \
 		$(SCHOOL_DIR)/generated.proto
 	mkdir -p $(ACCOUNT_DIR)
-	protoc -I $(ACCOUNT_DIR)/ \
-		--gofast_out=plugins=grpc:$(ACCOUNT_DIR) \
+	protoc -I/usr/local/include -I. \
+		-I$(GOPATH)/src \
+		-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+		--gofast_out=plugins=grpc:. \
 		$(ACCOUNT_DIR)/generated.proto
 
 gen: gen-grpc

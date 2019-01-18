@@ -46,6 +46,14 @@ container_pull(
     repository = "distroless/base",
 )
 
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "com_github_googleapis_googleapis",
+    commit = "c3e6909ae91b",
+    remote = "https://github.com/googleapis/googleapis.git",
+)
+
 go_repository(
     name = "com_github_jinzhu_gorm",
     importpath = "github.com/jinzhu/gorm",
