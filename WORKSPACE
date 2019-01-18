@@ -1,1 +1,1 @@
-build/root/WORKSPACE
+build/root/bazel/WORKSPACE
