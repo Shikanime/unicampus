@@ -5,20 +5,68 @@ package unicampus.api.admission.v1alpha1;
 import "google/api/annotations.proto";
 
 service AdmissionService {
-  rpc ListSchools (stream School) returns (stream School) {}
-  rpc ListSchoolsByQuery (Query) returns (stream School) {}
-  rpc ListSchoolsByCritera (Critera) returns (stream School) {}
-  rpc FindSchool (School) returns (School) {}
-  rpc RegisterSchool (School) returns (School) {}
-  rpc UnregisterSchool (School) returns (School) {}
-  rpc UpdateSchool (School) returns (School) {}
+  rpc ListSchools (stream School) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc ListSchoolsByQuery (Query) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc ListSchoolsByCritera (Critera) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc FindSchool (School) returns (School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc RegisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UnregisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+  rpc UpdateSchool (School) returns (School) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
 
-  rpc AppyStudentToSchool (Application) returns (Application) {}
+  rpc AppyStudentToSchool (Application) returns (Application) {
+    option (google.api.http) = {
+      post: "/v1/application"
+    };
+  }
 
-  rpc FindStudent (Student) returns (Student) {}
-  rpc RegisterStudent (Student) returns (Student) {}
-  rpc UnregisterStudent (Student) returns (Student) {}
-  rpc UpdateStudent (Student) returns (Student) {}
+  rpc FindStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc RegisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UnregisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+  rpc UpdateStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
 }
 
 message School {
