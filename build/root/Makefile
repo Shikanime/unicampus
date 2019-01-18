@@ -4,9 +4,6 @@ ACCOUNT_DIR := ./api/account/v1alpha1
 build-admission:
 	bazel build //cmd/admission:admission
 
-build-admission-image:
-	bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //cmd/admission:admission_image
-
 build: build-admission
 
 gen-grpc:
