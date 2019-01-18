@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -33,13 +34,20 @@ func (d *GRPCDeliver) Run() {
 	}
 }
 
-func newTCPListener() net.Listener {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "50051"
+func lookupTCPPort() uint16 {
+	strHost, ok := os.LookupEnv("PORT")
+	if !ok {
+		return uint16(50051)
 	}
+	host, err := strconv.ParseUint(strHost, 10, 16)
+	if err != nil {
+		panic(err)
+	}
+	return uint16(host)
+}
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+func newTCPListener() net.Listener {
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", lookupTCPPort()))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
