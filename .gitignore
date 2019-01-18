@@ -17,4 +17,4 @@
 .glide/
 
 # Bazel output
-bazel*
+/bazel*
