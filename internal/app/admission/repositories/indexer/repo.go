@@ -3,6 +3,7 @@ package indexer
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Shikanime/unicampus/internal/pkg/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
@@ -28,16 +29,24 @@ func (r *Repo) Init() error {
 	}
 
 	if !exists {
-		// createIndex, err := r.conn.CreateIndex(schoolIndexName).
-		// 	BodyString(mapping).
-		// 	Do(ctx)
-		// if err != nil {
-		// 	return err
-		// }
+		createIndex, err := r.conn.CreateIndex(schoolIndexName).
+			BodyString(fmt.Sprintf(`
+        {
+          "mapping": {
+            %s
+          }
+        }
+        `,
+				schoolMap,
+			)).
+			Do(ctx)
+		if err != nil {
+			return err
+		}
 
-		// if !createIndex.Acknowledged {
-		// 	return errors.New("Not acknowledged")
-		// }
+		if !createIndex.Acknowledged {
+			return errors.New("Not acknowledged")
+		}
 	}
 	return nil
 }
