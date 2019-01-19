@@ -33,27 +33,26 @@ func (s *Student) FindStudent(ctx context.Context, in *unicampus_api_admission_v
 }
 
 func (s *Student) RegisterStudent(ctx context.Context, in *unicampus_api_admission_v1alpha1.Student) (*unicampus_api_admission_v1alpha1.Student, error) {
-	studentData, err := s.persistence.CreateStudent(NewStudentNetworkToDomain(in))
-	if err != nil {
+	if err := s.persistence.CreateStudent(NewStudentNetworkToDomain(in)); err != nil {
 		return nil, err
 	}
-	return NewStudentDomainToNetwork(studentData), nil
+	return in, nil
 }
 
 func (s *Student) UnregisterStudent(ctx context.Context, in *unicampus_api_admission_v1alpha1.Student) (*unicampus_api_admission_v1alpha1.Student, error) {
-	studentData, err := s.persistence.DeleteStudent(NewStudentNetworkToDomain(in))
-	if err != nil {
+	school := NewStudentNetworkToDomain(in)
+	if err := s.persistence.DeleteStudent(school); err != nil {
 		return nil, err
 	}
-	return NewStudentDomainToNetwork(studentData), nil
+	return in, nil
 }
 
 func (s *Student) UpdateStudent(ctx context.Context, in *unicampus_api_admission_v1alpha1.Student) (*unicampus_api_admission_v1alpha1.Student, error) {
-	studentData, err := s.persistence.UpdateStudent(NewStudentNetworkToDomain(in))
-	if err != nil {
+	school := NewStudentNetworkToDomain(in)
+	if err := s.persistence.UpdateStudent(school); err != nil {
 		return nil, err
 	}
-	return NewStudentDomainToNetwork(studentData), nil
+	return in, nil
 }
 
 func NewStudentNetworkToDomain(student *unicampus_api_admission_v1alpha1.Student) *admission.Student {

@@ -36,56 +36,46 @@ func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, er
 	return newSchoolsPersistenceToDomain(schoolDatas), nil
 }
 
-func (r *Repo) CreateSchool(school *admission.School) (*admission.School, error) {
-	if err := r.db.Create(&school).Error; err != nil {
-		return nil, err
+func (r *Repo) CreateSchool(school *admission.School) error {
+	if err := r.db.Create(school).Error; err != nil {
+		return err
 	}
-	schoolData := new(School)
-	if err := r.db.First(&schoolData).Error; err != nil {
-		return nil, err
-	}
-	return newSchoolPersistenceToDomain(schoolData), nil
+	return nil
 }
 
-func (r *Repo) UpdateSchool(school *admission.School) (*admission.School, error) {
-	schoolData := new(School)
-	if err := r.db.Update(schoolData).Error; err != nil {
-		return nil, err
+func (r *Repo) UpdateSchool(school *admission.School) error {
+	if err := r.db.Update(school).Error; err != nil {
+		return err
 	}
-	return newSchoolPersistenceToDomain(schoolData), nil
+	return nil
 }
 
-func (r *Repo) DeleteSchool(school *admission.School) (*admission.School, error) {
-	schoolData := new(School)
-	if err := r.db.First(schoolData, school).Error; err != nil {
-		return nil, err
+func (r *Repo) DeleteSchool(school *admission.School) error {
+	if err := r.db.Delete(school).Error; err != nil {
+		return err
 	}
-	if err := r.db.Delete(schoolData).Error; err != nil {
-		return nil, err
-	}
-	return newSchoolPersistenceToDomain(schoolData), nil
+	return nil
 }
 
-func (r *Repo) CreateApplication(application *admission.Application) (*admission.Application, error) {
+func (r *Repo) CreateApplication(application *admission.Application) error {
 	schoolData, err := r.GetSchool(application.School)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	studentData, err := r.GetStudent(application.Student)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	applicationData := &Application{
+	if err := r.db.Create(&Application{
 		SchoolUUID:  schoolData.UUID,
 		StudentUUID: studentData.UUID,
-	}
-	if err := r.db.Create(&applicationData).Error; err != nil {
-		return nil, err
+	}).Error; err != nil {
+		return err
 	}
 
-	return newApplicationPersistenceToDomain(applicationData), nil
+	return nil
 }
 
 func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error) {
@@ -96,32 +86,23 @@ func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error
 	return newStudentPersistenceToDomain(studentData), nil
 }
 
-func (r *Repo) CreateStudent(student *admission.Student) (*admission.Student, error) {
-	if err := r.db.Create(&student).Error; err != nil {
-		return nil, err
+func (r *Repo) CreateStudent(student *admission.Student) error {
+	if err := r.db.Create(student).Error; err != nil {
+		return err
 	}
-	studentData := new(Student)
-	if err := r.db.First(&studentData).Error; err != nil {
-		return nil, err
-	}
-	return newStudentPersistenceToDomain(studentData), nil
+	return nil
 }
 
-func (r *Repo) UpdateStudent(student *admission.Student) (*admission.Student, error) {
-	studentData := new(Student)
-	if err := r.db.Update(studentData).Error; err != nil {
-		return nil, err
+func (r *Repo) UpdateStudent(student *admission.Student) error {
+	if err := r.db.Update(student).Error; err != nil {
+		return err
 	}
-	return newStudentPersistenceToDomain(studentData), nil
+	return nil
 }
 
-func (r *Repo) DeleteStudent(student *admission.Student) (*admission.Student, error) {
-	studentData := new(Student)
-	if err := r.db.First(studentData, student).Error; err != nil {
-		return nil, err
+func (r *Repo) DeleteStudent(student *admission.Student) error {
+	if err := r.db.Delete(student).Error; err != nil {
+		return err
 	}
-	if err := r.db.Delete(studentData).Error; err != nil {
-		return nil, err
-	}
-	return newStudentPersistenceToDomain(studentData), nil
+	return nil
 }

@@ -85,30 +85,42 @@ func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1a
 }
 
 func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.CreateSchool(NewSchoolNetworkToDomain(in))
-	if err != nil {
+	school := NewSchoolNetworkToDomain(in)
+	if err := s.persistence.CreateSchool(school); err != nil {
 		return nil, err
 	}
 
-	return NewSchoolDomainToNetwork(schoolData), nil
+	if err := s.indexer.PutSchool(school); err != nil {
+		return nil, err
+	}
+
+	return in, nil
 }
 
 func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.DeleteSchool(NewSchoolNetworkToDomain(in))
-	if err != nil {
+	school := NewSchoolNetworkToDomain(in)
+	if err := s.persistence.DeleteSchool(school); err != nil {
 		return nil, err
 	}
 
-	return NewSchoolDomainToNetwork(schoolData), nil
+	if err := s.indexer.DeleteSchool(school); err != nil {
+		return nil, err
+	}
+
+	return in, nil
 }
 
 func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.UpdateSchool(NewSchoolNetworkToDomain(in))
-	if err != nil {
+	school := NewSchoolNetworkToDomain(in)
+	if err := s.persistence.UpdateSchool(school); err != nil {
 		return nil, err
 	}
 
-	return NewSchoolDomainToNetwork(schoolData), nil
+	if err := s.indexer.PutSchool(school); err != nil {
+		return nil, err
+	}
+
+	return in, nil
 }
 
 func NewSchoolNetworkToDomain(school *unicampus_api_admission_v1alpha1.School) *admission.School {

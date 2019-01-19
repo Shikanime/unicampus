@@ -7,6 +7,11 @@ import (
 	"github.com/olivere/elastic"
 )
 
+const (
+	schoolIndexName = "schools"
+	schoolTypeName  = "school"
+)
+
 type School struct {
 	UUID        string
 	Name        string `json:"name"`

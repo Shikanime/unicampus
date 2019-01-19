@@ -25,12 +25,11 @@ type Application struct {
 }
 
 func (s *Student) AppyStudentToSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.Application) (*unicampus_api_admission_v1alpha1.Application, error) {
-	applicationData, err := s.persistence.CreateApplication(NewApplicationNetworkToDomain(in))
-	if err != nil {
+	if err := s.persistence.CreateApplication(NewApplicationNetworkToDomain(in)); err != nil {
 		return nil, err
 	}
 
-	return NewApplicationDomainToNetwork(applicationData), nil
+	return in, nil
 }
 
 func NewApplicationNetworkToDomain(application *unicampus_api_admission_v1alpha1.Application) *admission.Application {
