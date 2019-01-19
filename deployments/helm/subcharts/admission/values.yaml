@@ -1,6 +1,8 @@
 serviceType: LoadBalancer
 grpcpPort: 80
 
+image: registry.gitlab.com/deva-hub/unicampus/unicampus:latest
+
 postgresql:
   postgresqlUsername: admission
   postgresqlPassword: unicampus
@@ -20,6 +22,6 @@ neo4j:
   authEnabled: true
   neo4jPassword: unicampus
   core:
-    numberOfServers: 2
+    numberOfServers: 3
   readReplica:
     numberOfServers: 0
