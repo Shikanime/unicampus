@@ -8,12 +8,8 @@ go_library(
     importpath = "github.com/Shikanime/unicampus/cmd/admission",
     visibility = ["//visibility:private"],
     deps = [
-        "//api/admission/v1alpha1:unicampus_api_admission_v1alpha1_go_proto",
-        "//internal/app/admission:go_default_library",
-        "//internal/app/admission/repositories/indexer:go_default_library",
-        "//internal/app/admission/repositories/persistence:go_default_library",
-        "//internal/pkg/delivers:go_default_library",
-        "//internal/pkg/services:go_default_library",
+        "//internal/app/admission/commands:go_default_library",
+        "@com_github_spf13_cobra//:go_default_library",
     ],
 )
 

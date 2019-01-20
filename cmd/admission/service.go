@@ -1,52 +1,25 @@
 package main
 
 import (
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	app "github.com/Shikanime/unicampus/internal/app/admission"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/internal/pkg/delivers"
-	"github.com/Shikanime/unicampus/internal/pkg/services"
+	"log"
+
+	"github.com/Shikanime/unicampus/internal/app/admission/commands"
+	"github.com/spf13/cobra"
 )
 
 const (
 	APP_NAME = "admission"
 )
 
-type server struct {
-	app.School
-	app.Student
-	app.Application
-}
-
 func main() {
-	grpcDeliver := delivers.NewGRPCDeliver()
+	cmd := &cobra.Command{Use: "unicampus"}
 
-	postgresService := services.NewPostgreSQLService(APP_NAME)
-	defer postgresService.Close()
-	elasticserachService := services.NewElasticSearchService(APP_NAME)
-	defer elasticserachService.Close()
+	cmd.AddCommand(
+		commands.NewStart(APP_NAME),
+		commands.NewSetup(APP_NAME),
+	)
 
-	persistenceRepo := persistence.NewRepository(postgresService)
-	indexerRepo := indexer.NewRepository(elasticserachService)
-
-	schoolService := app.NewSchoolService(&persistenceRepo, &indexerRepo)
-	studentService := app.NewStudentService(&persistenceRepo, &indexerRepo)
-	applicationService := app.NewApplicationService(&persistenceRepo, &indexerRepo)
-
-	var err error
-	if err = persistenceRepo.Init(); err != nil {
-		panic(err)
+	if err := cmd.Execute(); err != nil {
+		log.Fatalf("Error when exiting: %s", err)
 	}
-	if err = indexerRepo.Init(); err != nil {
-		panic(err)
-	}
-
-	unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &server{
-		School:      schoolService,
-		Student:     studentService,
-		Application: applicationService,
-	})
-
-	grpcDeliver.Run()
 }

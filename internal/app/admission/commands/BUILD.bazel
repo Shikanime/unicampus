@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "setup.go",
+        "start.go",
+    ],
+    importpath = "github.com/Shikanime/unicampus/internal/app/admission/commands",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//api/admission/v1alpha1:unicampus_api_admission_v1alpha1_go_proto",
+        "//internal/app/admission:go_default_library",
+        "//internal/app/admission/repositories/indexer:go_default_library",
+        "//internal/app/admission/repositories/persistence:go_default_library",
+        "//internal/pkg/delivers:go_default_library",
+        "//internal/pkg/services:go_default_library",
+        "@com_github_spf13_cobra//:go_default_library",
+    ],
+)
