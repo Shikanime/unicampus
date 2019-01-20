@@ -2,8 +2,8 @@
 build-app:
 	bazel build //cmd/admission:admission
 
-.PHONY: build-app
-build-app:
+.PHONY: clean-app
+clean-app:
 	bazel clean --expunge
 
 .PHONY: build-grpc
@@ -23,8 +23,8 @@ build-grpc:
 		--gofast_out=plugins=grpc:. \
 		./api/account/v1alpha1/generated.proto
 
-.PHONY: build-grpc
-build-grpc:
+.PHONY: clean-grpc
+clean-grpc:
 	find . -name "*.pb.*" -type f -delete
 
 .PHONY: install-tiller
@@ -32,8 +32,8 @@ install-tiller:
 	helm init \
 		--service-account tiller
 
-.PHONY: clean-tiller
-clean-tiller:
+.PHONY: destruct-tiller
+destruct-tiller:
 	helm reset \
 		--force
 
@@ -47,11 +47,11 @@ install-istio:
 		--name istio \
 		--namespace istio-system
 
-.PHONY: clean-istio
-clean-istio:
-  kubectl delete \
+.PHONY: destruct-istio
+destruct-istio:
+	kubectl delete \
 		-f https://github.com/istio/istio/install/kubernetes/helm/helm-service-account.yaml
-  kubectl \
+	kubectl \
 		-n istio-system \
 		delete job --all
 
@@ -60,7 +60,7 @@ install-app:
 	helm install ./deployments/helm/unicampus \
 		--name unicampus
 
-.PHONY: clean-app
-clean-app:
+.PHONY: destruct-app
+destruct-app:
 	helm delete \
 		--purge unicampus
