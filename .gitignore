@@ -18,3 +18,9 @@
 
 # Bazel output
 /bazel*
+
+# Protobuf artifact
+/api/**/*.pb.*
+
+# Helm dep cache artifact
+/deployments/helm/**/*.tgz
