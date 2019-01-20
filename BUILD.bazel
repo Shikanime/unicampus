@@ -1,1 +1,5 @@
-build/root/bazel/BUILD.bazel
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/Shikanime/unicampus
+# gazelle:proto disable_global
+gazelle(name = "gazelle")
