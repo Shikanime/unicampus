@@ -52,7 +52,24 @@ func (r *Repo) Init() error {
 }
 
 func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, error) {
-	return nil, nil
+	nameTermQuery := elastic.NewTermQuery("name", school.Name)
+	descriptionTermQuery := elastic.NewTermQuery("description", school.Description)
+
+	result, err := r.conn.Search().
+		Index(schoolIndexName).
+		Query(nameTermQuery).
+		Query(descriptionTermQuery).
+		Sort("user", true).
+		Pretty(true).
+		Do(context.Background())
+	if err != nil {
+		return nil, err
+	}
+	if result.TotalHits() < 0 {
+		return make([]*admission.School, 0), nil
+	}
+
+	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
 }
 
 func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
@@ -66,6 +83,9 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 		Do(context.Background())
 	if err != nil {
 		return nil, err
+	}
+	if result.TotalHits() < 0 {
+		return make([]*admission.School, 0), nil
 	}
 
 	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
