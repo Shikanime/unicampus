@@ -39,7 +39,8 @@ func lookupPostgreSQLHost() string {
 
 func NewPostgreSQLService(name string) *PostgreSQLService {
 	conn, err := gorm.Open("postgres", fmt.Sprintf(
-		"sslmode=disable host=%s user=%s password=%s",
+		"sslmode=disable dbname=%s host=%s user=%s password=%s",
+		name,
 		lookupPostgreSQLHost(),
 		lookupPostgreSQLUsername(),
 		lookupPostgreSQLPassword(),
