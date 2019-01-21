@@ -1,6 +1,12 @@
 dependencies:
-- name: admission
-  repository: file://../subcharts/admission
-  version: 0.1.0
-digest: sha256:2c8198beb0aa465fceee5484292e17d96fc1b480f9811c6d3efc46b44f0443e7
-generated: 2019-01-20T14:42:30.782191+01:00
+- name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 3.9.1
+- name: neo4j
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 0.10.0
+- name: elasticsearch
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 1.17.0
+digest: sha256:4f3abf95bb3ab4aeeed88cbecf58aa1ca3417bb12157b970682d555070e86420
+generated: 2019-01-17T09:53:02.099867+01:00

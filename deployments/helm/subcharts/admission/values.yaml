@@ -4,11 +4,9 @@ grpcpPort: 80
 image: registry.gitlab.com/deva-hub/unicampus/unicampus:latest
 
 postgresql:
-  postgresqlUsername: admission
   postgresqlPassword: unicampus
   replication:
     slaveReplicas: 0
-    user: admission_read
     password: unicampus
 
 elasticsearch:
