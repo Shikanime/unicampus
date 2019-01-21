@@ -1,7 +1,7 @@
 module github.com/Shikanime/unicampus
 
 require (
-	github.com/denisenkom/go-mssqldb v0.0.0-20190111225525-2fea367d496d // indirect
+	github.com/denisenkom/go-mssqldb v0.0.0-20190121005146-b04fd42d9952 // indirect
 	github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5 // indirect
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/go-ini/ini v1.41.0 // indirect
@@ -13,7 +13,7 @@ require (
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/jinzhu/now v0.0.0-20181116074157-8ec929ed50c3 // indirect
-	github.com/johnnadratowski/golang-neo4j-bolt-driver v0.0.0-20161220215215-2387cc1f0125
+	github.com/johnnadratowski/golang-neo4j-bolt-driver v0.0.0-20181101021923-6b24c0085aae
 	github.com/jtolds/gls v4.2.1+incompatible // indirect
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/lib/pq v1.0.0 // indirect
@@ -29,9 +29,6 @@ require (
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
 	golang.org/x/crypto v0.0.0-20190103213133-ff983b9c42bc // indirect
-	golang.org/x/net v0.0.0-20190110200230-915654e7eabc // indirect
-	golang.org/x/sys v0.0.0-20190116161447-11f53e031339 // indirect
-	google.golang.org/genproto v0.0.0-20190111180523-db91494dd46c // indirect
 	google.golang.org/grpc v1.18.0
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/ini.v1 v1.41.0 // indirect

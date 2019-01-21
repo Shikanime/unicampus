@@ -54,7 +54,7 @@ go_repository(
 
 go_repository(
     name = "com_github_johnnadratowski_golang_neo4j_bolt_driver",
-    commit = "2387cc1f0125",
+    commit = "6b24c0085aae",
     importpath = "github.com/johnnadratowski/golang-neo4j-bolt-driver",
 )
 
@@ -90,7 +90,7 @@ go_repository(
 
 go_repository(
     name = "org_golang_x_net",
-    commit = "915654e7eabc",
+    commit = "8a410e7b638d",
     importpath = "golang.org/x/net",
 )
 
@@ -240,7 +240,7 @@ go_repository(
 
 go_repository(
     name = "org_golang_google_genproto",
-    commit = "db91494dd46c",
+    commit = "c66870c02cf8",
     importpath = "google.golang.org/genproto",
 )
 
@@ -264,7 +264,7 @@ go_repository(
 
 go_repository(
     name = "org_golang_x_sys",
-    commit = "11f53e031339",
+    commit = "49385e6e1522",
     importpath = "golang.org/x/sys",
 )
 
@@ -282,7 +282,7 @@ go_repository(
 
 go_repository(
     name = "com_github_denisenkom_go_mssqldb",
-    commit = "2fea367d496d",
+    commit = "b04fd42d9952",
     importpath = "github.com/denisenkom/go-mssqldb",
 )
 
