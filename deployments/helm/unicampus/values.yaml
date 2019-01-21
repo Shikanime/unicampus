@@ -8,7 +8,7 @@ elasticsearch:
   master:
     replicas: 2
   client:
-    replicas: 2
+    replicas: 1
 
 neo4j:
   acceptLicenseAgreement: "yes"
