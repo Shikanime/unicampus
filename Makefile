@@ -1,8 +1,4 @@
 .PHONY: build-admission
-run-admission:
-	bazel run //cmd/admission:admission
-
-.PHONY: build-admission
 build-admission:
 	bazel build //cmd/admission:admission
 
@@ -61,8 +57,9 @@ undeploy-istio:
 
 .PHONY: deploy-app
 deploy-app:
-	helm install ./deployments/helm/unicampus \
-		--name unicampus
+	helm install \
+		--name unicampus \
+		./deployments/helm/unicampus
 
 .PHONY: undeploy-app
 undeploy-app:
