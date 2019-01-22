@@ -3,65 +3,16 @@ build-admission:
 	bazel build //cmd/admission:admission
 
 .PHONY: clean-admission
-clean-app:
+clean:
 	bazel clean --expunge
 
-.PHONY: build-protobuf
-build-protobuf:
-	protoc \
-		-I/usr/local/include \
-		-I. \
-		-I$(GOPATH)/src \
-		-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-		--gofast_out=plugins=grpc:. \
-		./api/admission/v1alpha1/generated.proto
-	protoc \
-		-I/usr/local/include \
-		-I. \
-		-I$(GOPATH)/src \
-		-I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-		--gofast_out=plugins=grpc:. \
-		./api/account/v1alpha1/generated.proto
-
-.PHONY: clean-protobuf
-clean-protobuf:
-	find . -name "*.pb.*" -type f -delete
-
-.PHONY: deploy-tiller
-deploy-tiller:
-	helm init \
-		--service-account tiller
-
-.PHONY: undeploy-tiller
-undeploy-tiller:
-	helm reset \
-		--force
-
-.PHONY: deploy-istio
-deploy-istio:
-	helm init \
-		--service-account tiller
-  kubectl apply \
-		-f https://github.com/istio/istio/install/kubernetes/helm/helm-service-account.yaml
-  helm install https://github.com/istio/istio/install/kubernetes/helm/istio \
-		--name istio \
-		--namespace istio-system
-
-.PHONY: undeploy-istio
-undeploy-istio:
-	kubectl delete \
-		-f https://github.com/istio/istio/install/kubernetes/helm/helm-service-account.yaml
-	kubectl \
-		-n istio-system \
-		delete job --all
-
-.PHONY: deploy-app
-deploy-app:
+.PHONY: install
+install:
 	helm install \
 		--name unicampus \
-		./deployments/helm/unicampus
+		./installments/helm/unicampus
 
-.PHONY: undeploy-app
-undeploy-app:
+.PHONY: uninstall
+uninstall:
 	helm delete \
 		--purge unicampus
