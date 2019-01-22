@@ -1,7 +1,6 @@
 package persistence
 
 import (
-	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/jinzhu/gorm"
 )
 
@@ -14,10 +13,4 @@ type Application struct {
 
 	School     School `gorm:"foreignkey:SchoolUUID;association_foreignkey:Refer"`
 	SchoolUUID string
-}
-
-func newApplicationPersistenceToDomain(d *Application) *admission.Application {
-	return &admission.Application{
-		UUID: d.UUID,
-	}
 }

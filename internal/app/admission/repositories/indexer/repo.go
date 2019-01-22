@@ -2,6 +2,7 @@ package indexer
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -23,7 +24,8 @@ type Repo struct {
 func (r *Repo) Init() error {
 	ctx := context.Background()
 
-	exists, err := r.conn.IndexExists(schoolIndexName).Do(ctx)
+	exists, err := r.conn.IndexExists(schoolIndexName).
+		Do(ctx)
 	if err != nil {
 		return err
 	}
@@ -55,7 +57,7 @@ func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, err
 	nameTermQuery := elastic.NewTermQuery("name", school.Name)
 	descriptionTermQuery := elastic.NewTermQuery("description", school.Description)
 
-	result, err := r.conn.Search().
+	dbSchool, err := r.conn.Search().
 		Index(schoolIndexName).
 		Query(nameTermQuery).
 		Query(descriptionTermQuery).
@@ -65,11 +67,17 @@ func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, err
 	if err != nil {
 		return nil, err
 	}
-	if result.TotalHits() < 0 {
-		return make([]*admission.School, 0), nil
+
+	res := make([]*admission.School, len(dbSchool.Hits.Hits))
+	for i, hit := range dbSchool.Hits.Hits {
+		var school *School
+		json.Unmarshal(*hit.Source, school)
+		res[i] = &admission.School{
+			UUID: school.UUID,
+		}
 	}
 
-	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
+	return res, nil
 }
 
 func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
@@ -77,22 +85,28 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 		Fuzziness("2").
 		MinimumShouldMatch("2")
 
-	result, err := r.conn.Search().
+	dbSchool, err := r.conn.Search().
 		Index(schoolIndexName).
 		Query(queryBuilder).
 		Do(context.Background())
 	if err != nil {
 		return nil, err
 	}
-	if result.TotalHits() < 0 {
-		return make([]*admission.School, 0), nil
+
+	res := make([]*admission.School, len(dbSchool.Hits.Hits))
+	for i, hit := range dbSchool.Hits.Hits {
+		school := new(School)
+		json.Unmarshal(*hit.Source, school)
+		res[i] = &admission.School{
+			UUID: school.UUID,
+		}
 	}
 
-	return newSchoolsIndexerToDomain(result.Hits.Hits), nil
+	return res, nil
 }
 
 func (r *Repo) PutSchool(school *admission.School) error {
-	result, err := r.conn.Index().
+	dbSchool, err := r.conn.Index().
 		Index(schoolIndexName).
 		Type(schoolTypeName).
 		Id(school.UUID).
@@ -101,7 +115,7 @@ func (r *Repo) PutSchool(school *admission.School) error {
 	if err != nil {
 		return err
 	}
-	if result.Result != "created" {
+	if dbSchool.Result != "created" {
 		return errors.New("fail to index school")
 	}
 

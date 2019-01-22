@@ -4,16 +4,14 @@ go_library(
     name = "go_default_library",
     srcs = [
         "application.go",
-        "repo.go",
+        "indenfier.go",
         "school.go",
         "student.go",
     ],
-    importpath = "github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence",
+    importpath = "github.com/Shikanime/unicampus/pkg/objconv",
     visibility = ["//:__subpackages__"],
     deps = [
-        "//internal/pkg/services:go_default_library",
+        "//api/admission/v1alpha1:unicampus_api_admission_v1alpha1_go_proto",
         "//pkg/admission:go_default_library",
-        "//pkg/objconv:go_default_library",
-        "@com_github_jinzhu_gorm//:go_default_library",
     ],
 )

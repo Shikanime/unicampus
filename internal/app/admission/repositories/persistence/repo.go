@@ -3,6 +3,7 @@ package persistence
 import (
 	"github.com/Shikanime/unicampus/internal/pkg/services"
 	"github.com/Shikanime/unicampus/pkg/admission"
+	"github.com/Shikanime/unicampus/pkg/objconv"
 	"github.com/jinzhu/gorm"
 )
 
@@ -21,19 +22,25 @@ func (r *Repo) Init() error {
 }
 
 func (r *Repo) GetSchool(school *admission.School) (*admission.School, error) {
-	schoolData := new(School)
-	if err := r.db.Take(schoolData, school).Error; err != nil {
+	dbSchool := new(School)
+	if err := r.db.Take(dbSchool, school).Error; err != nil {
 		return nil, err
 	}
-	return newSchoolPersistenceToDomain(schoolData), nil
+	return objconv.FormatSchoolDomain(dbSchool), nil
 }
 
 func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, error) {
-	schoolDatas := make([]*School, len(schools))
-	if err := r.db.Find(&schoolDatas, schools).Error; err != nil {
+	datas := make([]*School, len(schools))
+	if err := r.db.Find(&datas, schools).Error; err != nil {
 		return nil, err
 	}
-	return newSchoolsPersistenceToDomain(schoolDatas), nil
+
+	res := make([]*admission.School, len(datas))
+	for _, dbSchool := range datas {
+		res = append(res, objconv.FormatSchoolDomain(dbSchool))
+	}
+
+	return res, nil
 }
 
 func (r *Repo) CreateSchool(school *admission.School) error {
@@ -58,19 +65,19 @@ func (r *Repo) DeleteSchool(school *admission.School) error {
 }
 
 func (r *Repo) CreateApplication(application *admission.Application) error {
-	schoolData, err := r.GetSchool(application.School)
+	dbSchool, err := r.GetSchool(application.School)
 	if err != nil {
 		return err
 	}
 
-	studentData, err := r.GetStudent(application.Student)
+	dbStudent, err := r.GetStudent(application.Student)
 	if err != nil {
 		return err
 	}
 
 	if err := r.db.Create(&Application{
-		SchoolUUID:  schoolData.UUID,
-		StudentUUID: studentData.UUID,
+		SchoolUUID:  dbSchool.UUID,
+		StudentUUID: dbStudent.UUID,
 	}).Error; err != nil {
 		return err
 	}
@@ -79,11 +86,11 @@ func (r *Repo) CreateApplication(application *admission.Application) error {
 }
 
 func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error) {
-	studentData := new(Student)
-	if err := r.db.Take(studentData, student).Error; err != nil {
+	dbStudent := new(Student)
+	if err := r.db.Take(dbStudent, student).Error; err != nil {
 		return nil, err
 	}
-	return newStudentPersistenceToDomain(studentData), nil
+	return objconv.FormatStudentDomain(dbStudent), nil
 }
 
 func (r *Repo) CreateStudent(student *admission.Student) error {

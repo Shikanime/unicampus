@@ -13,6 +13,6 @@ go_library(
         "//api/admission/v1alpha1:unicampus_api_admission_v1alpha1_go_proto",
         "//internal/app/admission/repositories/indexer:go_default_library",
         "//internal/app/admission/repositories/persistence:go_default_library",
-        "//pkg/admission:go_default_library",
+        "//pkg/objconv:go_default_library",
     ],
 )

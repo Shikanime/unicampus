@@ -7,7 +7,7 @@ import (
 	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
 	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
 	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/pkg/admission"
+	"github.com/Shikanime/unicampus/pkg/objconv"
 )
 
 func NewSchoolService(
@@ -30,12 +30,12 @@ func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionSe
 		in, err := stream.Recv()
 
 		if err == io.EOF {
-			schoolData, err := s.persistence.GetSchool(NewSchoolNetworkToDomain(in))
+			schoolData, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
 			if err != nil {
 				return err
 			}
 
-			if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
+			if err := stream.Send(objconv.FormatSchoolNetwork(schoolData)); err != nil {
 				return err
 			}
 		}
@@ -60,7 +60,7 @@ func (s *School) ListSchoolsByQuery(in *unicampus_api_admission_v1alpha1.Query, 
 	}
 
 	for _, schoolData := range schoolDatas {
-		if err := stream.Send(NewSchoolDomainToNetwork(schoolData)); err != nil {
+		if err := stream.Send(objconv.FormatSchoolNetwork(schoolData)); err != nil {
 			return err
 		}
 	}
@@ -76,16 +76,16 @@ func (s *School) ListSchoolsByCritera(in *unicampus_api_admission_v1alpha1.Crite
 }
 
 func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.GetSchool(NewSchoolNetworkToDomain(in))
+	schoolData, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
 	if err != nil {
 		return nil, err
 	}
 
-	return NewSchoolDomainToNetwork(schoolData), nil
+	return objconv.FormatSchoolNetwork(schoolData), nil
 }
 
 func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := NewSchoolNetworkToDomain(in)
+	school := objconv.FormatSchoolDomain(in)
 	if err := s.persistence.CreateSchool(school); err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission
 }
 
 func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := NewSchoolNetworkToDomain(in)
+	school := objconv.FormatSchoolDomain(in)
 	if err := s.persistence.DeleteSchool(school); err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admissi
 }
 
 func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := NewSchoolNetworkToDomain(in)
+	school := objconv.FormatSchoolDomain(in)
 	if err := s.persistence.UpdateSchool(school); err != nil {
 		return nil, err
 	}
@@ -121,20 +121,4 @@ func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v
 	}
 
 	return in, nil
-}
-
-func NewSchoolNetworkToDomain(school *unicampus_api_admission_v1alpha1.School) *admission.School {
-	return &admission.School{
-		UUID:        school.UUID,
-		Name:        school.Name,
-		Description: school.Description,
-	}
-}
-
-func NewSchoolDomainToNetwork(school *admission.School) *unicampus_api_admission_v1alpha1.School {
-	return &unicampus_api_admission_v1alpha1.School{
-		UUID:        school.UUID,
-		Name:        school.Name,
-		Description: school.Description,
-	}
 }
