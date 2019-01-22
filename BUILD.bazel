@@ -1,5 +1,6 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
+# gazelle:exclude third_party
 # gazelle:prefix github.com/Shikanime/unicampus
 # gazelle:proto disable_global
 gazelle(name = "gazelle")
