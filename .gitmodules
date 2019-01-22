@@ -1,3 +1,9 @@
 [submodule "third_party/istio"]
 	path = third_party/istio
 	url = git@github.com:istio/istio.git
+[submodule "third_party/knative_build"]
+	path = third_party/knative_build
+	url = https://github.com/knative/build
+[submodule "third_party/knative_serving"]
+	path = third_party/knative_serving
+	url = https://github.com/knative/serving
