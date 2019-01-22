@@ -1,0 +1,20 @@
+image: gcr.io/cloud-builders/bazel:latest
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - ~/.cache/bazel
+
+stages:
+    - test
+    - build
+
+test:
+    stage: test
+    script:
+        - bazel test --verbose_failures //cmd/admission:admission
+
+build:
+    stage: build
+    script:
+        - bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 --verbose_failures //cmd/admission:admission_image
