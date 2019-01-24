@@ -23,7 +23,7 @@ require (
 	github.com/mitchellh/go-homedir v1.0.0 // indirect
 	github.com/olivere/elastic v6.2.15+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
-	github.com/satori/go.uuid v1.2.0 // indirect
+	github.com/satori/go.uuid v1.2.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20181108003508-044398e4856c // indirect
 	github.com/spf13/cobra v0.0.3
