@@ -15,6 +15,17 @@ func FormatSchoolDomain(in interface{}) *admission.School {
 		},
 		Name:        value.FieldByName("Name").String(),
 		Description: value.FieldByName("Description").String(),
+		Region: admission.Region{
+			City:    value.FieldByName("City").String(),
+			Country: value.FieldByName("Country").String(),
+			State:   value.FieldByName("State").String(),
+			Zipcode: value.FieldByName("Zipcode").String(),
+		},
+		Location: admission.Location{
+			Address:   value.FieldByName("Addres").String(),
+			Latitude:  value.FieldByName("Latitude").Float(),
+			Longitude: value.FieldByName("Longitude").Float(),
+		},
 	}
 }
 

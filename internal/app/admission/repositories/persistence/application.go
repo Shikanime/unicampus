@@ -1,12 +1,7 @@
 package persistence
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type Application struct {
-	gorm.Model
-	UUID string
+	UUID string `gorm:"primary_key"`
 
 	Student     Student `gorm:"foreignkey:StudentUUID;association_foreignkey:Refer"`
 	StudentUUID string

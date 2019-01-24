@@ -1,12 +1,8 @@
 package persistence
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type Student struct {
-	gorm.Model
-	UUID      string
+	UUID string `gorm:"primary_key"`
+
 	FirstName string
 	LastName  string
 }

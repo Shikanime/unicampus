@@ -1,12 +1,13 @@
 package persistence
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type School struct {
-	gorm.Model
-	UUID        string
+	UUID string `gorm:"primary_key"`
+
 	Name        string
 	Description string
+
+	Address   string
+	Latitude  float64
+	Longitude float64
+	Region    Region `gorm:"many2many:school_regions;"`
 }

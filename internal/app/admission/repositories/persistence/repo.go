@@ -18,7 +18,19 @@ type Repo struct {
 }
 
 func (r *Repo) Init() error {
-	return r.db.AutoMigrate(&School{}).Error
+	if err := r.db.AutoMigrate(&School{}).Error; err != nil {
+		return err
+	}
+	if err := r.db.AutoMigrate(&Region{}).Error; err != nil {
+		return err
+	}
+	if err := r.db.AutoMigrate(&Student{}).Error; err != nil {
+		return err
+	}
+	if err := r.db.AutoMigrate(&Application{}).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Repo) GetSchool(school *admission.School) (*admission.School, error) {

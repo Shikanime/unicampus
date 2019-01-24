@@ -20,7 +20,8 @@ const (
 )
 
 type School struct {
-	UUID        string
+	UUID string `json:"uuid"`
+
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
