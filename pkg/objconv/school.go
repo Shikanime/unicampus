@@ -8,19 +8,21 @@ import (
 )
 
 func FormatSchoolDomain(in interface{}) *admission.School {
-	inValue := reflect.ValueOf(in)
+	value := reflect.ValueOf(in).Elem()
 	return &admission.School{
-		UUID:        inValue.Elem().FieldByName("UUID").String(),
-		Name:        inValue.Elem().FieldByName("Name").String(),
-		Description: inValue.Elem().FieldByName("Description").String(),
+		Identification: admission.Identification{
+			UUID: value.FieldByName("UUID").String(),
+		},
+		Name:        value.FieldByName("Name").String(),
+		Description: value.FieldByName("Description").String(),
 	}
 }
 
 func FormatSchoolNetwork(in interface{}) *unicampus_api_admission_v1alpha1.School {
-	inValue := reflect.ValueOf(in)
+	value := reflect.ValueOf(in)
 	return &unicampus_api_admission_v1alpha1.School{
-		UUID:        inValue.Elem().FieldByName("UUID").String(),
-		Name:        inValue.Elem().FieldByName("Name").String(),
-		Description: inValue.Elem().FieldByName("Description").String(),
+		UUID:        value.FieldByName("UUID").String(),
+		Name:        value.FieldByName("Name").String(),
+		Description: value.FieldByName("Description").String(),
 	}
 }

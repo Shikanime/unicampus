@@ -1,35 +1,29 @@
 package admission
 
-type Location struct {
-	Adresss string
-	State   string
-	Country string
-	Code    string
-}
-
-type Link struct {
-	Name      string
-	Reference string
-}
-
 type School struct {
+	Identification
 	Location
-	UUID        string
+	Region
+
 	Name        string
 	Description string
-	Pictures    Link
-	Externals   Link
+
+	Pictures   []Link
+	References []Link
 }
 
 type Student struct {
+	Identification
 	Location
-	UUID      string
+	Region
+
 	FirstName string
 	LastName  string
 }
 
 type Application struct {
-	UUID    string
+	Identification
+
 	School  *School
 	Student *Student
 }

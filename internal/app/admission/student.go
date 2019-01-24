@@ -25,11 +25,11 @@ type Student struct {
 }
 
 func (s *Student) FindStudent(ctx context.Context, in *unicampus_api_admission_v1alpha1.Student) (*unicampus_api_admission_v1alpha1.Student, error) {
-	studentData, err := s.persistence.GetStudent(objconv.FormatStudentDomain(in))
+	student, err := s.persistence.GetStudent(objconv.FormatStudentDomain(in))
 	if err != nil {
 		return nil, err
 	}
-	return objconv.FormatStudentNetwork(studentData), nil
+	return objconv.FormatStudentNetwork(student), nil
 }
 
 func (s *Student) RegisterStudent(ctx context.Context, in *unicampus_api_admission_v1alpha1.Student) (*unicampus_api_admission_v1alpha1.Student, error) {

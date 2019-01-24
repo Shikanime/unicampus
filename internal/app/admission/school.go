@@ -30,12 +30,12 @@ func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionSe
 		in, err := stream.Recv()
 
 		if err == io.EOF {
-			schoolData, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
+			school, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
 			if err != nil {
 				return err
 			}
 
-			if err := stream.Send(objconv.FormatSchoolNetwork(schoolData)); err != nil {
+			if err := stream.Send(objconv.FormatSchoolNetwork(school)); err != nil {
 				return err
 			}
 		}
@@ -49,18 +49,18 @@ func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionSe
 }
 
 func (s *School) ListSchoolsByQuery(in *unicampus_api_admission_v1alpha1.Query, stream unicampus_api_admission_v1alpha1.AdmissionService_ListSchoolsByQueryServer) error {
-	schoolIndexes, err := s.indexer.SearchSchoolsByQuery(in.Query)
+	schools, err := s.indexer.SearchSchoolsByQuery(in.Query)
 	if err != nil {
 		return err
 	}
 
-	schoolDatas, err := s.persistence.ListSchools(schoolIndexes)
+	schools, err = s.persistence.ListSchools(schools)
 	if err != nil {
 		return err
 	}
 
-	for _, schoolData := range schoolDatas {
-		if err := stream.Send(objconv.FormatSchoolNetwork(schoolData)); err != nil {
+	for _, school := range schools {
+		if err := stream.Send(objconv.FormatSchoolNetwork(school)); err != nil {
 			return err
 		}
 	}
@@ -76,12 +76,12 @@ func (s *School) ListSchoolsByCritera(in *unicampus_api_admission_v1alpha1.Crite
 }
 
 func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	schoolData, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
+	school, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
 	if err != nil {
 		return nil, err
 	}
 
-	return objconv.FormatSchoolNetwork(schoolData), nil
+	return objconv.FormatSchoolNetwork(school), nil
 }
 
 func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {

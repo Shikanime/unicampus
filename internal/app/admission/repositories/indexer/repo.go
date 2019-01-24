@@ -73,7 +73,9 @@ func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, err
 		var school *School
 		json.Unmarshal(*hit.Source, school)
 		res[i] = &admission.School{
-			UUID: school.UUID,
+			Identification: admission.Identification{
+				UUID: school.UUID,
+			},
 		}
 	}
 
@@ -98,7 +100,9 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 		school := new(School)
 		json.Unmarshal(*hit.Source, school)
 		res[i] = &admission.School{
-			UUID: school.UUID,
+			Identification: admission.Identification{
+				UUID: school.UUID,
+			},
 		}
 	}
 

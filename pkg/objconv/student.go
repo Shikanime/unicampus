@@ -8,19 +8,21 @@ import (
 )
 
 func FormatStudentDomain(in interface{}) *admission.Student {
-	inValue := reflect.ValueOf(in)
+	value := reflect.ValueOf(in).Elem()
 	return &admission.Student{
-		UUID:      inValue.Elem().FieldByName("UUID").String(),
-		FirstName: inValue.Elem().FieldByName("FirstName").String(),
-		LastName:  inValue.Elem().FieldByName("LastName").String(),
+		Identification: admission.Identification{
+			UUID: value.FieldByName("UUID").String(),
+		},
+		FirstName: value.FieldByName("FirstName").String(),
+		LastName:  value.FieldByName("LastName").String(),
 	}
 }
 
 func FormatStudentNetwork(in interface{}) *unicampus_api_admission_v1alpha1.Student {
-	inValue := reflect.ValueOf(in)
+	value := reflect.ValueOf(in)
 	return &unicampus_api_admission_v1alpha1.Student{
-		UUID:      inValue.Elem().FieldByName("UUID").String(),
-		FirstName: inValue.Elem().FieldByName("FirstName").String(),
-		LastName:  inValue.Elem().FieldByName("LastName").String(),
+		UUID:      value.FieldByName("UUID").String(),
+		FirstName: value.FieldByName("FirstName").String(),
+		LastName:  value.FieldByName("LastName").String(),
 	}
 }
