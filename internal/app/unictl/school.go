@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
 	"github.com/spf13/cobra"
+	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
 )
 
 func NewSeedSchoolCommand(client unicampus_api_admission_v1alpha1.AdmissionServiceClient) *cobra.Command {

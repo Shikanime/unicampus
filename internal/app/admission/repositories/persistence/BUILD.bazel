@@ -8,7 +8,7 @@ go_library(
         "school.go",
         "student.go",
     ],
-    importpath = "github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/pkg/services:go_default_library",

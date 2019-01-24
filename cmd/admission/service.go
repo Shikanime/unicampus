@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/Shikanime/unicampus/internal/app/admission/commands"
 	"github.com/spf13/cobra"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/commands"
 )
 
 const (

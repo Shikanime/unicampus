@@ -4,7 +4,7 @@ load("@io_bazel_rules_docker//go:image.bzl", "go_image")
 go_library(
     name = "go_default_library",
     srcs = ["service.go"],
-    importpath = "github.com/Shikanime/unicampus/cmd/admission",
+    importpath = "gitlab.com/deva-hub/unicampus/cmd/admission",
     visibility = ["//visibility:private"],
     deps = [
         "//internal/app/admission/commands:go_default_library",

@@ -1,4 +1,4 @@
-module github.com/Shikanime/unicampus
+module gitlab.com/deva-hub/unicampus
 
 require (
 	github.com/denisenkom/go-mssqldb v0.0.0-20190121005146-b04fd42d9952 // indirect

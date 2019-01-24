@@ -3,10 +3,10 @@ package admission
 import (
 	"context"
 
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/pkg/objconv"
+	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/pkg/objconv"
 )
 
 func NewApplicationService(

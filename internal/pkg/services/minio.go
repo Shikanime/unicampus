@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/minio/minio-go"
+	minio "github.com/minio/minio-go"
 )
 
 type MinioService struct {

@@ -3,8 +3,8 @@ package objconv
 import (
 	"reflect"
 
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	"github.com/Shikanime/unicampus/pkg/admission"
+	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 func FormatStudentDomain(in interface{}) *admission.Student {

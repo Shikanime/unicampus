@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "go_default_library",
     srcs = ["grpc.go"],
-    importpath = "github.com/Shikanime/unicampus/internal/pkg/delivers",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/pkg/delivers",
     visibility = ["//:__subpackages__"],
     deps = [
         "@org_golang_google_grpc//:go_default_library",

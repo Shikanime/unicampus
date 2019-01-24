@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	"github.com/Shikanime/unicampus/internal/app/unictl"
 	"github.com/spf13/cobra"
+	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
+	"gitlab.com/deva-hub/unicampus/internal/app/unictl"
 	"google.golang.org/grpc"
 )
 

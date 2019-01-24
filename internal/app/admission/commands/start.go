@@ -1,13 +1,13 @@
 package commands
 
 import (
-	unicampus_api_admission_v1alpha1 "github.com/Shikanime/unicampus/api/admission/v1alpha1"
-	app "github.com/Shikanime/unicampus/internal/app/admission"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/internal/pkg/delivers"
-	"github.com/Shikanime/unicampus/internal/pkg/services"
 	"github.com/spf13/cobra"
+	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
+	app "gitlab.com/deva-hub/unicampus/internal/app/admission"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/delivers"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 )
 
 type server struct {

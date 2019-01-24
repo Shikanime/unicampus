@@ -1,12 +1,12 @@
 package commands
 
 import (
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
-	"github.com/Shikanime/unicampus/internal/pkg/services"
-	"github.com/Shikanime/unicampus/pkg/admission"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 func NewSetup(appName string) *cobra.Command {

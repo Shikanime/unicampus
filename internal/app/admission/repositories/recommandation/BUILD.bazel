@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "go_default_library",
     srcs = ["repo.go"],
-    importpath = "github.com/Shikanime/unicampus/internal/app/admission/repositories/recommandation",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/recommandation",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/pkg/services:go_default_library",

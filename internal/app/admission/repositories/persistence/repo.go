@@ -1,10 +1,10 @@
 package persistence
 
 import (
-	"github.com/Shikanime/unicampus/internal/pkg/services"
-	"github.com/Shikanime/unicampus/pkg/admission"
-	"github.com/Shikanime/unicampus/pkg/objconv"
 	"github.com/jinzhu/gorm"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
+	"gitlab.com/deva-hub/unicampus/pkg/objconv"
 )
 
 func NewRepository(service *services.PostgreSQLService) Repo {

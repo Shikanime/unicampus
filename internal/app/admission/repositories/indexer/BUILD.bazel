@@ -6,7 +6,7 @@ go_library(
         "repo.go",
         "school.go",
     ],
-    importpath = "github.com/Shikanime/unicampus/internal/app/admission/repositories/indexer",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/pkg/services:go_default_library",

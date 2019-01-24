@@ -6,7 +6,7 @@ go_library(
         "setup.go",
         "start.go",
     ],
-    importpath = "github.com/Shikanime/unicampus/internal/app/admission/commands",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/admission/commands",
     visibility = ["//:__subpackages__"],
     deps = [
         "//api/admission/v1alpha1:go_default_library",

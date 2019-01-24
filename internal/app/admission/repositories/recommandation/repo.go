@@ -1,8 +1,8 @@
 package recommandation
 
 import (
-	"github.com/Shikanime/unicampus/internal/pkg/services"
 	neo4j "github.com/johnnadratowski/golang-neo4j-bolt-driver"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 )
 
 func NewRepository(service *services.Neo4jService) *Repo {

@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Shikanime/unicampus/internal/pkg/services"
-	"github.com/Shikanime/unicampus/pkg/admission"
 	"github.com/olivere/elastic"
+	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 func NewRepository(service *services.ElasticSearchService) Repo {

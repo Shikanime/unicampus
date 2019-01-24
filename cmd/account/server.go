@@ -7,8 +7,8 @@ import (
 	"net"
 	"os"
 
-	unicampus_api_account_v1alpha1 "github.com/Shikanime/unicampus/api/account/v1alpha1"
-	"github.com/Shikanime/unicampus/internal/app/admission/repositories/persistence"
+	unicampus_api_account_v1alpha1 "gitlab.com/deva-hub/unicampus/api/account/v1alpha1"
+	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
