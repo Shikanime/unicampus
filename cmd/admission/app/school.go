@@ -11,10 +11,7 @@ import (
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 )
 
-func NewSchoolService(
-	persistence *persistence.Repo,
-	indexer *indexer.Repo,
-) School {
+func NewSchoolService(persistence *persistence.Repo, indexer *indexer.Repo) School {
 	return School{
 		persistence: persistence,
 		indexer:     indexer,
