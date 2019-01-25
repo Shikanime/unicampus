@@ -15,7 +15,6 @@ go_library(
 go_binary(
     name = "admission",
     embed = [":go_default_library"],
-    pure = "on",
     visibility = ["//visibility:public"],
 )
 

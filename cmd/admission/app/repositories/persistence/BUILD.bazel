@@ -10,7 +10,7 @@ go_library(
         "student.go",
     ],
     importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence",
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "//internal/pkg/services:go_default_library",
         "//pkg/admission:go_default_library",

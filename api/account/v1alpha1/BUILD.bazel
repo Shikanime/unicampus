@@ -1,13 +1,23 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+proto_library(
+    name = "unicampus_api_account_v1alpha1_proto",
+    srcs = ["generated.proto"],
+    visibility = ["//visibility:public"],
+)
+
+go_proto_library(
+    name = "unicampus_api_account_v1alpha1_go_proto",
+    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
+    importpath = "gitlab.com/deva-hub/unicampus/api/account/v1alpha1",
+    proto = ":unicampus_api_account_v1alpha1_proto",
+    visibility = ["//visibility:public"],
+)
 
 go_library(
     name = "go_default_library",
-    srcs = ["generated.pb.go"],
+    embed = [":unicampus_api_account_v1alpha1_go_proto"],
     importpath = "gitlab.com/deva-hub/unicampus/api/account/v1alpha1",
     visibility = ["//visibility:public"],
-    deps = [
-        "@com_github_golang_protobuf//proto:go_default_library",
-        "@org_golang_google_grpc//:go_default_library",
-        "@org_golang_x_net//context:go_default_library",
-    ],
 )

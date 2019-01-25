@@ -4,6 +4,6 @@ go_library(
     name = "go_default_library",
     srcs = ["repo.go"],
     importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/filestore",
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = ["@com_github_minio_minio_go//:go_default_library"],
 )

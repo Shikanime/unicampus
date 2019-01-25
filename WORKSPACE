@@ -167,24 +167,6 @@ go_repository(
 )
 
 go_repository(
-    name = "com_github_kr_pretty",
-    importpath = "github.com/kr/pretty",
-    tag = "v0.1.0",
-)
-
-go_repository(
-    name = "com_github_kr_pty",
-    importpath = "github.com/kr/pty",
-    tag = "v1.1.1",
-)
-
-go_repository(
-    name = "com_github_kr_text",
-    importpath = "github.com/kr/text",
-    tag = "v0.1.0",
-)
-
-go_repository(
     name = "com_github_lib_pq",
     importpath = "github.com/lib/pq",
     tag = "v1.0.0",
@@ -227,12 +209,6 @@ go_repository(
 )
 
 go_repository(
-    name = "com_github_satori_go_uuid",
-    importpath = "github.com/satori/go.uuid",
-    tag = "v1.2.0",
-)
-
-go_repository(
     name = "com_github_smartystreets_assertions",
     commit = "b6c0e53d7304",
     importpath = "github.com/smartystreets/assertions",
@@ -260,12 +236,6 @@ go_repository(
     name = "com_google_cloud_go",
     importpath = "cloud.google.com/go",
     tag = "v0.26.0",
-)
-
-go_repository(
-    name = "in_gopkg_check_v1",
-    commit = "788fd7840127",
-    importpath = "gopkg.in/check.v1",
 )
 
 go_repository(

@@ -7,7 +7,7 @@ go_library(
         "repo.go",
     ],
     importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/recommandation",
-    visibility = ["//:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "//internal/pkg/services:go_default_library",
         "@com_github_johnnadratowski_golang_neo4j_bolt_driver//:go_default_library",
