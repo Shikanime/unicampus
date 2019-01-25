@@ -7,15 +7,15 @@ go_library(
     importpath = "gitlab.com/deva-hub/unicampus/cmd/admission",
     visibility = ["//visibility:private"],
     deps = [
-        "//internal/app/admission/commands:go_default_library",
+        "//cmd/admission/app/commands:go_default_library",
         "@com_github_spf13_cobra//:go_default_library",
     ],
 )
 
 go_binary(
     name = "admission",
-    pure = "on",
     embed = [":go_default_library"],
+    pure = "on",
     visibility = ["//visibility:public"],
 )
 

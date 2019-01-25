@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 	"gitlab.com/deva-hub/unicampus/pkg/admission"
-	"gitlab.com/deva-hub/unicampus/pkg/objconv"
 )
 
 func NewRepository(service *services.PostgreSQLService) Repo {
@@ -38,7 +37,7 @@ func (r *Repo) GetSchool(school *admission.School) (*admission.School, error) {
 	if err := r.db.Take(dbSchool, school).Error; err != nil {
 		return nil, err
 	}
-	return objconv.FormatSchoolDomain(dbSchool), nil
+	return formatSchoolDomain(*dbSchool), nil
 }
 
 func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, error) {
@@ -49,7 +48,7 @@ func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, er
 
 	res := make([]*admission.School, len(datas))
 	for _, dbSchool := range datas {
-		res = append(res, objconv.FormatSchoolDomain(dbSchool))
+		res = append(res, formatSchoolDomain(*dbSchool))
 	}
 
 	return res, nil
@@ -102,7 +101,7 @@ func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error
 	if err := r.db.Take(dbStudent, student).Error; err != nil {
 		return nil, err
 	}
-	return objconv.FormatStudentDomain(dbStudent), nil
+	return formatStudentDomain(*dbStudent), nil
 }
 
 func (r *Repo) CreateStudent(student *admission.Student) error {
@@ -124,4 +123,35 @@ func (r *Repo) DeleteStudent(student *admission.Student) error {
 		return err
 	}
 	return nil
+}
+
+func formatSchoolDomain(in School) *admission.School {
+	return &admission.School{
+		Identification: admission.Identification{
+			UUID: in.UUID,
+		},
+		Name:        in.Name,
+		Description: in.Description,
+		Region: admission.Region{
+			City:    in.Region.City,
+			Country: in.Region.Country,
+			State:   in.Region.State,
+			Zipcode: in.Region.Zipcode,
+		},
+		Location: admission.Location{
+			Address:   in.Address,
+			Latitude:  in.Latitude,
+			Longitude: in.Longitude,
+		},
+	}
+}
+
+func formatStudentDomain(in Student) *admission.Student {
+	return &admission.Student{
+		Identification: admission.Identification{
+			UUID: in.UUID,
+		},
+		FirstName: in.FirstName,
+		LastName:  in.LastName,
+	}
 }

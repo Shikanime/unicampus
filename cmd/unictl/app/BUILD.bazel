@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "go_default_library",
     srcs = ["school.go"],
-    importpath = "gitlab.com/deva-hub/unicampus/internal/app/unictl",
+    importpath = "gitlab.com/deva-hub/unicampus/cmd/unictl/app",
     visibility = ["//:__subpackages__"],
     deps = [
         "//api/admission/v1alpha1:go_default_library",

@@ -3,14 +3,17 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 go_library(
     name = "go_default_library",
     srcs = [
+        "application.go",
+        "region.go",
         "repo.go",
         "school.go",
+        "student.go",
     ],
-    importpath = "gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer",
+    importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence",
     visibility = ["//:__subpackages__"],
     deps = [
         "//internal/pkg/services:go_default_library",
         "//pkg/admission:go_default_library",
-        "@com_github_olivere_elastic//:go_default_library",
+        "@com_github_jinzhu_gorm//:go_default_library",
     ],
 )

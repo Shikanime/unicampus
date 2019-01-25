@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/commands"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/commands"
 )
 
 const (

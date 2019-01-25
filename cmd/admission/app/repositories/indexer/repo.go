@@ -53,7 +53,7 @@ func (r *Repo) Init() error {
 	return nil
 }
 
-func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, error) {
+func (r *Repo) SearchSchool(school *admission.School) ([]*admission.School, error) {
 	nameTermQuery := elastic.NewTermQuery("name", school.Name)
 	descriptionTermQuery := elastic.NewTermQuery("description", school.Description)
 
@@ -70,13 +70,9 @@ func (r *Repo) SearchSchools(school *admission.School) ([]*admission.School, err
 
 	res := make([]*admission.School, len(dbSchool.Hits.Hits))
 	for i, hit := range dbSchool.Hits.Hits {
-		var school *School
+		school := new(School)
 		json.Unmarshal(*hit.Source, school)
-		res[i] = &admission.School{
-			Identification: admission.Identification{
-				UUID: school.UUID,
-			},
-		}
+		res[i] = formatSchoolDomain(*school)
 	}
 
 	return res, nil
@@ -99,11 +95,7 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 	for i, hit := range dbSchool.Hits.Hits {
 		school := new(School)
 		json.Unmarshal(*hit.Source, school)
-		res[i] = &admission.School{
-			Identification: admission.Identification{
-				UUID: school.UUID,
-			},
-		}
+		res[i] = formatSchoolDomain(*school)
 	}
 
 	return res, nil
@@ -135,4 +127,12 @@ func (r *Repo) DeleteSchool(school *admission.School) error {
 		return errors.New("fail to index school")
 	}
 	return nil
+}
+
+func formatSchoolDomain(in School) *admission.School {
+	return &admission.School{
+		Identification: admission.Identification{
+			UUID: in.UUID,
+		},
+	}
 }

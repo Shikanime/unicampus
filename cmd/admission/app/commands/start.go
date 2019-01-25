@@ -3,9 +3,9 @@ package commands
 import (
 	"github.com/spf13/cobra"
 	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
-	app "gitlab.com/deva-hub/unicampus/internal/app/admission"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/delivers"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 )
@@ -33,8 +33,8 @@ func NewStart(appName string) *cobra.Command {
 			indexerRepo := indexer.NewRepository(elasticserachService)
 
 			schoolService := app.NewSchoolService(&persistenceRepo, &indexerRepo)
-			studentService := app.NewStudentService(&persistenceRepo, &indexerRepo)
-			applicationService := app.NewApplicationService(&persistenceRepo, &indexerRepo)
+			studentService := app.NewStudentService(&persistenceRepo)
+			applicationService := app.NewApplicationService(&persistenceRepo)
 
 			unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &server{
 				School:      schoolService,

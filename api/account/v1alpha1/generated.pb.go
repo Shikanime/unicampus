@@ -128,7 +128,7 @@ func (m *Session) GetToken() string {
 }
 
 type SignInRequest struct {
-	Credential           *Credential `protobuf:"bytes,1,opt,name=credential" json:"credential,omitempty"`
+	Credential           *Credential `protobuf:"bytes,1,opt,name=credential,proto3" json:"credential,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -175,7 +175,7 @@ func (m *SignInRequest) GetCredential() *Credential {
 }
 
 type SignInReply struct {
-	Session              *Session `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session              *Session `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -222,7 +222,7 @@ func (m *SignInReply) GetSession() *Session {
 }
 
 type SignUpRequest struct {
-	Credential           *Credential `protobuf:"bytes,1,opt,name=credential" json:"credential,omitempty"`
+	Credential           *Credential `protobuf:"bytes,1,opt,name=credential,proto3" json:"credential,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`

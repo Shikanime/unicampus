@@ -13,6 +13,8 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
+import encoding_binary "encoding/binary"
+
 import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -26,20 +28,156 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type School struct {
-	UUID                 string   `protobuf:"bytes,1,opt,name=UUID,proto3" json:"UUID,omitempty"`
-	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+type Location struct {
+	Address              string   `protobuf:"bytes,1,opt,name=Address,proto3" json:"Address,omitempty"`
+	Latitude             float64  `protobuf:"fixed64,2,opt,name=Latitude,proto3" json:"Latitude,omitempty"`
+	Longitude            float64  `protobuf:"fixed64,3,opt,name=Longitude,proto3" json:"Longitude,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Location) Reset()         { *m = Location{} }
+func (m *Location) String() string { return proto.CompactTextString(m) }
+func (*Location) ProtoMessage()    {}
+func (*Location) Descriptor() ([]byte, []int) {
+	return fileDescriptor_generated_b44b0105082de8fc, []int{0}
+}
+func (m *Location) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Location) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Location.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *Location) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Location.Merge(dst, src)
+}
+func (m *Location) XXX_Size() int {
+	return m.Size()
+}
+func (m *Location) XXX_DiscardUnknown() {
+	xxx_messageInfo_Location.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Location proto.InternalMessageInfo
+
+func (m *Location) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *Location) GetLatitude() float64 {
+	if m != nil {
+		return m.Latitude
+	}
+	return 0
+}
+
+func (m *Location) GetLongitude() float64 {
+	if m != nil {
+		return m.Longitude
+	}
+	return 0
+}
+
+type Region struct {
+	City                 string   `protobuf:"bytes,1,opt,name=city,proto3" json:"city,omitempty"`
+	State                string   `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
+	Country              string   `protobuf:"bytes,3,opt,name=country,proto3" json:"country,omitempty"`
+	Zipcode              string   `protobuf:"bytes,4,opt,name=zipcode,proto3" json:"zipcode,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Region) Reset()         { *m = Region{} }
+func (m *Region) String() string { return proto.CompactTextString(m) }
+func (*Region) ProtoMessage()    {}
+func (*Region) Descriptor() ([]byte, []int) {
+	return fileDescriptor_generated_b44b0105082de8fc, []int{1}
+}
+func (m *Region) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *Region) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_Region.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalTo(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (dst *Region) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Region.Merge(dst, src)
+}
+func (m *Region) XXX_Size() int {
+	return m.Size()
+}
+func (m *Region) XXX_DiscardUnknown() {
+	xxx_messageInfo_Region.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Region proto.InternalMessageInfo
+
+func (m *Region) GetCity() string {
+	if m != nil {
+		return m.City
+	}
+	return ""
+}
+
+func (m *Region) GetState() string {
+	if m != nil {
+		return m.State
+	}
+	return ""
+}
+
+func (m *Region) GetCountry() string {
+	if m != nil {
+		return m.Country
+	}
+	return ""
+}
+
+func (m *Region) GetZipcode() string {
+	if m != nil {
+		return m.Zipcode
+	}
+	return ""
+}
+
+type School struct {
+	UUID                 string    `protobuf:"bytes,1,opt,name=UUID,proto3" json:"UUID,omitempty"`
+	Name                 string    `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description          string    `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Region               *Region   `protobuf:"bytes,5,opt,name=region,proto3" json:"region,omitempty"`
+	Location             *Location `protobuf:"bytes,6,opt,name=location,proto3" json:"location,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
 }
 
 func (m *School) Reset()         { *m = School{} }
 func (m *School) String() string { return proto.CompactTextString(m) }
 func (*School) ProtoMessage()    {}
 func (*School) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{0}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{2}
 }
 func (m *School) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -89,6 +227,20 @@ func (m *School) GetDescription() string {
 	return ""
 }
 
+func (m *School) GetRegion() *Region {
+	if m != nil {
+		return m.Region
+	}
+	return nil
+}
+
+func (m *School) GetLocation() *Location {
+	if m != nil {
+		return m.Location
+	}
+	return nil
+}
+
 type Student struct {
 	UUID                 string   `protobuf:"bytes,1,opt,name=UUID,proto3" json:"UUID,omitempty"`
 	FirstName            string   `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
@@ -103,7 +255,7 @@ func (m *Student) Reset()         { *m = Student{} }
 func (m *Student) String() string { return proto.CompactTextString(m) }
 func (*Student) ProtoMessage()    {}
 func (*Student) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{1}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{3}
 }
 func (m *Student) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -162,8 +314,8 @@ func (m *Student) GetDescription() string {
 
 type Application struct {
 	UUID                 string   `protobuf:"bytes,1,opt,name=UUID,proto3" json:"UUID,omitempty"`
-	School               *School  `protobuf:"bytes,2,opt,name=school" json:"school,omitempty"`
-	Student              *Student `protobuf:"bytes,3,opt,name=student" json:"student,omitempty"`
+	School               *School  `protobuf:"bytes,2,opt,name=school,proto3" json:"school,omitempty"`
+	Student              *Student `protobuf:"bytes,3,opt,name=student,proto3" json:"student,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -173,7 +325,7 @@ func (m *Application) Reset()         { *m = Application{} }
 func (m *Application) String() string { return proto.CompactTextString(m) }
 func (*Application) ProtoMessage()    {}
 func (*Application) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{2}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{4}
 }
 func (m *Application) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -234,7 +386,7 @@ func (m *Query) Reset()         { *m = Query{} }
 func (m *Query) String() string { return proto.CompactTextString(m) }
 func (*Query) ProtoMessage()    {}
 func (*Query) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{3}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{5}
 }
 func (m *Query) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -281,7 +433,7 @@ func (m *Critera) Reset()         { *m = Critera{} }
 func (m *Critera) String() string { return proto.CompactTextString(m) }
 func (*Critera) ProtoMessage()    {}
 func (*Critera) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{4}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{6}
 }
 func (m *Critera) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -329,7 +481,7 @@ func (m *Offset) Reset()         { *m = Offset{} }
 func (m *Offset) String() string { return proto.CompactTextString(m) }
 func (*Offset) ProtoMessage()    {}
 func (*Offset) Descriptor() ([]byte, []int) {
-	return fileDescriptor_generated_9cbb55bf5a2097b1, []int{5}
+	return fileDescriptor_generated_b44b0105082de8fc, []int{7}
 }
 func (m *Offset) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -373,6 +525,8 @@ func (m *Offset) GetOffset() uint64 {
 }
 
 func init() {
+	proto.RegisterType((*Location)(nil), "unicampus.api.admission.v1alpha1.Location")
+	proto.RegisterType((*Region)(nil), "unicampus.api.admission.v1alpha1.Region")
 	proto.RegisterType((*School)(nil), "unicampus.api.admission.v1alpha1.School")
 	proto.RegisterType((*Student)(nil), "unicampus.api.admission.v1alpha1.Student")
 	proto.RegisterType((*Application)(nil), "unicampus.api.admission.v1alpha1.Application")
@@ -903,6 +1057,90 @@ var _AdmissionService_serviceDesc = grpc.ServiceDesc{
 	Metadata: "api/admission/v1alpha1/generated.proto",
 }
 
+func (m *Location) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Location) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(len(m.Address)))
+		i += copy(dAtA[i:], m.Address)
+	}
+	if m.Latitude != 0 {
+		dAtA[i] = 0x11
+		i++
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Latitude))))
+		i += 8
+	}
+	if m.Longitude != 0 {
+		dAtA[i] = 0x19
+		i++
+		encoding_binary.LittleEndian.PutUint64(dAtA[i:], uint64(math.Float64bits(float64(m.Longitude))))
+		i += 8
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
+func (m *Region) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *Region) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.City) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(len(m.City)))
+		i += copy(dAtA[i:], m.City)
+	}
+	if len(m.State) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(len(m.State)))
+		i += copy(dAtA[i:], m.State)
+	}
+	if len(m.Country) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(len(m.Country)))
+		i += copy(dAtA[i:], m.Country)
+	}
+	if len(m.Zipcode) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(len(m.Zipcode)))
+		i += copy(dAtA[i:], m.Zipcode)
+	}
+	if m.XXX_unrecognized != nil {
+		i += copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	return i, nil
+}
+
 func (m *School) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -935,6 +1173,26 @@ func (m *School) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGenerated(dAtA, i, uint64(len(m.Description)))
 		i += copy(dAtA[i:], m.Description)
+	}
+	if m.Region != nil {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(m.Region.Size()))
+		n1, err := m.Region.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n1
+	}
+	if m.Location != nil {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintGenerated(dAtA, i, uint64(m.Location.Size()))
+		n2, err := m.Location.MarshalTo(dAtA[i:])
+		if err != nil {
+			return 0, err
+		}
+		i += n2
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1012,21 +1270,21 @@ func (m *Application) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x12
 		i++
 		i = encodeVarintGenerated(dAtA, i, uint64(m.School.Size()))
-		n1, err := m.School.MarshalTo(dAtA[i:])
+		n3, err := m.School.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n1
+		i += n3
 	}
 	if m.Student != nil {
 		dAtA[i] = 0x1a
 		i++
 		i = encodeVarintGenerated(dAtA, i, uint64(m.Student.Size()))
-		n2, err := m.Student.MarshalTo(dAtA[i:])
+		n4, err := m.Student.MarshalTo(dAtA[i:])
 		if err != nil {
 			return 0, err
 		}
-		i += n2
+		i += n4
 	}
 	if m.XXX_unrecognized != nil {
 		i += copy(dAtA[i:], m.XXX_unrecognized)
@@ -1128,6 +1386,56 @@ func encodeVarintGenerated(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+func (m *Location) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	if m.Latitude != 0 {
+		n += 9
+	}
+	if m.Longitude != 0 {
+		n += 9
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *Region) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.City)
+	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	l = len(m.State)
+	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	l = len(m.Country)
+	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	l = len(m.Zipcode)
+	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func (m *School) Size() (n int) {
 	if m == nil {
 		return 0
@@ -1144,6 +1452,14 @@ func (m *School) Size() (n int) {
 	}
 	l = len(m.Description)
 	if l > 0 {
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	if m.Region != nil {
+		l = m.Region.Size()
+		n += 1 + l + sovGenerated(uint64(l))
+	}
+	if m.Location != nil {
+		l = m.Location.Size()
 		n += 1 + l + sovGenerated(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
@@ -1267,6 +1583,275 @@ func sovGenerated(x uint64) (n int) {
 func sozGenerated(x uint64) (n int) {
 	return sovGenerated(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+func (m *Location) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenerated
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Location: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Location: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Latitude", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Latitude = float64(math.Float64frombits(v))
+		case 3:
+			if wireType != 1 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Longitude", wireType)
+			}
+			var v uint64
+			if (iNdEx + 8) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint64(encoding_binary.LittleEndian.Uint64(dAtA[iNdEx:]))
+			iNdEx += 8
+			m.Longitude = float64(math.Float64frombits(v))
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenerated(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *Region) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGenerated
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: Region: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: Region: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field City", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.City = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.State = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Country", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Country = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Zipcode", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Zipcode = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGenerated(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func (m *School) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1382,6 +1967,72 @@ func (m *School) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Description = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Region", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Region == nil {
+				m.Region = &Region{}
+			}
+			if err := m.Region.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Location", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGenerated
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGenerated
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Location == nil {
+				m.Location = &Location{}
+			}
+			if err := m.Location.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -2073,46 +2724,54 @@ var (
 )
 
 func init() {
-	proto.RegisterFile("api/admission/v1alpha1/generated.proto", fileDescriptor_generated_9cbb55bf5a2097b1)
+	proto.RegisterFile("api/admission/v1alpha1/generated.proto", fileDescriptor_generated_b44b0105082de8fc)
 }
 
-var fileDescriptor_generated_9cbb55bf5a2097b1 = []byte{
-	// 580 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x56, 0xc1, 0x6e, 0x13, 0x31,
-	0x10, 0x65, 0x4b, 0x9a, 0x92, 0xd9, 0x42, 0x53, 0x53, 0x41, 0x14, 0x68, 0x14, 0xf6, 0x00, 0x01,
-	0x89, 0xdd, 0x26, 0x48, 0x9c, 0x49, 0x8b, 0x90, 0x90, 0x50, 0x11, 0x1b, 0x72, 0x46, 0x66, 0xd7,
-	0x49, 0x2d, 0x25, 0x6b, 0x63, 0x3b, 0x81, 0x50, 0xf5, 0x00, 0x67, 0x6e, 0x5c, 0xf8, 0x04, 0x3e,
-	0x85, 0x23, 0x12, 0x3f, 0x80, 0x02, 0x7f, 0xc0, 0x0f, 0xa0, 0xb5, 0x9d, 0x6a, 0x23, 0x22, 0x65,
-	0x51, 0xd5, 0xdc, 0xec, 0xf1, 0xcc, 0x7b, 0x33, 0x2f, 0x2f, 0xa3, 0x85, 0xdb, 0x98, 0xd3, 0x00,
-	0xc7, 0x43, 0x2a, 0x25, 0x65, 0x49, 0x30, 0x6e, 0xe2, 0x01, 0x3f, 0xc2, 0xcd, 0xa0, 0x4f, 0x12,
-	0x22, 0xb0, 0x22, 0xb1, 0xcf, 0x05, 0x53, 0x0c, 0xd5, 0x47, 0x09, 0x8d, 0xf0, 0x90, 0x8f, 0xa4,
-	0x8f, 0x39, 0xf5, 0x4f, 0x2b, 0xfc, 0x59, 0x45, 0xf5, 0x66, 0x9f, 0xb1, 0xfe, 0x80, 0x04, 0x1a,
-	0x30, 0x49, 0x98, 0xc2, 0x8a, 0xb2, 0x44, 0x9a, 0x7a, 0x2f, 0x84, 0x62, 0x27, 0x3a, 0x62, 0x6c,
-	0x80, 0x10, 0x14, 0xba, 0xdd, 0xa7, 0x8f, 0x2b, 0x4e, 0xdd, 0x69, 0x94, 0x42, 0x7d, 0x4e, 0x63,
-	0x09, 0x1e, 0x92, 0xca, 0x9a, 0x89, 0xa5, 0x67, 0x54, 0x07, 0x37, 0x26, 0x32, 0x12, 0x94, 0xa7,
-	0x38, 0x95, 0x8b, 0xfa, 0x29, 0x1b, 0xf2, 0x8e, 0x61, 0xa3, 0xa3, 0x46, 0x31, 0x49, 0xd4, 0x42,
-	0xd0, 0x5d, 0x80, 0x1e, 0x15, 0x52, 0xbd, 0xca, 0x40, 0x97, 0x74, 0xe4, 0x30, 0xc5, 0xbf, 0x01,
-	0xa5, 0x01, 0x9e, 0xbd, 0x1a, 0xf4, 0x4b, 0x69, 0xe0, 0x70, 0x01, 0x79, 0xe1, 0x5f, 0xf2, 0xaf,
-	0x0e, 0xb8, 0x6d, 0xce, 0x07, 0x34, 0xd2, 0x73, 0x2e, 0xec, 0xe0, 0x11, 0x14, 0xa5, 0x1e, 0x5a,
-	0xb3, 0xbb, 0xad, 0x86, 0xbf, 0x4c, 0x45, 0xdf, 0x88, 0x14, 0xda, 0x3a, 0x74, 0x00, 0x1b, 0xd2,
-	0x8c, 0xa8, 0x5b, 0x74, 0x5b, 0x77, 0x73, 0x40, 0x98, 0x82, 0x70, 0x56, 0xe9, 0xed, 0xc2, 0xfa,
-	0x8b, 0x11, 0x11, 0x13, 0xb4, 0x03, 0xeb, 0x6f, 0xd2, 0x83, 0x6d, 0xd2, 0x5c, 0xbc, 0x5b, 0xb0,
-	0x71, 0x20, 0xa8, 0x22, 0x02, 0xa3, 0x6b, 0x50, 0x94, 0x24, 0x52, 0x4c, 0xd8, 0x0c, 0x7b, 0xf3,
-	0x1e, 0x42, 0xf1, 0x79, 0xaf, 0x27, 0x89, 0x4a, 0x21, 0xb4, 0x84, 0x3a, 0xa1, 0x10, 0x9a, 0x4b,
-	0x5a, 0xc7, 0xf4, 0xbb, 0x1e, 0xb4, 0x10, 0xda, 0x5b, 0xeb, 0x8f, 0x0b, 0xe5, 0xf6, 0xac, 0xc3,
-	0x0e, 0x11, 0x63, 0x1a, 0x11, 0x34, 0x01, 0xf7, 0x19, 0x95, 0xca, 0x4c, 0x2a, 0x51, 0x6e, 0x51,
-	0xaa, 0xb9, 0x33, 0x3d, 0xf4, 0xf1, 0xc7, 0xef, 0xcf, 0x6b, 0x9b, 0x08, 0x82, 0x71, 0x33, 0x30,
-	0x52, 0x36, 0x9c, 0x3d, 0x07, 0x9d, 0x00, 0xca, 0x50, 0xef, 0x4f, 0x8c, 0x2c, 0x77, 0x96, 0xe3,
-	0xea, 0xc4, 0xb3, 0x35, 0xb0, 0xe7, 0xa0, 0x0f, 0x0e, 0xec, 0xcc, 0xf1, 0xcf, 0x74, 0xcf, 0xf1,
-	0xab, 0xda, 0xd4, 0x33, 0xf7, 0xa0, 0x00, 0x9e, 0xd0, 0x24, 0xb6, 0x7f, 0xc6, 0x15, 0x89, 0x8f,
-	0xde, 0xc1, 0x95, 0x90, 0xf4, 0xa9, 0x54, 0x44, 0x9c, 0x3f, 0xb3, 0x97, 0x65, 0x7e, 0x0f, 0xe5,
-	0x6e, 0x22, 0x56, 0xc6, 0x7d, 0x2f, 0xcb, 0x3d, 0x86, 0xcd, 0x2e, 0x8f, 0xb1, 0x22, 0xe7, 0xcf,
-	0x5b, 0xcd, 0xf2, 0x7e, 0x72, 0xe0, 0x6a, 0x9b, 0xf3, 0x89, 0xdd, 0x04, 0x2f, 0x99, 0xe5, 0xbf,
-	0xbf, 0x1c, 0x35, 0xb3, 0xd2, 0xaa, 0xff, 0x97, 0xee, 0x5d, 0xd7, 0x9d, 0x6c, 0x7b, 0x5b, 0x69,
-	0x27, 0x38, 0xb3, 0x1a, 0xdf, 0x82, 0xab, 0x2d, 0x67, 0x77, 0x75, 0xfe, 0x15, 0x56, 0xcd, 0x9f,
-	0xba, 0xd0, 0x75, 0xc7, 0xb0, 0x75, 0xea, 0xba, 0x55, 0x90, 0xcf, 0x19, 0xef, 0x04, 0xb6, 0x33,
-	0xc6, 0x5b, 0x05, 0xfd, 0x9c, 0xf7, 0x26, 0x70, 0xd9, 0x7a, 0x6f, 0x15, 0xd4, 0x59, 0xfb, 0xed,
-	0x97, 0xbf, 0x4d, 0x6b, 0xce, 0xf7, 0x69, 0xcd, 0xf9, 0x39, 0xad, 0x39, 0x5f, 0x7e, 0xd5, 0x2e,
-	0xbc, 0x2e, 0xea, 0x8f, 0x80, 0x07, 0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0xc1, 0xc0, 0xcb, 0x8e,
-	0x6e, 0x08, 0x00, 0x00,
+var fileDescriptor_generated_b44b0105082de8fc = []byte{
+	// 705 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x56, 0x4f, 0x6b, 0x13, 0x41,
+	0x14, 0x77, 0x6a, 0xba, 0x49, 0x5e, 0xaa, 0x6d, 0xc7, 0xa2, 0x21, 0xb6, 0x21, 0xee, 0x41, 0x63,
+	0xc1, 0xa4, 0xad, 0xe0, 0xb9, 0x69, 0xa5, 0x20, 0x84, 0x8a, 0x5b, 0x73, 0x55, 0xc6, 0xdd, 0x49,
+	0x3a, 0x90, 0xee, 0xac, 0x3b, 0x93, 0x68, 0x5a, 0x7a, 0xd0, 0xb3, 0x37, 0x2f, 0x7e, 0x04, 0x3f,
+	0x8a, 0x47, 0xc1, 0xab, 0x07, 0xa9, 0x7e, 0x03, 0xbf, 0x80, 0xcc, 0x9f, 0x8d, 0x5b, 0x0c, 0x64,
+	0xa5, 0x34, 0xb7, 0x79, 0xff, 0x7e, 0xbf, 0xf7, 0x7e, 0xfb, 0x78, 0x2c, 0xdc, 0x25, 0x11, 0x6b,
+	0x92, 0xe0, 0x88, 0x09, 0xc1, 0x78, 0xd8, 0x1c, 0x6e, 0x92, 0x7e, 0x74, 0x48, 0x36, 0x9b, 0x3d,
+	0x1a, 0xd2, 0x98, 0x48, 0x1a, 0x34, 0xa2, 0x98, 0x4b, 0x8e, 0x6b, 0x83, 0x90, 0xf9, 0xe4, 0x28,
+	0x1a, 0x88, 0x06, 0x89, 0x58, 0x63, 0x5c, 0xd1, 0x48, 0x2a, 0x2a, 0xab, 0x3d, 0xce, 0x7b, 0x7d,
+	0xda, 0xd4, 0x80, 0x61, 0xc8, 0x25, 0x91, 0x8c, 0x87, 0xc2, 0xd4, 0xbb, 0x2f, 0xa0, 0xd0, 0xe6,
+	0xbe, 0x76, 0xe1, 0x32, 0xe4, 0x5b, 0x41, 0x10, 0x53, 0x21, 0xca, 0xa8, 0x86, 0xea, 0x45, 0x2f,
+	0x31, 0x71, 0x05, 0x0a, 0x6d, 0x22, 0x99, 0x1c, 0x04, 0xb4, 0x3c, 0x57, 0x43, 0x75, 0xe4, 0x8d,
+	0x6d, 0xbc, 0x0a, 0xc5, 0x36, 0x0f, 0x7b, 0x26, 0x78, 0x55, 0x07, 0xff, 0x3a, 0xdc, 0x2e, 0x38,
+	0x1e, 0xed, 0x29, 0x74, 0x0c, 0x39, 0x9f, 0xc9, 0x91, 0x85, 0xd6, 0x6f, 0xbc, 0x02, 0xf3, 0x42,
+	0x12, 0x69, 0x40, 0x8b, 0x9e, 0x31, 0x54, 0x1f, 0x3e, 0x1f, 0x84, 0x32, 0x1e, 0x69, 0xbc, 0xa2,
+	0x97, 0x98, 0x2a, 0x72, 0xcc, 0x22, 0x9f, 0x07, 0xb4, 0x9c, 0x33, 0x11, 0x6b, 0xba, 0xdf, 0x11,
+	0x38, 0x07, 0xfe, 0x21, 0xe7, 0x7d, 0x45, 0xd4, 0xe9, 0x3c, 0x79, 0x9c, 0x10, 0xa9, 0xb7, 0xf2,
+	0x85, 0xe4, 0x28, 0xe1, 0xd1, 0x6f, 0x5c, 0x83, 0x52, 0x40, 0x85, 0x1f, 0xb3, 0x48, 0x4d, 0x6f,
+	0xa9, 0xd2, 0x2e, 0xbc, 0x0d, 0x4e, 0xac, 0x9b, 0x2f, 0xcf, 0xd7, 0x50, 0xbd, 0xb4, 0x55, 0x6f,
+	0x4c, 0x53, 0xbb, 0x61, 0x86, 0xf5, 0x6c, 0x1d, 0xde, 0x83, 0x42, 0xdf, 0xca, 0x5b, 0x76, 0x34,
+	0xc6, 0xfa, 0x74, 0x8c, 0xe4, 0x83, 0x78, 0xe3, 0x5a, 0xf7, 0x04, 0xf2, 0x07, 0x4a, 0xcf, 0x50,
+	0x4e, 0x1c, 0x6f, 0x0d, 0xa0, 0xcb, 0x62, 0x21, 0x5f, 0xa6, 0x86, 0x2c, 0x6a, 0xcf, 0xbe, 0x9a,
+	0xf4, 0x36, 0x14, 0xfb, 0x24, 0x89, 0x9a, 0x39, 0x0b, 0xca, 0xb1, 0x3f, 0x41, 0x86, 0xdc, 0x3f,
+	0x32, 0xb8, 0x9f, 0x11, 0x94, 0x5a, 0x51, 0xd4, 0x67, 0x76, 0x4f, 0x26, 0x75, 0xb0, 0x0d, 0x8e,
+	0xd0, 0xf2, 0x6b, 0xf6, 0x4c, 0x52, 0x99, 0xcf, 0xe5, 0xd9, 0x3a, 0xbc, 0x0b, 0x79, 0x61, 0x46,
+	0xd4, 0x2d, 0x96, 0xb6, 0xee, 0x67, 0x80, 0x30, 0x05, 0x5e, 0x52, 0xe9, 0xae, 0xc1, 0xfc, 0xb3,
+	0x01, 0x8d, 0xf5, 0x66, 0xbd, 0x56, 0x0f, 0xdb, 0xa4, 0x31, 0xdc, 0x3b, 0x90, 0xdf, 0x8d, 0x99,
+	0xa4, 0x31, 0xc1, 0x37, 0xc1, 0x11, 0xd4, 0x97, 0x3c, 0xb6, 0x19, 0xd6, 0x72, 0x1f, 0x81, 0xf3,
+	0xb4, 0xdb, 0x15, 0x54, 0x2a, 0x08, 0x2d, 0xa1, 0x4e, 0xc8, 0x79, 0xc6, 0x50, 0x75, 0x5c, 0xc7,
+	0xf5, 0xa0, 0x39, 0xcf, 0x5a, 0x5b, 0xbf, 0x4b, 0xb0, 0xd4, 0x4a, 0x3a, 0x3c, 0xa0, 0xf1, 0x90,
+	0xf9, 0x14, 0x8f, 0xa0, 0xd4, 0x66, 0x42, 0x9a, 0x49, 0x05, 0xce, 0x2c, 0x4a, 0x25, 0x73, 0xa6,
+	0x8b, 0xdf, 0x7f, 0xfb, 0xf5, 0x71, 0x6e, 0x01, 0x43, 0x73, 0xb8, 0xd9, 0x34, 0x52, 0xd6, 0xd1,
+	0x06, 0xc2, 0xa7, 0x80, 0x53, 0xd4, 0x3b, 0x23, 0x23, 0xcb, 0xbd, 0xe9, 0xb8, 0x3a, 0xf1, 0x62,
+	0x0d, 0x6c, 0x20, 0xfc, 0x0e, 0xc1, 0xca, 0x39, 0xfe, 0x44, 0xf7, 0x0c, 0x5f, 0xd5, 0xa6, 0x5e,
+	0xb8, 0x07, 0x09, 0xb0, 0xc7, 0xc2, 0xc0, 0x9e, 0x85, 0x19, 0x89, 0x8f, 0xdf, 0xc2, 0x75, 0x75,
+	0x04, 0x84, 0xa4, 0xf1, 0xe5, 0x33, 0xbb, 0x69, 0xe6, 0x63, 0x58, 0xea, 0x84, 0xf1, 0xcc, 0xb8,
+	0xd7, 0xd3, 0xdc, 0x43, 0x58, 0xe8, 0x44, 0x01, 0x91, 0xf4, 0xf2, 0x79, 0x2b, 0x69, 0xde, 0x0f,
+	0x08, 0x6e, 0xb4, 0xa2, 0x68, 0x64, 0x2f, 0xc1, 0x73, 0x6e, 0xf9, 0x1f, 0x4c, 0x47, 0x4d, 0x9d,
+	0xb4, 0xca, 0xff, 0xa5, 0xbb, 0xb7, 0x74, 0x27, 0xcb, 0xee, 0xa2, 0xea, 0x84, 0xa4, 0x4e, 0xe3,
+	0x1b, 0x28, 0xe9, 0x95, 0xb3, 0xb7, 0x3a, 0xfb, 0x09, 0xab, 0x64, 0x4f, 0x9d, 0xb8, 0x75, 0x27,
+	0xb0, 0x38, 0xde, 0xba, 0x59, 0x90, 0x9f, 0x5b, 0xbc, 0x53, 0x58, 0x4e, 0x2d, 0xde, 0x2c, 0xe8,
+	0xcf, 0xed, 0xde, 0x08, 0xae, 0xd9, 0xdd, 0x9b, 0x05, 0x75, 0x7a, 0xfd, 0x76, 0x96, 0xbe, 0x9c,
+	0x55, 0xd1, 0xd7, 0xb3, 0x2a, 0xfa, 0x71, 0x56, 0x45, 0x9f, 0x7e, 0x56, 0xaf, 0xbc, 0x72, 0xf4,
+	0x7f, 0xd5, 0xc3, 0x3f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x87, 0x23, 0x5c, 0xc3, 0xc1, 0x09, 0x00,
+	0x00,
 }

@@ -3,8 +3,8 @@ package commands
 import (
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )

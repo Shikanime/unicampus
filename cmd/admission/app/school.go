@@ -1,13 +1,14 @@
-package admission
+package app
 
 import (
 	"context"
 	"io"
 
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
+
 	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/indexer"
-	"gitlab.com/deva-hub/unicampus/internal/app/admission/repositories/persistence"
-	"gitlab.com/deva-hub/unicampus/pkg/objconv"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 )
 
 func NewSchoolService(
@@ -21,8 +22,8 @@ func NewSchoolService(
 }
 
 type School struct {
-	persistence *persistence.Repo
-	indexer     *indexer.Repo
+	persistence admission.SchoolPersistence
+	indexer     admission.SchoolIndexer
 }
 
 func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionService_ListSchoolsServer) error {
@@ -30,12 +31,12 @@ func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionSe
 		in, err := stream.Recv()
 
 		if err == io.EOF {
-			school, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
+			school, err := s.persistence.GetSchool(formatSchoolDomain(*in))
 			if err != nil {
 				return err
 			}
 
-			if err := stream.Send(objconv.FormatSchoolNetwork(school)); err != nil {
+			if err := stream.Send(formatSchoolNetwork(*school)); err != nil {
 				return err
 			}
 		}
@@ -60,7 +61,7 @@ func (s *School) ListSchoolsByQuery(in *unicampus_api_admission_v1alpha1.Query, 
 	}
 
 	for _, school := range schools {
-		if err := stream.Send(objconv.FormatSchoolNetwork(school)); err != nil {
+		if err := stream.Send(formatSchoolNetwork(*school)); err != nil {
 			return err
 		}
 	}
@@ -76,16 +77,16 @@ func (s *School) ListSchoolsByCritera(in *unicampus_api_admission_v1alpha1.Crite
 }
 
 func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school, err := s.persistence.GetSchool(objconv.FormatSchoolDomain(in))
+	school, err := s.persistence.GetSchool(formatSchoolDomain(*in))
 	if err != nil {
 		return nil, err
 	}
 
-	return objconv.FormatSchoolNetwork(school), nil
+	return formatSchoolNetwork(*school), nil
 }
 
 func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := objconv.FormatSchoolDomain(in)
+	school := formatSchoolDomain(*in)
 	if err := s.persistence.CreateSchool(school); err != nil {
 		return nil, err
 	}
@@ -98,7 +99,7 @@ func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission
 }
 
 func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := objconv.FormatSchoolDomain(in)
+	school := formatSchoolDomain(*in)
 	if err := s.persistence.DeleteSchool(school); err != nil {
 		return nil, err
 	}
@@ -111,7 +112,7 @@ func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admissi
 }
 
 func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
-	school := objconv.FormatSchoolDomain(in)
+	school := formatSchoolDomain(*in)
 	if err := s.persistence.UpdateSchool(school); err != nil {
 		return nil, err
 	}
@@ -121,4 +122,33 @@ func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v
 	}
 
 	return in, nil
+}
+
+func formatSchoolDomain(in unicampus_api_admission_v1alpha1.School) *admission.School {
+	return &admission.School{
+		Identification: admission.Identification{
+			UUID: in.UUID,
+		},
+		Name:        in.Name,
+		Description: in.Description,
+		Region: admission.Region{
+			City:    in.Region.City,
+			Country: in.Region.Country,
+			State:   in.Region.State,
+			Zipcode: in.Region.Zipcode,
+		},
+		Location: admission.Location{
+			Address:   in.Location.Address,
+			Latitude:  in.Location.Latitude,
+			Longitude: in.Location.Longitude,
+		},
+	}
+}
+
+func formatSchoolNetwork(in admission.School) *unicampus_api_admission_v1alpha1.School {
+	return &unicampus_api_admission_v1alpha1.School{
+		UUID:        in.UUID,
+		Name:        in.Name,
+		Description: in.Description,
+	}
 }
