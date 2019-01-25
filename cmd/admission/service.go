@@ -7,16 +7,16 @@ import (
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/commands"
 )
 
-const (
-	APP_NAME = "admission"
+var (
+	name = "admission"
 )
 
 func main() {
-	cmd := &cobra.Command{Use: "unicampus"}
+	cmd := &cobra.Command{Use: name}
 
 	cmd.AddCommand(
-		commands.NewStart(APP_NAME),
-		commands.NewSetup(APP_NAME),
+		commands.NewStart(name),
+		commands.NewSetup(name),
 	)
 
 	if err := cmd.Execute(); err != nil {

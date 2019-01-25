@@ -1,4 +1,4 @@
-package unictl
+package app
 
 import (
 	"context"
