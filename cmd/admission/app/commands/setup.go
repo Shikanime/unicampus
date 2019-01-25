@@ -1,19 +1,30 @@
 package commands
 
 import (
-	uuid "github.com/satori/go.uuid"
+	"encoding/csv"
+	"io"
+	"os"
+
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
+
 	"github.com/spf13/cobra"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
-	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 func NewSetup(appName string) *cobra.Command {
+	var filename string
+
 	cmd := &cobra.Command{
-		Use:   "setup",
-		Short: "Setup a service",
+		Use:   "setup [service]",
+		Short: "Initialize a service",
 		Long:  `setup command is used for managing sub service intialization.`,
+	}
+
+	persistenctCmd := &cobra.Command{
+		Use:   "persistence",
+		Short: "Initialize persistence service",
 		Run: func(cmd *cobra.Command, args []string) {
 			postgresService := services.NewPostgreSQLService(appName)
 			defer postgresService.Close()
@@ -31,23 +42,36 @@ func NewSetup(appName string) *cobra.Command {
 				panic(err)
 			}
 
-			persistenceRepo.CreateSchool(&admission.School{
-				Identification: admission.Identification{
-					UUID: uuid.NewV4().String(),
-				},
-				Name:        "ETNA",
-				Description: "The École des technologies numériques appliquées (ETNA) is a French private school in computer science localized at Ivry-sur-Seine. Created in 2005 by Patrice Dumoucel, the school since 2006 is part of IONIS Education Group. The certification delivered by the school are recognized by the French state.",
-			})
+			data, err := os.Open(filename)
+			if err != nil {
+				panic(err)
+			}
+			defer data.Close()
 
-			persistenceRepo.CreateSchool(&admission.School{
-				Identification: admission.Identification{
-					UUID: uuid.NewV4().String(),
-				},
-				Name:        "ESGI",
-				Description: ".",
-			})
+			parser := csv.NewReader(data)
+			for {
+				record, err := parser.Read()
+				if err == io.EOF {
+					break
+				} else if err != nil {
+					panic(err)
+				}
+				if err := persistenceRepo.CreateSchool(&admission.School{
+					Identification: admission.Identification{
+						UUID: record[0],
+					},
+					Name:        record[1],
+					Description: record[2],
+				}); err != nil {
+					panic(err)
+				}
+			}
 		},
 	}
+
+	cmd.MarkFlagRequired("filename")
+	cmd.PersistentFlags().StringVarP(&filename, "filename", "f", "", "filename to read from")
+	cmd.AddCommand(persistenctCmd)
 
 	return cmd
 }
