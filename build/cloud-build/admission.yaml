@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/bazel'
+  args: ['run', '--spawn_strategy=standalone', '//cmd/admission:admission_image', '--verbose_failures']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'bazel/cmd/admission:admission_image', 'gcr.io/$PROJECT_ID/admission']
+# - name: 'gcr.io/cloud-builders/kubectl'
+#   args: ['get', 'pods']
+#   env:
+#   - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
+#   - 'CLOUDSDK_CONTAINER_CLUSTER=your-cluster'
+images: ['gcr.io/$PROJECT_ID/admission']
