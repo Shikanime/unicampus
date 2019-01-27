@@ -55,21 +55,21 @@ func (r *Repo) ListSchools(schools []*admission.School) ([]*admission.School, er
 }
 
 func (r *Repo) CreateSchool(school *admission.School) error {
-	if err := r.db.Create(school).Error; err != nil {
+	if err := r.db.Create(formatSchoolRepo(*school)).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func (r *Repo) UpdateSchool(school *admission.School) error {
-	if err := r.db.Update(school).Error; err != nil {
+	if err := r.db.Update(formatSchoolRepo(*school)).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
 func (r *Repo) DeleteSchool(school *admission.School) error {
-	if err := r.db.Delete(school).Error; err != nil {
+	if err := r.db.Delete(formatSchoolRepo(*school)).Error; err != nil {
 		return err
 	}
 	return nil
@@ -125,27 +125,6 @@ func (r *Repo) DeleteStudent(student *admission.Student) error {
 	return nil
 }
 
-func formatSchoolDomain(in School) *admission.School {
-	return &admission.School{
-		Identification: admission.Identification{
-			UUID: in.UUID,
-		},
-		Name:        in.Name,
-		Description: in.Description,
-		Region: admission.Region{
-			City:    in.Region.City,
-			Country: in.Region.Country,
-			State:   in.Region.State,
-			Zipcode: in.Region.Zipcode,
-		},
-		Location: admission.Location{
-			Address:   in.Address,
-			Latitude:  in.Latitude,
-			Longitude: in.Longitude,
-		},
-	}
-}
-
 func formatStudentDomain(in Student) *admission.Student {
 	return &admission.Student{
 		Identification: admission.Identification{
@@ -153,5 +132,45 @@ func formatStudentDomain(in Student) *admission.Student {
 		},
 		FirstName: in.FirstName,
 		LastName:  in.LastName,
+	}
+}
+
+func formatSchoolDomain(in School) *admission.School {
+	return &admission.School{
+		Identification: admission.Identification{
+			UUID: in.UUID,
+		},
+		Name:        in.Name,
+		Description: in.Description,
+		Region: &admission.Region{
+			City:    in.Region.City,
+			Country: in.Region.Country,
+			State:   in.Region.State,
+			Zipcode: in.Region.Zipcode,
+		},
+		Location: &admission.Location{
+			Address:   in.Address,
+			Latitude:  in.Latitude,
+			Longitude: in.Longitude,
+		},
+	}
+}
+
+func formatSchoolRepo(in admission.School) *School {
+	return &School{
+		UUID:        in.UUID,
+		Name:        in.Name,
+		Description: in.Description,
+		Region: Region{
+			City:    in.Region.City,
+			Country: in.Region.Country,
+			State:   in.Region.State,
+			Zipcode: in.Region.Zipcode,
+		},
+		Location: Location{
+			Address:   in.Location.Address,
+			Latitude:  in.Location.Latitude,
+			Longitude: in.Location.Longitude,
+		},
 	}
 }

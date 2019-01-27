@@ -6,6 +6,7 @@ import (
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/recommandation"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/delivers"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 )
@@ -28,13 +29,24 @@ func NewStart(appName string) *cobra.Command {
 			defer postgresService.Close()
 			elasticserachService := services.NewElasticSearchService(appName)
 			defer elasticserachService.Close()
+			neo4jService := services.NewNeo4jService(appName)
+			defer neo4jService.Close()
 
 			persistenceRepo := persistence.NewRepository(postgresService)
 			indexerRepo := indexer.NewRepository(elasticserachService)
+			recommandationRepo := recommandation.NewRepository(neo4jService)
 
-			schoolService := app.NewSchoolService(&persistenceRepo, &indexerRepo)
-			studentService := app.NewStudentService(&persistenceRepo)
-			applicationService := app.NewApplicationService(&persistenceRepo)
+			var err error
+			if err = persistenceRepo.Init(); err != nil {
+				panic(err)
+			}
+			if err = indexerRepo.Init(); err != nil {
+				panic(err)
+			}
+
+			schoolService := app.NewSchool(&persistenceRepo, &indexerRepo, &recommandationRepo)
+			studentService := app.NewStudent(&persistenceRepo)
+			applicationService := app.NewApplication(&persistenceRepo)
 
 			unicampus_api_admission_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &server{
 				School:      schoolService,

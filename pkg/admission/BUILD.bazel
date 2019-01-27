@@ -7,6 +7,7 @@ go_library(
         "geography.go",
         "indexer.go",
         "persistence.go",
+        "recommandation.go",
         "value_objects.go",
     ],
     importpath = "gitlab.com/deva-hub/unicampus/pkg/admission",

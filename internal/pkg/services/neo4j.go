@@ -1,7 +1,6 @@
 package services
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -15,7 +14,7 @@ type Neo4jService struct {
 func lookupNeo4jUsername() string {
 	username, ok := os.LookupEnv("NEO4J_USERNAME")
 	if !ok {
-		username = "postgres"
+		username = "neo4j"
 	}
 	return username
 }
@@ -36,20 +35,21 @@ func lookupNeo4jHost() string {
 	return host
 }
 
-func NewNeo4jService() *Neo4jService {
-	driver := neo4j.NewDriver()
-	conn, err := driver.OpenNeo(fmt.Sprintf(
-		"bolt://%s:%s@%s:7687",
-		lookupNeo4jUsername(),
-		lookupNeo4jPassword(),
-		lookupNeo4jHost(),
-	))
-	if err != nil {
-		log.Fatalf("failed to connect neo4j service")
-	}
+func NewNeo4jService(name string) *Neo4jService {
+	// TODO: Fix segfault
+	// driver := neo4j.NewDriver()
+	// conn, err := driver.OpenNeo(fmt.Sprintf(
+	// 	"bolt://%s:%s@%s:7687",
+	// 	lookupNeo4jUsername(),
+	// 	lookupNeo4jPassword(),
+	// 	lookupNeo4jHost(),
+	// ))
+	// if err != nil {
+	// 	log.Fatalf("failed to connect neo4j service")
+	// }
 
 	return &Neo4jService{
-		driver: conn,
+		driver: nil,
 	}
 }
 

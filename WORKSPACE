@@ -309,3 +309,9 @@ go_repository(
     commit = "6cd1fcedba52",
     importpath = "golang.org/x/tools",
 )
+
+go_repository(
+    name = "com_github_satori_go_uuid",
+    importpath = "github.com/satori/go.uuid",
+    tag = "v1.2.0",
+)

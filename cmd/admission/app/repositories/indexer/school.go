@@ -4,7 +4,7 @@ const (
 	schoolIndexName = "schools"
 	schoolTypeName  = "school"
 	schoolMap       = `
-    "tweet":{
+    "school":{
       "properties":{
         "name":{
           "type":"keyword"

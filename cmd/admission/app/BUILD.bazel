@@ -5,6 +5,7 @@ go_library(
     srcs = [
         "application.go",
         "school.go",
+        "shared.go",
         "student.go",
     ],
     importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app",
@@ -13,6 +14,7 @@ go_library(
         "//api/admission/v1alpha1:go_default_library",
         "//cmd/admission/app/repositories/indexer:go_default_library",
         "//cmd/admission/app/repositories/persistence:go_default_library",
+        "//cmd/admission/app/repositories/recommandation:go_default_library",
         "//pkg/admission:go_default_library",
     ],
 )

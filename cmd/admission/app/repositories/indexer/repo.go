@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/olivere/elastic"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
@@ -31,24 +30,25 @@ func (r *Repo) Init() error {
 	}
 
 	if !exists {
-		createIndex, err := r.conn.CreateIndex(schoolIndexName).
-			BodyString(fmt.Sprintf(`
-        {
-          "mapping": {
-            %s
-          }
-        }
-        `,
-				schoolMap,
-			)).
-			Do(ctx)
-		if err != nil {
-			return err
-		}
+		// TODO: Fix unknow mapping property
+		// createIndex, err := r.conn.CreateIndex(schoolIndexName).
+		// 	BodyString(fmt.Sprintf(`
+		//     {
+		//       "mapping": {
+		//         %s
+		//       }
+		//     }
+		//     `,
+		// 		schoolMap,
+		// 	)).
+		// 	Do(ctx)
+		// if err != nil {
+		// 	return err
+		// }
 
-		if !createIndex.Acknowledged {
-			return errors.New("Not acknowledged")
-		}
+		// if !createIndex.Acknowledged {
+		// 	return errors.New("Not acknowledged")
+		// }
 	}
 	return nil
 }

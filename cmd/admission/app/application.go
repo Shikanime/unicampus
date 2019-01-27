@@ -9,7 +9,7 @@ import (
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 )
 
-func NewApplicationService(persistence *persistence.Repo) Application {
+func NewApplication(persistence *persistence.Repo) Application {
 	return Application{
 		persistence: persistence,
 	}

@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"io"
 
 	"gitlab.com/deva-hub/unicampus/pkg/admission"
@@ -9,18 +10,21 @@ import (
 	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/indexer"
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
+	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/recommandation"
 )
 
-func NewSchoolService(persistence *persistence.Repo, indexer *indexer.Repo) School {
+func NewSchool(persistence *persistence.Repo, indexer *indexer.Repo, recommandation *recommandation.Repo) School {
 	return School{
-		persistence: persistence,
-		indexer:     indexer,
+		persistence:    persistence,
+		indexer:        indexer,
+		recommandation: recommandation,
 	}
 }
 
 type School struct {
-	persistence admission.SchoolPersistence
-	indexer     admission.SchoolIndexer
+	persistence    admission.SchoolPersistence
+	indexer        admission.SchoolIndexer
+	recommandation admission.SchoolRecommandation
 }
 
 func (s *School) ListSchools(stream unicampus_api_admission_v1alpha1.AdmissionService_ListSchoolsServer) error {
@@ -83,6 +87,7 @@ func (s *School) FindSchool(ctx context.Context, in *unicampus_api_admission_v1a
 }
 
 func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission_v1alpha1.School) (*unicampus_api_admission_v1alpha1.School, error) {
+	fmt.Print(*in)
 	school := formatSchoolDomain(*in)
 	if err := s.persistence.CreateSchool(school); err != nil {
 		return nil, err
@@ -91,6 +96,10 @@ func (s *School) RegisterSchool(ctx context.Context, in *unicampus_api_admission
 	if err := s.indexer.PutSchool(school); err != nil {
 		return nil, err
 	}
+
+	// if err := s.recommandation.PutSchool(school); err != nil {
+	// 	return nil, err
+	// }
 
 	return in, nil
 }
@@ -105,6 +114,10 @@ func (s *School) UnregisterSchool(ctx context.Context, in *unicampus_api_admissi
 		return nil, err
 	}
 
+	// if err := s.recommandation.DeleteSchool(school); err != nil {
+	// 	return nil, err
+	// }
+
 	return in, nil
 }
 
@@ -114,9 +127,18 @@ func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v
 		return nil, err
 	}
 
+	school, err := s.persistence.GetSchool(school)
+	if err != nil {
+		return nil, err
+	}
+
 	if err := s.indexer.PutSchool(school); err != nil {
 		return nil, err
 	}
+
+	// if err := s.recommandation.PutSchool(school); err != nil {
+	// 	return nil, err
+	// }
 
 	return in, nil
 }
@@ -128,17 +150,8 @@ func formatSchoolDomain(in unicampus_api_admission_v1alpha1.School) *admission.S
 		},
 		Name:        in.Name,
 		Description: in.Description,
-		Region: admission.Region{
-			City:    in.Region.City,
-			Country: in.Region.Country,
-			State:   in.Region.State,
-			Zipcode: in.Region.Zipcode,
-		},
-		Location: admission.Location{
-			Address:   in.Location.Address,
-			Latitude:  in.Location.Latitude,
-			Longitude: in.Location.Longitude,
-		},
+		Region:      formatRegionDomain(*in.Region),
+		Location:    formatLocationDomain(*in.Location),
 	}
 }
 

@@ -3,6 +3,7 @@ package recommandation
 import (
 	neo4j "github.com/johnnadratowski/golang-neo4j-bolt-driver"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
+	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 // TODO Separate to seed
@@ -34,8 +35,8 @@ const (
     `
 )
 
-func NewRepository(service *services.Neo4jService) *Repo {
-	return &Repo{
+func NewRepository(service *services.Neo4jService) Repo {
+	return Repo{
 		conn: service.Driver(),
 	}
 }
@@ -46,6 +47,24 @@ type Repo struct {
 
 func (r *Repo) Init() error {
 	if _, err := r.conn.ExecNeo(regionDataModel, map[string]interface{}{}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Repo) PutSchool(school *admission.School) error {
+	if _, err := r.conn.ExecNeo(`CREATE (School {id: id})`, map[string]interface{}{
+		"id": school.UUID,
+	}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Repo) DeleteSchool(school *admission.School) error {
+	if _, err := r.conn.ExecNeo(`MATCH (s:School {id: id}) DELETE (s)`, map[string]interface{}{
+		"id": school.UUID,
+	}); err != nil {
 		return err
 	}
 	return nil

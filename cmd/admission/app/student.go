@@ -9,7 +9,7 @@ import (
 	"gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/persistence"
 )
 
-func NewStudentService(persistence *persistence.Repo) Student {
+func NewStudent(persistence *persistence.Repo) Student {
 	return Student{
 		persistence: persistence,
 	}

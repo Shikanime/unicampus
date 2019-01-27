@@ -13,6 +13,7 @@ go_library(
         "//cmd/admission/app:go_default_library",
         "//cmd/admission/app/repositories/indexer:go_default_library",
         "//cmd/admission/app/repositories/persistence:go_default_library",
+        "//cmd/admission/app/repositories/recommandation:go_default_library",
         "//internal/pkg/delivers:go_default_library",
         "//internal/pkg/services:go_default_library",
         "//pkg/admission:go_default_library",
