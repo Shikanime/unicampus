@@ -1,0 +1,3 @@
+image:
+  repository: bazel/cmd/admission:admission_image
+  tag: latest

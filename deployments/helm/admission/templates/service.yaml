@@ -1,0 +1,20 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: {{ include "admission.fullname" . }}
+  namespace: default
+  labels:
+    app.kubernetes.io/name: {{ include "admission.name" . }}
+    helm.sh/chart: {{ include "admission.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ include "admission.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
