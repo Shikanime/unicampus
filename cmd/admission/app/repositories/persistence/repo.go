@@ -26,9 +26,6 @@ func (r *Repo) Init() error {
 	if err := r.db.AutoMigrate(&Student{}).Error; err != nil {
 		return err
 	}
-	if err := r.db.AutoMigrate(&Application{}).Error; err != nil {
-		return err
-	}
 	return nil
 }
 
@@ -75,27 +72,6 @@ func (r *Repo) DeleteSchool(school *admission.School) error {
 	return nil
 }
 
-func (r *Repo) CreateApplication(application *admission.Application) error {
-	dbSchool, err := r.GetSchool(application.School)
-	if err != nil {
-		return err
-	}
-
-	dbStudent, err := r.GetStudent(application.Student)
-	if err != nil {
-		return err
-	}
-
-	if err := r.db.Create(&Application{
-		SchoolUUID:  dbSchool.UUID,
-		StudentUUID: dbStudent.UUID,
-	}).Error; err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (r *Repo) GetStudent(student *admission.Student) (*admission.Student, error) {
 	dbStudent := new(Student)
 	if err := r.db.Take(dbStudent, student).Error; err != nil {
@@ -135,6 +111,23 @@ func formatStudentDomain(in Student) *admission.Student {
 	}
 }
 
+func formatRegionDomain(in Region) *admission.Region {
+	return &admission.Region{
+		City:    in.City,
+		Country: in.Country,
+		State:   in.State,
+		Zipcode: in.Zipcode,
+	}
+}
+
+func formatLocationDomain(in Location) *admission.Location {
+	return &admission.Location{
+		Address:   in.Address,
+		Latitude:  in.Latitude,
+		Longitude: in.Longitude,
+	}
+}
+
 func formatSchoolDomain(in School) *admission.School {
 	return &admission.School{
 		Identification: admission.Identification{
@@ -142,17 +135,8 @@ func formatSchoolDomain(in School) *admission.School {
 		},
 		Name:        in.Name,
 		Description: in.Description,
-		Region: &admission.Region{
-			City:    in.Region.City,
-			Country: in.Region.Country,
-			State:   in.Region.State,
-			Zipcode: in.Region.Zipcode,
-		},
-		Location: &admission.Location{
-			Address:   in.Address,
-			Latitude:  in.Latitude,
-			Longitude: in.Longitude,
-		},
+		Region:      formatRegionDomain(in.Region),
+		Location:    formatLocationDomain(in.Location),
 	}
 }
 

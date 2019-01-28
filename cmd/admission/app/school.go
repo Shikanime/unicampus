@@ -144,14 +144,22 @@ func (s *School) UpdateSchool(ctx context.Context, in *unicampus_api_admission_v
 }
 
 func formatSchoolDomain(in unicampus_api_admission_v1alpha1.School) *admission.School {
+	var region *admission.Region
+	if in.Region != nil {
+		region = formatRegionDomain(*in.Region)
+	}
+	var location *admission.Location
+	if in.Location != nil {
+		location = formatLocationDomain(*in.Location)
+	}
 	return &admission.School{
 		Identification: admission.Identification{
 			UUID: in.UUID,
 		},
 		Name:        in.Name,
 		Description: in.Description,
-		Region:      formatRegionDomain(*in.Region),
-		Location:    formatLocationDomain(*in.Location),
+		Region:      region,
+		Location:    location,
 	}
 }
 

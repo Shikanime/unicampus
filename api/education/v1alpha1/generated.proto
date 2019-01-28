@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package unicampus.api.admission.v1alpha1;
+
+import "google/api/annotations.proto";
+
+service AdmissionService {
+  rpc ListSchools (stream School) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc ListSchoolsByQuery (Query) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school/_query"
+    };
+  }
+  rpc ListSchoolsByCritera (Critera) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school/_critera"
+    };
+  }
+  rpc RegisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UpdateSchool (School) returns (School) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
+  rpc UnregisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+
+  rpc RegisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UpdateStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
+  rpc UnregisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+}
+
+// Requests
+
+message Query {
+  string content = 1;
+}
+
+message Critera {
+  string sector = 1;
+}
+
+// Responses
+
+message School {
+  string            UUID        = 1;
+  string            name        = 2;
+  string            description = 3;
+  string            phone       = 4;
+  string            email       = 5;
+  repeated Link     pictures    = 6;
+  repeated Link     regions     = 7;
+  repeated Location locations   = 8;
+}
+
+message Link {
+  string Type       = 1;
+  string Reference  = 2;
+}
+
+message Location {
+  string    address   = 1;
+  GeoPoint  geo_point = 2;
+  Region    region    = 3;
+}
+
+message GeoPoint {
+	double latitude   = 1;
+	double longitude  = 2;
+}
+
+message Region {
+  string city     = 1;
+	string state    = 2;
+	string country  = 3;
+	string zipcode  = 4;
+}
+
+message Student {
+  string UUID       = 1;
+  string first_name = 2;
+  string last_name  = 3;
+  string phone      = 4;
+  string email      = 5;
+}
