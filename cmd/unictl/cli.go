@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
-	unicampus_api_admission_v1alpha1 "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1"
+	unicampus_api_education_v1alpha1 "gitlab.com/deva-hub/unicampus/api/education/v1alpha1"
 	"gitlab.com/deva-hub/unicampus/cmd/unictl/app"
 	"google.golang.org/grpc"
 )
@@ -26,7 +26,7 @@ func main() {
 		log.Fatalf("Fail to connect: %s", err)
 	}
 
-	client := unicampus_api_admission_v1alpha1.NewAdmissionServiceClient(conn)
+	client := unicampus_api_education_v1alpha1.NewAdmissionServiceClient(conn)
 
 	cmdCreate := &cobra.Command{
 		Use:   "create [ressource name]",

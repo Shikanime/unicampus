@@ -114,11 +114,23 @@ func formatSchoolDomain(school *School) *unicampus_api_education_v1alpha1.School
 }
 
 func formatSchoolPostgres(in *unicampus_api_education_v1alpha1.School) *School {
+	var locations []Location
+	for _, location := range in.Locations {
+		locations = append(locations, Location{
+			Address: location.Address,
+			GeoPoint: GeoPoint{
+				Latitude:  location.GeoPoint.Latitude,
+				Longitude: location.GeoPoint.Longitude,
+			},
+		})
+	}
+
 	return &School{
 		UUID:        in.UUID,
 		Name:        in.Name,
 		Description: in.Description,
 		Phone:       in.Phone,
 		Email:       in.Email,
+		Locations:   locations,
 	}
 }

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -36,20 +37,19 @@ func lookupNeo4jHost() string {
 }
 
 func NewNeo4jService(name string) *Neo4jService {
-	// TODO: Fix segfault
-	// driver := neo4j.NewDriver()
-	// conn, err := driver.OpenNeo(fmt.Sprintf(
-	// 	"bolt://%s:%s@%s:7687",
-	// 	lookupNeo4jUsername(),
-	// 	lookupNeo4jPassword(),
-	// 	lookupNeo4jHost(),
-	// ))
-	// if err != nil {
-	// 	log.Fatalf("failed to connect neo4j service")
-	// }
+	driver := neo4j.NewDriver()
+	conn, err := driver.OpenNeo(fmt.Sprintf(
+		"bolt://%s:%s@%s:7687",
+		lookupNeo4jUsername(),
+		lookupNeo4jPassword(),
+		lookupNeo4jHost(),
+	))
+	if err != nil {
+		log.Fatalf("failed to connect neo4j service")
+	}
 
 	return &Neo4jService{
-		driver: nil,
+		driver: conn,
 	}
 }
 

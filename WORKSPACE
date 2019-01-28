@@ -315,3 +315,9 @@ go_repository(
     commit = "6cd1fcedba52",
     importpath = "golang.org/x/tools",
 )
+
+go_repository(
+    name = "com_github_google_uuid",
+    importpath = "github.com/google/uuid",
+    tag = "v1.1.0",
+)

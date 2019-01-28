@@ -1,12 +1,12 @@
 dependencies:
 - name: postgresql
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://../subcharts/postgresql
   version: 3.9.1
 - name: neo4j
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://../subcharts/neo4j
   version: 0.10.0
 - name: elasticsearch
-  repository: https://kubernetes-charts.storage.googleapis.com/
+  repository: file://../subcharts/elasticsearch
   version: 1.17.0
-digest: sha256:4f3abf95bb3ab4aeeed88cbecf58aa1ca3417bb12157b970682d555070e86420
-generated: 2019-01-17T09:53:02.099867+01:00
+digest: sha256:3927cee42bccdd7bd08fe9464614ecdbec81c4023773ad5835eac82612be1b56
+generated: 2019-01-28T17:04:21.565765+01:00
