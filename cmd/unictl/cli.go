@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	unicampus_api_education_v1alpha1 "gitlab.com/deva-hub/unicampus/api/education/v1alpha1"
-	"gitlab.com/deva-hub/unicampus/cmd/unictl/app"
+	"gitlab.com/deva-hub/unicampus/internal/app/unictl"
 	"google.golang.org/grpc"
 )
 
@@ -40,8 +40,8 @@ func main() {
 		Long:  "seed command is used for to bootstap with basic ressource.",
 	}
 
-	cmdSchool := app.NewCreateSchoolCommand(client)
-	cmdSeedSchool := app.NewSeedSchoolCommand(client)
+	cmdSchool := unictl.NewCreateSchoolCommand(client)
+	cmdSeedSchool := unictl.NewSeedSchoolCommand(client)
 
 	cmd := &cobra.Command{Use: name}
 

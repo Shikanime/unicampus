@@ -7,7 +7,7 @@ go_library(
     visibility = ["//visibility:private"],
     deps = [
         "//api/education/v1alpha1:go_default_library",
-        "//cmd/unictl/app:go_default_library",
+        "//internal/app/unictl:go_default_library",
         "@com_github_spf13_cobra//:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
     ],

@@ -25,5 +25,8 @@ go_binary(
 go_image(
     name = "education_image",
     binary = ":education_binary",
+    goarch = "amd64",
+    goos = "linux",
+    pure = "on",
     visibility = ["//visibility:public"],
 )
