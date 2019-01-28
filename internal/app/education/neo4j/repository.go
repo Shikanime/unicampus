@@ -1,9 +1,9 @@
-package recommandation
+package neo4j
 
 import (
-	neo4j "github.com/johnnadratowski/golang-neo4j-bolt-driver"
+	neo4jDriver "github.com/johnnadratowski/golang-neo4j-bolt-driver"
+	unicampus_api_education_v1alpha1 "gitlab.com/deva-hub/unicampus/api/education/v1alpha1"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
-	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
 // TODO Separate to seed
@@ -35,24 +35,28 @@ const (
     `
 )
 
-func NewRepository(service *services.Neo4jService) Repo {
-	return Repo{
+func New(service *services.Neo4jService) *Repository {
+	return &Repository{
 		conn: service.Driver(),
 	}
 }
 
-type Repo struct {
-	conn neo4j.Conn
+type Repository struct {
+	conn neo4jDriver.Conn
 }
 
-func (r *Repo) Init() error {
+func (r *Repository) Init() error {
 	if _, err := r.conn.ExecNeo(regionDataModel, map[string]interface{}{}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Repo) PutSchool(school *admission.School) error {
+func (r *Repository) RecommandSchoolsByCritera(school *unicampus_api_education_v1alpha1.Critera) ([]*unicampus_api_education_v1alpha1.School, error) {
+	return nil, nil
+}
+
+func (r *Repository) PutSchool(school *unicampus_api_education_v1alpha1.School) error {
 	if _, err := r.conn.ExecNeo(`CREATE (School {id: id})`, map[string]interface{}{
 		"id": school.UUID,
 	}); err != nil {
@@ -61,7 +65,7 @@ func (r *Repo) PutSchool(school *admission.School) error {
 	return nil
 }
 
-func (r *Repo) DeleteSchool(school *admission.School) error {
+func (r *Repository) DeleteSchool(school *unicampus_api_education_v1alpha1.School) error {
 	if _, err := r.conn.ExecNeo(`MATCH (s:School {id: id}) DELETE (s)`, map[string]interface{}{
 		"id": school.UUID,
 	}); err != nil {

@@ -1,26 +1,26 @@
-package indexer
+package elasticsearch
 
 import (
 	"context"
 	"encoding/json"
 	"errors"
 
-	"github.com/olivere/elastic"
+	elasticsearchDriver "github.com/olivere/elastic"
+	unicampus_api_education_v1alpha1 "gitlab.com/deva-hub/unicampus/api/education/v1alpha1"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
-	"gitlab.com/deva-hub/unicampus/pkg/admission"
 )
 
-func NewRepository(service *services.ElasticSearchService) Repo {
-	return Repo{
+func New(service *services.ElasticSearchService) *Repository {
+	return &Repository{
 		conn: service.Driver(),
 	}
 }
 
-type Repo struct {
-	conn *elastic.Client
+type Repository struct {
+	conn *elasticsearchDriver.Client
 }
 
-func (r *Repo) Init() error {
+func (r *Repository) Init() error {
 	ctx := context.Background()
 
 	exists, err := r.conn.IndexExists(schoolIndexName).
@@ -53,9 +53,9 @@ func (r *Repo) Init() error {
 	return nil
 }
 
-func (r *Repo) SearchSchool(school *admission.School) ([]*admission.School, error) {
-	nameTermQuery := elastic.NewTermQuery("name", school.Name)
-	descriptionTermQuery := elastic.NewTermQuery("description", school.Description)
+func (r *Repository) SearchSchool(school *unicampus_api_education_v1alpha1.School) ([]*unicampus_api_education_v1alpha1.School, error) {
+	nameTermQuery := elasticsearchDriver.NewTermQuery("name", school.Name)
+	descriptionTermQuery := elasticsearchDriver.NewTermQuery("description", school.Description)
 
 	dbSchool, err := r.conn.Search().
 		Index(schoolIndexName).
@@ -68,18 +68,18 @@ func (r *Repo) SearchSchool(school *admission.School) ([]*admission.School, erro
 		return nil, err
 	}
 
-	res := make([]*admission.School, len(dbSchool.Hits.Hits))
+	res := make([]*unicampus_api_education_v1alpha1.School, len(dbSchool.Hits.Hits))
 	for i, hit := range dbSchool.Hits.Hits {
 		school := new(School)
 		json.Unmarshal(*hit.Source, school)
-		res[i] = formatSchoolDomain(*school)
+		res[i] = formatSchoolDomain(school)
 	}
 
 	return res, nil
 }
 
-func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
-	queryBuilder := elastic.NewMultiMatchQuery(query, "name", "description").
+func (r *Repository) SearchSchoolsByQuery(query string) ([]*unicampus_api_education_v1alpha1.School, error) {
+	queryBuilder := elasticsearchDriver.NewMultiMatchQuery(query, "name", "description").
 		Fuzziness("2").
 		MinimumShouldMatch("2")
 
@@ -91,17 +91,17 @@ func (r *Repo) SearchSchoolsByQuery(query string) ([]*admission.School, error) {
 		return nil, err
 	}
 
-	res := make([]*admission.School, len(dbSchool.Hits.Hits))
+	res := make([]*unicampus_api_education_v1alpha1.School, len(dbSchool.Hits.Hits))
 	for i, hit := range dbSchool.Hits.Hits {
 		school := new(School)
 		json.Unmarshal(*hit.Source, school)
-		res[i] = formatSchoolDomain(*school)
+		res[i] = formatSchoolDomain(school)
 	}
 
 	return res, nil
 }
 
-func (r *Repo) PutSchool(school *admission.School) error {
+func (r *Repository) PutSchool(school *unicampus_api_education_v1alpha1.School) error {
 	dbSchool, err := r.conn.Index().
 		Index(schoolIndexName).
 		Type(schoolTypeName).
@@ -118,7 +118,7 @@ func (r *Repo) PutSchool(school *admission.School) error {
 	return nil
 }
 
-func (r *Repo) DeleteSchool(school *admission.School) error {
+func (r *Repository) DeleteSchool(school *unicampus_api_education_v1alpha1.School) error {
 	deleteIndex, err := r.conn.DeleteIndex(schoolIndexName).Do(context.Background())
 	if err != nil {
 		return err
@@ -129,10 +129,8 @@ func (r *Repo) DeleteSchool(school *admission.School) error {
 	return nil
 }
 
-func formatSchoolDomain(in School) *admission.School {
-	return &admission.School{
-		Identification: admission.Identification{
-			UUID: in.UUID,
-		},
+func formatSchoolDomain(in *School) *unicampus_api_education_v1alpha1.School {
+	return &unicampus_api_education_v1alpha1.School{
+		UUID: in.UUID,
 	}
 }

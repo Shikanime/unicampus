@@ -1,4 +1,4 @@
-package indexer
+package elasticsearch
 
 const (
 	schoolIndexName = "schools"
@@ -20,8 +20,9 @@ const (
 )
 
 type School struct {
-	UUID string `json:"uuid"`
-
+	UUID        string `json:"uuid"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
 }

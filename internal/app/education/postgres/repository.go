@@ -1,22 +1,36 @@
 package postgres
 
 import (
-	"github.com/jinzhu/gorm"
+	postgresDriver "github.com/jinzhu/gorm"
 	unicampus_api_education_v1alpha1 "gitlab.com/deva-hub/unicampus/api/education/v1alpha1"
 	"gitlab.com/deva-hub/unicampus/internal/pkg/services"
 )
 
-func NewPostgresRepository(conn *services.PostgreSQLService) *PostgresRepository {
-	return &PostgresRepository{
+func New(conn *services.PostgreSQLService) *Repository {
+	return &Repository{
 		conn: conn.Driver(),
 	}
 }
 
-type PostgresRepository struct {
-	conn *gorm.DB
+type Repository struct {
+	conn *postgresDriver.DB
 }
 
-func (r *PostgresRepository) GetSchool(school *unicampus_api_education_v1alpha1.School) (*unicampus_api_education_v1alpha1.School, error) {
+func (r *Repository) Init() error {
+	if err := r.conn.AutoMigrate(
+		&School{},
+		&Sector{},
+		&Location{},
+		&GeoPoint{},
+		&Region{},
+		&Link{},
+	).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *Repository) GetSchool(school *unicampus_api_education_v1alpha1.School) (*unicampus_api_education_v1alpha1.School, error) {
 	data := new(School)
 	if err := r.conn.
 		Preload("Links").
@@ -28,10 +42,10 @@ func (r *PostgresRepository) GetSchool(school *unicampus_api_education_v1alpha1.
 		return nil, err
 	}
 
-	return formatSchoolGRPC(data), nil
+	return formatSchoolDomain(data), nil
 }
 
-func (r *PostgresRepository) ListSchools(schools []*unicampus_api_education_v1alpha1.School) ([]*unicampus_api_education_v1alpha1.School, error) {
+func (r *Repository) ListSchools(schools []*unicampus_api_education_v1alpha1.School) ([]*unicampus_api_education_v1alpha1.School, error) {
 	req := make([]*School, len(schools))
 	for _, school := range schools {
 		req = append(req, formatSchoolPostgres(school))
@@ -50,34 +64,34 @@ func (r *PostgresRepository) ListSchools(schools []*unicampus_api_education_v1al
 
 	res := make([]*unicampus_api_education_v1alpha1.School, len(datas))
 	for _, data := range datas {
-		res = append(res, formatSchoolGRPC(data))
+		res = append(res, formatSchoolDomain(data))
 	}
 
 	return res, nil
 }
 
-func (r *PostgresRepository) CreateSchool(school *unicampus_api_education_v1alpha1.School) error {
+func (r *Repository) CreateSchool(school *unicampus_api_education_v1alpha1.School) error {
 	if err := r.conn.Create(formatSchoolPostgres(school)).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *PostgresRepository) UpdateSchool(school *unicampus_api_education_v1alpha1.School) error {
+func (r *Repository) UpdateSchool(school *unicampus_api_education_v1alpha1.School) error {
 	if err := r.conn.Update(formatSchoolPostgres(school)).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *PostgresRepository) DeleteSchool(school *unicampus_api_education_v1alpha1.School) error {
+func (r *Repository) DeleteSchool(school *unicampus_api_education_v1alpha1.School) error {
 	if err := r.conn.Delete(formatSchoolPostgres(school)).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func formatSchoolGRPC(school *School) *unicampus_api_education_v1alpha1.School {
+func formatSchoolDomain(school *School) *unicampus_api_education_v1alpha1.School {
 	var locations []*unicampus_api_education_v1alpha1.Location
 	for _, location := range school.Locations {
 		locations = append(locations, &unicampus_api_education_v1alpha1.Location{
@@ -88,6 +102,7 @@ func formatSchoolGRPC(school *School) *unicampus_api_education_v1alpha1.School {
 			},
 		})
 	}
+
 	return &unicampus_api_education_v1alpha1.School{
 		UUID:        school.UUID,
 		Name:        school.Name,

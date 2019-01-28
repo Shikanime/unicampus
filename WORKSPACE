@@ -209,6 +209,12 @@ go_repository(
 )
 
 go_repository(
+    name = "com_github_satori_go_uuid",
+    importpath = "github.com/satori/go.uuid",
+    tag = "v1.2.0",
+)
+
+go_repository(
     name = "com_github_smartystreets_assertions",
     commit = "b6c0e53d7304",
     importpath = "github.com/smartystreets/assertions",
@@ -308,10 +314,4 @@ go_repository(
     name = "org_golang_x_tools",
     commit = "6cd1fcedba52",
     importpath = "golang.org/x/tools",
-)
-
-go_repository(
-    name = "com_github_satori_go_uuid",
-    importpath = "github.com/satori/go.uuid",
-    tag = "v1.2.0",
 )

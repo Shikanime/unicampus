@@ -2,16 +2,16 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
-    name = "unicampus_api_admission_v1alpha1_proto",
+    name = "unicampus_api_education_v1alpha1_proto",
     srcs = ["generated.proto"],
     visibility = ["//visibility:public"],
     deps = ["@go_googleapis//google/api:annotations_proto"],
 )
 
 go_proto_library(
-    name = "unicampus_api_admission_v1alpha1_go_proto",
+    name = "unicampus_api_education_v1alpha1_go_proto",
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-    importpath = "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1",
+    importpath = "gitlab.com/deva-hub/unicampus/api/education/v1alpha1",
     proto = ":unicampus_api_admission_v1alpha1_proto",
     visibility = ["//visibility:public"],
     deps = ["@go_googleapis//google/api:annotations_go_proto"],
@@ -19,7 +19,14 @@ go_proto_library(
 
 go_library(
     name = "go_default_library",
-    embed = [":unicampus_api_admission_v1alpha1_go_proto"],
-    importpath = "gitlab.com/deva-hub/unicampus/api/admission/v1alpha1",
+    embed = [":unicampus_api_education_v1alpha1_go_proto"],
+    importpath = "gitlab.com/deva-hub/unicampus/api/education/v1alpha1",
     visibility = ["//visibility:public"],
+)
+
+proto_library(
+    name = "unicampus_api_admission_v1alpha1_proto",
+    srcs = ["generated.proto"],
+    visibility = ["//visibility:public"],
+    deps = ["@go_googleapis//google/api:annotations_proto"],
 )

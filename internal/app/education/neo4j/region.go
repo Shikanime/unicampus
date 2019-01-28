@@ -1,4 +1,4 @@
-package recommandation
+package neo4j
 
 type Region struct {
 	City    string

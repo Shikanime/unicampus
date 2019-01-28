@@ -4,13 +4,13 @@ go_library(
     name = "go_default_library",
     srcs = [
         "region.go",
-        "repo.go",
+        "repository.go",
     ],
-    importpath = "gitlab.com/deva-hub/unicampus/cmd/admission/app/repositories/recommandation",
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/education/neo4j",
     visibility = ["//visibility:public"],
     deps = [
+        "//api/education/v1alpha1:go_default_library",
         "//internal/pkg/services:go_default_library",
-        "//pkg/admission:go_default_library",
         "@com_github_johnnadratowski_golang_neo4j_bolt_driver//:go_default_library",
     ],
 )
