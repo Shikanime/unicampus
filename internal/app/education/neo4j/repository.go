@@ -46,9 +46,9 @@ type Repository struct {
 }
 
 func (r *Repository) Init() error {
-	if _, err := r.conn.ExecNeo(regionDataModel, map[string]interface{}{}); err != nil {
-		return err
-	}
+	// if _, err := r.conn.ExecNeo(regionDataModel, map[string]interface{}{}); err != nil {
+	// 	return err
+	// }
 	return nil
 }
 

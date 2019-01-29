@@ -33,9 +33,9 @@ func main() {
 	if err := esr.Init(); err != nil {
 		panic(err)
 	}
-	// if err := njr.Init(); err != nil {
-	// 	panic(err)
-	// }
+	if err := njr.Init(); err != nil {
+		panic(err)
+	}
 
 	unicampus_api_education_v1alpha1.RegisterAdmissionServiceServer(grpcDeliver.Server(), &Server{
 		storage:        pgr,
@@ -96,21 +96,21 @@ func (s *Server) ListSchoolsByQuery(in *unicampus_api_education_v1alpha1.Query, 
 }
 
 func (s *Server) ListSchoolsByCritera(in *unicampus_api_education_v1alpha1.Critera, stream unicampus_api_education_v1alpha1.AdmissionService_ListSchoolsByCriteraServer) error {
-	// schools, err := s.recommandation.RecommandSchoolsByCritera(in)
-	// if err != nil {
-	// 	return err
-	// }
+	schools, err := s.recommandation.RecommandSchoolsByCritera(in)
+	if err != nil {
+		return err
+	}
 
-	// schools, err = s.storage.ListSchools(schools)
-	// if err != nil {
-	// 	return err
-	// }
+	schools, err = s.storage.ListSchools(schools)
+	if err != nil {
+		return err
+	}
 
-	// for _, school := range schools {
-	// 	if err := stream.Send(school); err != nil {
-	// 		return err
-	// 	}
-	// }
+	for _, school := range schools {
+		if err := stream.Send(school); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }
@@ -129,9 +129,9 @@ func (s *Server) RegisterSchool(ctx context.Context, in *unicampus_api_education
 		return nil, err
 	}
 
-	// if err := s.recommandation.PutSchool(school); err != nil {
-	// 	return nil, err
-	// }
+	if err := s.recommandation.PutSchool(school); err != nil {
+		return nil, err
+	}
 
 	return in, nil
 }
@@ -150,9 +150,9 @@ func (s *Server) UpdateSchool(ctx context.Context, in *unicampus_api_education_v
 		return nil, err
 	}
 
-	// if err := s.recommandation.PutSchool(school); err != nil {
-	// 	return nil, err
-	// }
+	if err := s.recommandation.PutSchool(school); err != nil {
+		return nil, err
+	}
 
 	return in, nil
 }
@@ -166,9 +166,9 @@ func (s *Server) UnregisterSchool(ctx context.Context, in *unicampus_api_educati
 		return nil, err
 	}
 
-	// if err := s.recommandation.DeleteSchool(school); err != nil {
-	// 	return nil, err
-	// }
+	if err := s.recommandation.DeleteSchool(in); err != nil {
+		return nil, err
+	}
 
 	return in, nil
 }
