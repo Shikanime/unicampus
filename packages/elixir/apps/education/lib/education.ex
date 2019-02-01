@@ -1,0 +1,2 @@
+defmodule Education do
+end
