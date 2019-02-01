@@ -1,9 +1,2 @@
 .DS_Store
-*.exe
-*.dll
-*.so
-*.dylib
-*.test
 *.tgz
-.glide/
-/bazel*
