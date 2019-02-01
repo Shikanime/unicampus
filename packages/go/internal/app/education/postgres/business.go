@@ -11,10 +11,10 @@ type School struct {
 	Description string
 	Phone       string
 	Email       string
-	Links       []Link     `gorm:"foreignkey:SchoolLink"`
-	Pictures    []Link     `gorm:"foreignkey:SchoolPicture"`
-	Locations   []Location `gorm:"foreignkey:SchoolLocation"`
-	Sectors     []Sector   `gorm:"foreignkey:SchoolSector"`
+	Links       []Link     `gorm:"foreignkey:SchoolRefer"`
+	Pictures    []Link     `gorm:"foreignkey:SchoolRefer"`
+	Locations   []Location `gorm:"foreignkey:SchoolRefer"`
+	Sectors     []Sector   `gorm:"foreignkey:SchoolRefer"`
 }
 
 type Sector struct {

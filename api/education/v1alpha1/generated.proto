@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package unicampus.api.admission.v1alpha1;
+package unicampus.api.education.v1alpha1;
 
 import "google/api/annotations.proto";
 
