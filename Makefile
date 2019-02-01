@@ -1,8 +1,8 @@
-.PHONY: build-admission
-build-admission:
-	bazel build //cmd/admission:admission
+.PHONY: build-education
+build-education:
+	cd packages/go; bazel build //cmd/education:education_binary
 
-.PHONY: clean-admission
+.PHONY: clean-education
 clean:
 	bazel clean --expunge
 

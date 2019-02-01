@@ -7,12 +7,5 @@ protoc \
   -I. \
   -I$(go env GOPATH)/src \
   -I$(go env GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --gofast_out=plugins=grpc:. \
-  ./api/admission/v1alpha1/generated.proto
-protoc \
-  -I/usr/local/include \
-  -I. \
-  -I$(go env GOPATH)/src \
-  -I$(go env GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
-  --gofast_out=plugins=grpc:. \
-  ./api/account/v1alpha1/generated.proto
+  --gofast_out=plugins=grpc:./packages/go \
+  ./api/education/v1alpha1/generated.proto
