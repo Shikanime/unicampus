@@ -1,3 +1,0 @@
-image:
-  repository: bazel/cmd/admission
-  tag: admission_image

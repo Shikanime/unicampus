@@ -1,0 +1,6 @@
+steps:
+- name: 'gcr.io/cloud-builders/bazel'
+  args: ['run', '--spawn_strategy=standalone', '//cmd/education:image', '--verbose_failures']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag', 'bazel/cmd/education:image', 'gcr.io/$PROJECT_ID/education']
+images: ['gcr.io/$PROJECT_ID/education']

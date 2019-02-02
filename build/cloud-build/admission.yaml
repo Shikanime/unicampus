@@ -1,6 +1,0 @@
-steps:
-- name: 'gcr.io/cloud-builders/bazel'
-  args: ['run', '--spawn_strategy=standalone', '//cmd/admission:admission_image', '--verbose_failures']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['tag', 'bazel/cmd/admission:admission_image', 'gcr.io/$PROJECT_ID/admission']
-images: ['gcr.io/$PROJECT_ID/admission']

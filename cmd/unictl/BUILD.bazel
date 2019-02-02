@@ -1,0 +1,20 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["cli.go"],
+    importpath = "gitlab.com/deva-hub/unicampus/cmd/unictl",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//api/v1alpha1:go_default_library",
+        "//internal/app/unictl:go_default_library",
+        "@com_github_spf13_cobra//:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "binary",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)

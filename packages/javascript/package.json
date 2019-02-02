@@ -1,7 +1,0 @@
-{
-  "name": "unicampus",
-  "private": true,
-  "devDependencies": {
-    "lerna": "^3.10.7"
-  }
-}
