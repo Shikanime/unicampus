@@ -1,5 +1,5 @@
 apiVersion: v1alpha1
 appVersion: "0.1.0"
-description: Admission service
+description: Education service
 name: admission
 version: 0.1.0

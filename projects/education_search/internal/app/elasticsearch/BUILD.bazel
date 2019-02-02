@@ -1,0 +1,16 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "repository.go",
+        "school.go",
+    ],
+    importpath = "gitlab.com/deva-hub/unicampus/internal/app/elasticsearch",
+    visibility = ["//:__subpackages__"],
+    deps = [
+        "//projects/education_search/api/v1alpha1:go_default_library",
+        "//projects/education_search/internal/pkg/services:go_default_library",
+        "@com_github_olivere_elastic//:go_default_library",
+    ],
+)

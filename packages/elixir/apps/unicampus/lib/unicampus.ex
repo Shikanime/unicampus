@@ -1,2 +1,0 @@
-defmodule Unicampus do
-end

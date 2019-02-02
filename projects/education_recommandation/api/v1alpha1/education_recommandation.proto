@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package education.api.v1alpha1;
+
+import "google/api/annotations.proto";
+
+service EducationRecommandationService {
+  rpc ListSchoolsByCritera (Critera) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school/_critera"
+    };
+  }
+}
+
+message Critera {
+  string sector = 1;
+}
+
+message School {
+  string            UUID        = 1;
+  string            name        = 2;
+  string            description = 3;
+  string            phone       = 4;
+  string            email       = 5;
+  repeated Link     pictures    = 6;
+  repeated Link     regions     = 7;
+  repeated Location locations   = 8;
+}
+
+message Link {
+  string Type       = 1;
+  string Reference  = 2;
+}
+
+message Location {
+  string    address   = 1;
+  GeoPoint  geo_point = 2;
+  Region    region    = 3;
+}
+
+message GeoPoint {
+	double latitude   = 1;
+	double longitude  = 2;
+}
+
+message Region {
+  string city     = 1;
+	string state    = 2;
+	string country  = 3;
+	string zipcode  = 4;
+}

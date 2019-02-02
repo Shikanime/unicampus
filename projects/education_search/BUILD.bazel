@@ -1,0 +1,5 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:exclude third_party
+# gazelle:prefix gitlab.com/deva-hub/unicampus
+gazelle(name = "gazelle")
