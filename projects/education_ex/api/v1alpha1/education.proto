@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package education.api.v1alpha1;
+
+import "google/api/annotations.proto";
+
+service EducationService {
+  rpc ListSchools (stream School) returns (stream School) {
+    option (google.api.http) = {
+      get: "/v1/school"
+    };
+  }
+  rpc RegisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UpdateSchool (School) returns (School) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
+  rpc UnregisterSchool (School) returns (School) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+
+  rpc RegisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      post: "/v1/school"
+    };
+  }
+  rpc UpdateStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      put: "/v1/school"
+    };
+  }
+  rpc UnregisterStudent (Student) returns (Student) {
+    option (google.api.http) = {
+      delete: "/v1/school"
+    };
+  }
+}
+
+message School {
+  string            UUID        = 1;
+  string            name        = 2;
+  string            description = 3;
+  string            phone       = 4;
+  string            email       = 5;
+  repeated Link     pictures    = 6;
+  repeated Link     regions     = 7;
+  repeated Location locations   = 8;
+}
+
+message Student {
+  string UUID       = 1;
+  string first_name = 2;
+  string last_name  = 3;
+  string phone      = 4;
+  string email      = 5;
+}
+
+message Link {
+  string Type       = 1;
+  string Reference  = 2;
+}
+
+message Location {
+  string address    = 1;
+	double latitude   = 2;
+	double longitude  = 3;
+  Region region     = 4;
+}
+
+message Region {
+  string city     = 1;
+	string state    = 2;
+	string country  = 3;
+	string zipcode  = 4;
+}
