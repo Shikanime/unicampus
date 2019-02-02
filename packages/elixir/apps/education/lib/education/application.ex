@@ -3,6 +3,7 @@ defmodule Education.Application do
 
   def start(_type, _args) do
     children = [
+      {Education.Repo, []},
     ]
 
     opts = [strategy: :one_for_one, name: Education.Supervisor]
